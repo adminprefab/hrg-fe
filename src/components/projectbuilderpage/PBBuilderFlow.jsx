@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import emailjs from "@emailjs/browser";
 import { base44 } from "@/api/base44Client";
 import { PRICING, buildProject, money } from "@/lib/projectPricing";
 import StepHeading from "./StepHeading";
@@ -42,7 +43,11 @@ export default function PBBuilderFlow() {
     setData((d) => {
       const next = { ...d, [name]: value };
       // Record the original SF the customer entered, for the value-prompt funnel metric.
-      if (name === "sf" && d.original_sf == null && Number(value) >= PRICING.sfMin) {
+      if (
+        name === "sf" &&
+        d.original_sf == null &&
+        Number(value) >= PRICING.sfMin
+      ) {
         next.original_sf = Number(value);
       }
       return next;
@@ -56,7 +61,8 @@ export default function PBBuilderFlow() {
     materials: data.materials,
     siteWork: data.site_work,
   });
-  const showValuePrompt = sf >= PRICING.sfMin && sf < PRICING.smallProjectTriggerSF;
+  const showValuePrompt =
+    sf >= PRICING.sfMin && sf < PRICING.smallProjectTriggerSF;
 
   const submit = async () => {
     setLoading(true);
@@ -65,7 +71,9 @@ export default function PBBuilderFlow() {
       let plans_file_url = "";
       if (data.plans_file) {
         try {
-          const up = await base44.integrations.Core.UploadPrivateFile({ file: data.plans_file });
+          const up = await base44.integrations.Core.UploadPrivateFile({
+            file: data.plans_file,
+          });
           plans_file_url = up?.file_uri || "";
         } catch (uploadErr) {
           // a failed upload shouldn't block the lead
@@ -91,7 +99,12 @@ export default function PBBuilderFlow() {
         p3_estimate: estimate.p3,
         adjustment_amount: estimate.adjustment,
         expected_budget: estimate.total,
-        has_plans: data.has_plans === "Yes" ? true : data.has_plans === "No" ? false : undefined,
+        has_plans:
+          data.has_plans === "Yes"
+            ? true
+            : data.has_plans === "No"
+              ? false
+              : undefined,
         city_contact: data.city_contact || undefined,
         sewer_type: data.sewer_type || undefined,
         utility_info: data.utility_info || undefined,
@@ -99,45 +112,29 @@ export default function PBBuilderFlow() {
         plans_file_url: plans_file_url || undefined,
         lead_flow: "Project Builder Page",
       });
-      // Notify sales of the new lead. A mail failure must never block the customer's confirmation.
+      // Notify sales of the new lead via EmailJS. A mail failure must never block the customer's confirmation.
       try {
-        await base44.integrations.Core.SendEmail({
-          to: "sales@hrgprefab.com",
-          from_name: "HRG Prefab Portal",
-          subject: `New project inquiry · ${data.full_name.trim()} · ${money(estimate.total)}`,
-          html: `
-            <h2 style="font-family:Arial,sans-serif;margin:0 0 16px;">New Project Builder inquiry</h2>
-            <table style="font-family:Arial,sans-serif;font-size:14px;border-collapse:collapse;">
-              <tr><td style="padding:6px 12px 6px 0;color:#888;">Name</td><td><strong>${data.full_name.trim()}</strong></td></tr>
-              <tr><td style="padding:6px 12px 6px 0;color:#888;">Email</td><td>${data.email.trim()}</td></tr>
-              <tr><td style="padding:6px 12px 6px 0;color:#888;">Phone</td><td>${data.phone.trim()}</td></tr>
-              <tr><td style="padding:6px 12px 6px 0;color:#888;">Property address</td><td>${[data.street, data.city, data.zip].filter(Boolean).join(", ") || "-"}</td></tr>
-              <tr><td style="padding:6px 12px 6px 0;color:#888;">Jurisdiction</td><td>${data.jurisdiction || "-"}</td></tr>
-              <tr><td style="padding:6px 12px 6px 0;color:#888;">Square footage</td><td>${sf} ft²${data.original_sf && data.original_sf !== sf ? ` (entered as ${data.original_sf} ft²)` : ""}</td></tr>
-              <tr><td style="padding:6px 12px 6px 0;color:#888;">Plumbing</td><td>${data.plumbing || "-"}</td></tr>
-              <tr><td style="padding:6px 12px 6px 0;color:#888;">Scopes</td><td>${[
-                data.materials && "Materials",
-                data.land_dev && "Land development",
-                data.site_work && "Site work",
-              ].filter(Boolean).join(", ") || "-"}</td></tr>
-              <tr><td style="padding:6px 12px 6px 0;color:#888;">Timeline</td><td>${data.timeline || "-"}</td></tr>
-              <tr><td style="padding:6px 12px 6px 0;color:#888;">Plans</td><td>${data.has_plans || "-"}${plans_file_url ? ` · <a href="${plans_file_url}">uploaded file</a>` : ""}</td></tr>
-              <tr><td style="padding:6px 12px 6px 0;color:#888;">City contact</td><td>${data.city_contact || "-"}</td></tr>
-              <tr><td style="padding:6px 12px 6px 0;color:#888;">Sewer type</td><td>${data.sewer_type || "-"}</td></tr>
-              <tr><td style="padding:6px 12px 6px 0;color:#888;">Utility notes</td><td>${data.utility_info || "-"}</td></tr>
-            </table>
-            <h3 style="font-family:Arial,sans-serif;margin:20px 0 8px;">Estimates</h3>
-            <table style="font-family:Arial,sans-serif;font-size:14px;border-collapse:collapse;">
-              <tr><td style="padding:6px 12px 6px 0;color:#888;">P1 (structure)</td><td>${money(estimate.p1)}</td></tr>
-              <tr><td style="padding:6px 12px 6px 0;color:#888;">Materials</td><td>${money(estimate.mats)}</td></tr>
-              <tr><td style="padding:6px 12px 6px 0;color:#888;">Delivery</td><td>${money(estimate.del)}</td></tr>
-              <tr><td style="padding:6px 12px 6px 0;color:#888;">P3 (turnkey)</td><td>${money(estimate.p3)}</td></tr>
-              <tr><td style="padding:6px 12px 6px 0;color:#888;">Adjustments</td><td>${money(estimate.adjustment)}</td></tr>
-              <tr><td style="padding:6px 12px 6px 0;color:#888;"><strong>Expected budget</strong></td><td><strong>${money(estimate.total)}</strong></td></tr>
-            </table>
-            <p style="font-family:Arial,sans-serif;font-size:12px;color:#888;margin-top:20px;">Source: Project Builder page lead flow</p>
-          `,
-        });
+        await emailjs.send(
+          import.meta.env.VITE_EMAILJS_SERVICE_ID,
+          import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+          {
+            full_name: data.full_name.trim(),
+            email: data.email.trim(),
+            phone: data.phone.trim(),
+            property_address:
+              [data.street, data.city, data.zip].filter(Boolean).join(", ") ||
+              "-",
+            final_sf: sf,
+            plumbing: data.plumbing || "-",
+            scope_land_dev: data.land_dev ? "Yes" : "No",
+            scope_materials: data.materials ? "Yes" : "No",
+            scope_site_work: data.site_work ? "Yes" : "No",
+            expected_budget: money(estimate.total),
+            timeline: data.timeline || "-",
+            has_plans: data.has_plans || "-",
+          },
+          { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY },
+        );
       } catch (emailErr) {
         // The lead is already saved; keep the customer's confirmation flowing.
       }
@@ -145,7 +142,9 @@ export default function PBBuilderFlow() {
       // Keep the confirmation card in view: hiding the collapsed steps shrinks the page,
       // so bring the card back to the top of the viewport after it renders.
       setTimeout(() => {
-        document.getElementById("proceed")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        document
+          .getElementById("proceed")
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 60);
     } catch (err) {
       setError("Something went wrong sending your project. Please try again.");
@@ -160,7 +159,11 @@ export default function PBBuilderFlow() {
         <div className="min-w-0">
           <StepHeading
             num="Project builder"
-            title={<span>Let's build <em className="font-serif italic">your project.</em></span>}
+            title={
+              <span>
+                Let's build <em className="font-serif italic">your project.</em>
+              </span>
+            }
           />
 
           <div className="mt-10 space-y-8">
@@ -176,15 +179,22 @@ export default function PBBuilderFlow() {
 
             {/* More space. Better value. */}
             {showValuePrompt && !submitted && (
-              <ValuePrompt sf={sf} onApply={(size) => setField("sf", String(size))} />
+              <ValuePrompt
+                sf={sf}
+                onApply={(size) => setField("sf", String(size))}
+              />
             )}
 
             {/* 03 · Plumbing */}
             {!submitted && (
               <div className={CARD}>
-                <StepHeading num="03" title="Will your project include plumbing?" />
+                <StepHeading
+                  num="03"
+                  title="Will your project include plumbing?"
+                />
                 <p className="mt-3 text-foreground/60 leading-relaxed">
-                  A bathroom, kitchenette or any fixture that needs water and sewer or septic.
+                  A bathroom, kitchenette or any fixture that needs water and
+                  sewer or septic.
                 </p>
                 <div className="mt-6 flex gap-4 max-w-sm">
                   {["Yes", "No"].map((v) => (
@@ -204,8 +214,9 @@ export default function PBBuilderFlow() {
                 </div>
                 {data.plumbing === "No" && sf === 100 && (
                   <p className="mt-6 text-sm font-semibold text-primary">
-                    Your Expected Project Budget includes a {money(PRICING.noPlumbingAdjustment)}{" "}
-                    no-plumbing adjustment.
+                    Your Expected Project Budget includes a{" "}
+                    {money(PRICING.noPlumbingAdjustment)} no-plumbing
+                    adjustment.
                   </p>
                 )}
               </div>
@@ -221,7 +232,12 @@ export default function PBBuilderFlow() {
             {/* 05 · Your project (mobile / tablet) */}
             {!submitted && (
               <div className="lg:hidden">
-                <PBProjectCard data={data} setField={setField} estimate={estimate} sf={sf} />
+                <PBProjectCard
+                  data={data}
+                  setField={setField}
+                  estimate={estimate}
+                  sf={sf}
+                />
               </div>
             )}
 
@@ -245,7 +261,12 @@ export default function PBBuilderFlow() {
         <aside className="hidden lg:block">
           <div className="sticky top-28">
             {!submitted && (
-              <PBProjectCard data={data} setField={setField} estimate={estimate} sf={sf} />
+              <PBProjectCard
+                data={data}
+                setField={setField}
+                estimate={estimate}
+                sf={sf}
+              />
             )}
           </div>
         </aside>

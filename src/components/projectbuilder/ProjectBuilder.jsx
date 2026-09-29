@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Check } from "lucide-react";
+import emailjs from "@emailjs/browser";
 import { base44 } from "@/api/base44Client";
 import { PRICING, buildProject, money } from "@/lib/projectPricing";
 import AddressLookup from "./AddressLookup";
@@ -9,7 +10,14 @@ import BudgetPanel from "./BudgetPanel";
 import ProceedStep from "./ProceedStep";
 
 const TOTAL_STEPS = 6;
-const STEP_TITLES = ["Property", "Project Size", "Configuration", "Build Your Project", "Expected Budget", "Proceed"];
+const STEP_TITLES = [
+  "Property",
+  "Project Size",
+  "Configuration",
+  "Build Your Project",
+  "Expected Budget",
+  "Proceed",
+];
 
 export default function ProjectBuilder() {
   const [step, setStep] = useState(1);
@@ -52,7 +60,9 @@ export default function ProjectBuilder() {
 
   const anyScope = form.land_dev || form.materials || form.site_work;
   const contactValid =
-    form.full_name.trim() !== "" && /.+@.+\..+/.test(form.email) && form.phone.trim() !== "";
+    form.full_name.trim() !== "" &&
+    /.+@.+\..+/.test(form.email) &&
+    form.phone.trim() !== "";
 
   const canContinue = () => {
     switch (step) {
@@ -82,7 +92,9 @@ export default function ProjectBuilder() {
       let plans_file_url = "";
       if (form.plans_file) {
         try {
-          const up = await base44.integrations.Core.UploadPrivateFile({ file: form.plans_file });
+          const up = await base44.integrations.Core.UploadPrivateFile({
+            file: form.plans_file,
+          });
           plans_file_url = up?.file_uri || "";
         } catch (uploadErr) {
           // a failed upload shouldn't block the lead
@@ -116,6 +128,35 @@ export default function ProjectBuilder() {
         plans_file_url: plans_file_url || undefined,
         lead_flow: "Project Builder",
       });
+
+      // Notify sales of the new lead via EmailJS. A mail failure must never block the customer's confirmation.
+      try {
+        await emailjs.send(
+          import.meta.env.VITE_EMAILJS_SERVICE_ID,
+          import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+          {
+            full_name: form.full_name.trim(),
+            email: form.email.trim(),
+            phone: form.phone.trim(),
+            property_address:
+              [form.property_address, form.city, form.zip_code]
+                .filter(Boolean)
+                .join(", ") || "-",
+            final_sf: sf,
+            plumbing: form.plumbing || "-",
+            scope_land_dev: form.land_dev ? "Yes" : "No",
+            scope_materials: form.materials ? "Yes" : "No",
+            scope_site_work: form.site_work ? "Yes" : "No",
+            expected_budget: money(estimate.total),
+            timeline: form.timeline || "-",
+            has_plans: form.has_plans || "-",
+          },
+          { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY },
+        );
+      } catch (emailErr) {
+        // The lead is already saved; keep the customer's confirmation flowing.
+      }
+
       setSubmitted(true);
     } catch (err) {
       setError("Something went wrong sending your project. Please try again.");
@@ -132,10 +173,12 @@ export default function ProjectBuilder() {
             <div className="w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center mx-auto">
               <Check className="w-7 h-7" />
             </div>
-            <h2 className="mt-6 font-heading text-3xl md:text-4xl font-bold">Your project is in.</h2>
+            <h2 className="mt-6 font-heading text-3xl md:text-4xl font-bold">
+              Your project is in.
+            </h2>
             <p className="mt-4 text-foreground/60 leading-relaxed max-w-md mx-auto">
-              We're reviewing your {sf} SF project. A member of our team will reach out to schedule
-              your project review.
+              We're reviewing your {sf} SF project. A member of our team will
+              reach out to schedule your project review.
             </p>
             <div className="mt-8 border-t border-b border-border py-5">
               <span className="block text-xs font-bold uppercase tracking-[0.2em] text-foreground/50">
@@ -193,8 +236,8 @@ export default function ProjectBuilder() {
                   Will your project include plumbing?
                 </h2>
                 <p className="mt-3 text-foreground/60 leading-relaxed">
-                  Most backyard projects include at least a half bath · plumbing affects utilities,
-                  permitting and site work.
+                  Most backyard projects include at least a half bath · plumbing
+                  affects utilities, permitting and site work.
                 </p>
                 <div className="mt-8 grid grid-cols-2 gap-4 max-w-xs">
                   {["Yes", "No"].map((v) => (
@@ -214,14 +257,23 @@ export default function ProjectBuilder() {
                 </div>
                 {form.plumbing === "No" && sf === 100 && (
                   <p className="mt-6 text-sm font-semibold text-primary">
-                    Your Expected Project Budget includes a {money(PRICING.noPlumbingAdjustment)}{" "}
-                    no-plumbing adjustment.
+                    Your Expected Project Budget includes a{" "}
+                    {money(PRICING.noPlumbingAdjustment)} no-plumbing
+                    adjustment.
                   </p>
                 )}
               </div>
             )}
-            {step === 4 && <ScopeCards form={form} setField={setField} sf={sf} />}
-            {step === 5 && <BudgetPanel form={form} setField={setField} estimate={estimate} />}
+            {step === 4 && (
+              <ScopeCards form={form} setField={setField} sf={sf} />
+            )}
+            {step === 5 && (
+              <BudgetPanel
+                form={form}
+                setField={setField}
+                estimate={estimate}
+              />
+            )}
             {step === 6 && (
               <ProceedStep
                 form={form}
