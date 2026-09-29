@@ -1,0 +1,398 @@
+{
+  "name": "Lead",
+  "type": "object",
+  "properties": {
+    "full_name": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "company": {
+      "type": "string"
+    },
+    "zip_code": {
+      "type": "string"
+    },
+    "project_type": {
+      "type": "string",
+      "enum": [
+        "Backyard ADU",
+        "Standalone home",
+        "Multiple homes / investment project",
+        "Something else",
+        "Detached ADU",
+        "Attached Addition",
+        "Not sure yet"
+      ]
+    },
+    "message": {
+      "type": "string"
+    },
+    "model_selection": {
+      "type": "string",
+      "enum": [
+        "500 SF Prototype",
+        "800 SF Prototype",
+        "Not Sure"
+      ]
+    },
+    "square_footage": {
+      "type": "string",
+      "enum": [
+        "250 sq ft",
+        "500 sq ft",
+        "750 sq ft",
+        "1,000 sq ft",
+        "1,250+ sq ft"
+      ]
+    },
+    "property_address": {
+      "type": "string"
+    },
+    "intended_use": {
+      "type": "string"
+    },
+    "timeline": {
+      "type": "string",
+      "enum": [
+        "ASAP",
+        "1-3 months",
+        "3-6 months",
+        "6+ months",
+        "6-12 months",
+        "12+ months",
+        "Just exploring"
+      ]
+    },
+    "budget_range": {
+      "type": "string",
+      "enum": [
+        "Under $100K",
+        "$100K-$150K",
+        "$150K-$250K",
+        "$250K+",
+        "Not sure yet"
+      ]
+    },
+    "size_choice": {
+      "type": "string",
+      "enum": [
+        "500 SF",
+        "800 SF",
+        "Custom size",
+        "Help me decide"
+      ]
+    },
+    "custom_sqft": {
+      "type": "string"
+    },
+    "num_homes": {
+      "type": "number"
+    },
+    "property_connection": {
+      "type": "string",
+      "enum": [
+        "I own it",
+        "I'm under contract to purchase it",
+        "I'm helping the owner",
+        "I'm still looking for a property"
+      ]
+    },
+    "city_state": {
+      "type": "string"
+    },
+    "site_status": {
+      "type": "string",
+      "enum": [
+        "Existing home with space to build",
+        "Vacant land",
+        "Structure to replace",
+        "Not sure"
+      ]
+    },
+    "sewer_type": {
+      "type": "string",
+      "enum": [
+        "City sewer",
+        "Septic system",
+        "Neither / new connection needed",
+        "Not sure"
+      ]
+    },
+    "utilities_available": {
+      "type": "string",
+      "enum": [
+        "Both available",
+        "Water only",
+        "Electricity only",
+        "Neither",
+        "Not sure"
+      ]
+    },
+    "septic_connection": {
+      "type": "string",
+      "enum": [
+        "Existing system, if capacity allows",
+        "New system needed",
+        "Not sure"
+      ]
+    },
+    "city_contact": {
+      "type": "string",
+      "enum": [
+        "Yes",
+        "Not yet",
+        "My architect or contractor has"
+      ]
+    },
+    "city_feedback": {
+      "type": "string"
+    },
+    "plans_status": {
+      "type": "string",
+      "enum": [
+        "No plans yet",
+        "Sketches or inspiration images",
+        "Plans in progress",
+        "Completed plans, not yet approved",
+        "Approved plans"
+      ]
+    },
+    "plans_file_url": {
+      "type": "string"
+    },
+    "budget": {
+      "type": "string",
+      "enum": [
+        "Under $100,000",
+        "$100,000\u2013$149,999",
+        "$150,000\u2013$249,999",
+        "$250,000\u2013$399,999",
+        "$400,000+",
+        "I need help establishing a budget"
+      ]
+    },
+    "funding": {
+      "type": "string",
+      "enum": [
+        "Cash / available funds",
+        "Financing already arranged",
+        "I need financing options",
+        "Still deciding"
+      ]
+    },
+    "lead_category": {
+      "type": "string",
+      "enum": [
+        "Ready prospect",
+        "Needs review",
+        "Early research",
+        "Budget mismatch"
+      ]
+    },
+    "booked_slot": {
+      "type": "string"
+    },
+    "followup_requested": {
+      "type": "boolean"
+    },
+    "mismatch_response": {
+      "type": "string"
+    },
+    "lot_size": {
+      "type": "string"
+    },
+    "water_sewer": {
+      "type": "string",
+      "enum": [
+        "Public water + sewer",
+        "Well + septic",
+        "Public water + septic",
+        "Well + public sewer",
+        "Not sure"
+      ]
+    },
+    "property_condition": {
+      "type": "string",
+      "enum": [
+        "Vacant lot",
+        "Home to be demolished",
+        "Existing home on site",
+        "Not sure"
+      ]
+    },
+    "special_conditions": {
+      "type": "string",
+      "enum": [
+        "None known",
+        "Flood zone",
+        "Wetlands",
+        "Sloped lot",
+        "Other / not sure"
+      ]
+    },
+    "home_size": {
+      "type": "string",
+      "enum": [
+        "Compact",
+        "Family",
+        "Large",
+        "Estate"
+      ]
+    },
+    "architecture": {
+      "type": "string",
+      "enum": [
+        "Modern",
+        "Contemporary",
+        "Coastal",
+        "Traditional",
+        "Mediterranean",
+        "Farmhouse"
+      ]
+    },
+    "interior_level": {
+      "type": "string",
+      "enum": [
+        "Essential",
+        "Premium",
+        "Luxury"
+      ]
+    },
+    "kitchen": {
+      "type": "string",
+      "enum": [
+        "Classic",
+        "Designer",
+        "Luxury"
+      ]
+    },
+    "exterior_package": {
+      "type": "string",
+      "enum": [
+        "Standard",
+        "Impact",
+        "Architectural"
+      ]
+    },
+    "upgrades": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "Pool",
+          "Solar",
+          "Generator",
+          "Smart Home",
+          "Outdoor Living",
+          "Landscape"
+        ]
+      }
+    },
+    "bedrooms": {
+      "type": "number"
+    },
+    "bathrooms": {
+      "type": "number"
+    },
+    "stories": {
+      "type": "number"
+    },
+    "garage_spaces": {
+      "type": "number"
+    },
+    "living_area": {
+      "type": "number"
+    },
+    "special_requests": {
+      "type": "string"
+    },
+    "estimate_low": {
+      "type": "number"
+    },
+    "estimate_high": {
+      "type": "number"
+    },
+    "city": {
+      "type": "string"
+    },
+    "jurisdiction": {
+      "type": "string"
+    },
+    "original_sf": {
+      "type": "number"
+    },
+    "final_sf": {
+      "type": "number"
+    },
+    "plumbing": {
+      "type": "string",
+      "enum": [
+        "Yes",
+        "No"
+      ]
+    },
+    "has_plans": {
+      "type": "boolean"
+    },
+    "scope_land_dev": {
+      "type": "boolean"
+    },
+    "scope_materials": {
+      "type": "boolean"
+    },
+    "scope_site_work": {
+      "type": "boolean"
+    },
+    "p1_estimate": {
+      "type": "number"
+    },
+    "materials_estimate": {
+      "type": "number"
+    },
+    "delivery_estimate": {
+      "type": "number"
+    },
+    "p3_estimate": {
+      "type": "number"
+    },
+    "adjustment_amount": {
+      "type": "number"
+    },
+    "expected_budget": {
+      "type": "number"
+    },
+    "utility_info": {
+      "type": "string"
+    },
+    "lead_flow": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "full_name",
+    "email"
+  ],
+  "rls": {
+    "create": true,
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
