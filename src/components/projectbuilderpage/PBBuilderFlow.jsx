@@ -112,7 +112,6 @@ export default function PBBuilderFlow() {
         plans_file_url: plans_file_url || undefined,
         lead_flow: "Project Builder Page",
       });
-      // Notify sales of the new lead via EmailJS. A mail failure must never block the customer's confirmation.
       try {
         await emailjs.send(
           import.meta.env.VITE_EMAILJS_SERVICE_ID,
@@ -132,15 +131,12 @@ export default function PBBuilderFlow() {
             expected_budget: money(estimate.total),
             timeline: data.timeline || "-",
             has_plans: data.has_plans || "-",
+            plans_file_url: plans_file_url || "No file uploaded",
           },
           { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY },
         );
-      } catch (emailErr) {
-        // The lead is already saved; keep the customer's confirmation flowing.
-      }
+      } catch (emailErr) {}
       setSubmitted(true);
-      // Keep the confirmation card in view: hiding the collapsed steps shrinks the page,
-      // so bring the card back to the top of the viewport after it renders.
       setTimeout(() => {
         document
           .getElementById("proceed")

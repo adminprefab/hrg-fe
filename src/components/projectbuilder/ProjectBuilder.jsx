@@ -129,7 +129,6 @@ export default function ProjectBuilder() {
         lead_flow: "Project Builder",
       });
 
-      // Notify sales of the new lead via EmailJS. A mail failure must never block the customer's confirmation.
       try {
         await emailjs.send(
           import.meta.env.VITE_EMAILJS_SERVICE_ID,
@@ -150,12 +149,11 @@ export default function ProjectBuilder() {
             expected_budget: money(estimate.total),
             timeline: form.timeline || "-",
             has_plans: form.has_plans || "-",
+            plans_file_url: plans_file_url || "No file uploaded",
           },
           { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY },
         );
-      } catch (emailErr) {
-        // The lead is already saved; keep the customer's confirmation flowing.
-      }
+      } catch (emailErr) {}
 
       setSubmitted(true);
     } catch (err) {
