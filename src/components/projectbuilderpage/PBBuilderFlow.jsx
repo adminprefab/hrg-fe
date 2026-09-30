@@ -71,10 +71,10 @@ export default function PBBuilderFlow() {
       let plans_file_url = "";
       if (data.plans_file) {
         try {
-          const up = await base44.integrations.Core.UploadPrivateFile({
+          const up = await base44.integrations.Core.UploadPublicFile({
             file: data.plans_file,
           });
-          plans_file_url = up?.file_uri || "";
+          plans_file_url = up?.file_url || "";
         } catch (uploadErr) {
           // a failed upload shouldn't block the lead
         }
