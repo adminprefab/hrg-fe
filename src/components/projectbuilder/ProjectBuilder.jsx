@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Check } from "lucide-react";
-import emailjs from "@emailjs/browser";
 import { base44 } from "@/api/base44Client";
+import { leadDetails, sendLeadEmail, uploadNote } from "@/lib/leadEmail";
 import { PRICING, buildProject, money } from "@/lib/projectPricing";
 import AddressLookup from "./AddressLookup";
 import SizeStep from "./SizeStep";
@@ -120,7 +120,7 @@ export default function ProjectBuilder() {
         p3_estimate: estimate.p3,
         adjustment_amount: estimate.adjustment,
         expected_budget: estimate.total,
-        has_plans: form.has_plans === "Yes",
+        has_plans: form.has_plans === "Yes" ? true : form.has_plans === "No" ? false : undefined,
         city_contact: form.city_contact || undefined,
         sewer_type: form.sewer_type || undefined,
         utility_info: form.utility_info || undefined,
@@ -129,31 +129,36 @@ export default function ProjectBuilder() {
         lead_flow: "Project Builder",
       });
 
-      try {
-        await emailjs.send(
-          import.meta.env.VITE_EMAILJS_SERVICE_ID,
-          import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-          {
-            full_name: form.full_name.trim(),
-            email: form.email.trim(),
-            phone: form.phone.trim(),
-            property_address:
-              [form.property_address, form.city, form.zip_code]
-                .filter(Boolean)
-                .join(", ") || "-",
-            final_sf: sf,
-            plumbing: form.plumbing || "-",
-            scope_land_dev: form.land_dev ? "Yes" : "No",
-            scope_materials: form.materials ? "Yes" : "No",
-            scope_site_work: form.site_work ? "Yes" : "No",
-            expected_budget: money(estimate.total),
-            timeline: form.timeline || "-",
-            has_plans: form.has_plans || "-",
-            plans_file_url: plans_file_url || "No file uploaded",
-          },
-          { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY },
-        );
-      } catch (emailErr) {}
+      await sendLeadEmail({
+        full_name: form.full_name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        property_address:
+          [form.property_address, form.city, form.zip_code].filter(Boolean).join(", ") || "-",
+        final_sf: sf,
+        plumbing: form.plumbing || "-",
+        scope_land_dev: form.land_dev ? "Yes" : "No",
+        scope_materials: form.materials ? "Yes" : "No",
+        scope_site_work: form.site_work ? "Yes" : "No",
+        expected_budget: money(estimate.total),
+        timeline: form.timeline || "-",
+        has_plans: form.has_plans || "-",
+        plans_file_url: uploadNote(!!form.plans_file, plans_file_url),
+        jurisdiction: form.jurisdiction || "-",
+        city_contact: form.city_contact || "-",
+        sewer_type: form.sewer_type || "-",
+        utility_info: form.utility_info || "-",
+        lead_flow: "Project Builder",
+        details: leadDetails({
+          flow: "Project Builder (/see-what-fits)",
+          jurisdiction: form.jurisdiction,
+          cityContact: form.city_contact,
+          sewerType: form.sewer_type,
+          utilityInfo: form.utility_info,
+          originalSf: form.original_sf,
+          finalSf: sf,
+        }),
+      });
 
       setSubmitted(true);
     } catch (err) {

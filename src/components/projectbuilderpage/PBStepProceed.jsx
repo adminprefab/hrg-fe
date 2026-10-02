@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { money } from "@/lib/projectPricing";
+import { PLAN_FILE_TYPES } from "@/lib/leadEmail";
 import StepHeading from "./StepHeading";
 
 const TIMELINES = [
@@ -101,8 +102,15 @@ export default function PBStepProceed({ data, setField, sf, estimate, onSubmit, 
     data.full_name.trim() !== "" &&
     /.+@.+\..+/.test(data.email) &&
     data.phone.replace(/\D/g, "").length >= 10;
+  // Something to quote against: a street address, or at least city and ZIP.
+  const addressValid = data.street.trim() !== "" || (data.city.trim() !== "" && data.zip.length >= 5);
 
   const handleSubmit = () => {
+    if (!addressValid) {
+      setContactError(true);
+      document.getElementById("build")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
     if (!contactValid) {
       setContactError(true);
       document.getElementById("proceed")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -211,16 +219,21 @@ export default function PBStepProceed({ data, setField, sf, estimate, onSubmit, 
         </span>
         <input
           type="file"
-          accept=".pdf,.png,.jpg,.jpeg,.gif,.webp,.csv,.txt,.md"
+          accept={PLAN_FILE_TYPES}
           onChange={(e) => setField("plans_file", e.target.files?.[0] || null)}
           className="text-sm text-foreground/60 file:mr-3 file:rounded-md file:border-0 file:bg-primary file:text-primary-foreground file:px-4 file:py-2.5 file:font-semibold"
         />
         <span className="block mt-1.5 text-xs text-foreground/50">
-          Optional. Survey, drawings, photos, PDFs.
+          Optional. Survey, drawings, photos, PDFs, Word or CAD files.
         </span>
       </label>
 
-      {contactError && !contactValid && (
+      {contactError && !addressValid && (
+        <p className="mt-6 text-sm font-semibold text-destructive">
+          Please add the property address (or city and ZIP) in step 01 so we can review your project.
+        </p>
+      )}
+      {contactError && addressValid && !contactValid && (
         <p className="mt-6 text-sm font-semibold text-destructive">
           Please add your name, email and a 10-digit phone number so we can schedule your project review.
         </p>

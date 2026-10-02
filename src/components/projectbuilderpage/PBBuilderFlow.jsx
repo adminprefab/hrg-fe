@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import emailjs from "@emailjs/browser";
 import { base44 } from "@/api/base44Client";
+import { leadDetails, sendLeadEmail, uploadNote } from "@/lib/leadEmail";
 import { PRICING, buildProject, money } from "@/lib/projectPricing";
 import StepHeading from "./StepHeading";
 import PBStepProperty from "./PBStepProperty";
@@ -112,30 +112,36 @@ export default function PBBuilderFlow() {
         plans_file_url: plans_file_url || undefined,
         lead_flow: "Project Builder Page",
       });
-      try {
-        await emailjs.send(
-          import.meta.env.VITE_EMAILJS_SERVICE_ID,
-          import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-          {
-            full_name: data.full_name.trim(),
-            email: data.email.trim(),
-            phone: data.phone.trim(),
-            property_address:
-              [data.street, data.city, data.zip].filter(Boolean).join(", ") ||
-              "-",
-            final_sf: sf,
-            plumbing: data.plumbing || "-",
-            scope_land_dev: data.land_dev ? "Yes" : "No",
-            scope_materials: data.materials ? "Yes" : "No",
-            scope_site_work: data.site_work ? "Yes" : "No",
-            expected_budget: money(estimate.total),
-            timeline: data.timeline || "-",
-            has_plans: data.has_plans || "-",
-            plans_file_url: plans_file_url || "No file uploaded",
-          },
-          { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY },
-        );
-      } catch (emailErr) {}
+      await sendLeadEmail({
+        full_name: data.full_name.trim(),
+        email: data.email.trim(),
+        phone: data.phone.trim(),
+        property_address:
+          [data.street, data.city, data.zip].filter(Boolean).join(", ") || "-",
+        final_sf: sf,
+        plumbing: data.plumbing || "-",
+        scope_land_dev: data.land_dev ? "Yes" : "No",
+        scope_materials: data.materials ? "Yes" : "No",
+        scope_site_work: data.site_work ? "Yes" : "No",
+        expected_budget: money(estimate.total),
+        timeline: data.timeline || "-",
+        has_plans: data.has_plans || "-",
+        plans_file_url: uploadNote(!!data.plans_file, plans_file_url),
+        jurisdiction: data.jurisdiction || "-",
+        city_contact: data.city_contact || "-",
+        sewer_type: data.sewer_type || "-",
+        utility_info: data.utility_info || "-",
+        lead_flow: "Project Builder Page",
+        details: leadDetails({
+          flow: "Project Builder Page (home page)",
+          jurisdiction: data.jurisdiction,
+          cityContact: data.city_contact,
+          sewerType: data.sewer_type,
+          utilityInfo: data.utility_info,
+          originalSf: data.original_sf,
+          finalSf: sf,
+        }),
+      });
       setSubmitted(true);
       setTimeout(() => {
         document

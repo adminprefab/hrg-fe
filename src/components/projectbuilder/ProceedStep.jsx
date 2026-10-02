@@ -1,5 +1,6 @@
 import React from "react";
 import { money } from "@/lib/projectPricing";
+import { PLAN_FILE_TYPES } from "@/lib/leadEmail";
 
 const TIMELINES = ["ASAP", "1-3 months", "3-6 months", "6+ months", "Just exploring"];
 const SEWER_OPTIONS = ["City sewer", "Septic system", "Neither / new connection needed", "Not sure"];
@@ -144,7 +145,7 @@ export default function ProceedStep({ form, setField, estimate, sf, onSubmit, lo
         </span>
         <input
           type="file"
-          accept=".pdf,.png,.jpg,.jpeg,.gif,.webp,.csv,.txt,.md"
+          accept={PLAN_FILE_TYPES}
           onChange={(e) => setField("plans_file", e.target.files?.[0] || null)}
           className="text-sm text-foreground/60 file:mr-3 file:rounded-md file:border-0 file:bg-primary file:text-primary-foreground file:px-4 file:py-2.5 file:font-semibold"
         />
