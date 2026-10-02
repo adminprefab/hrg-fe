@@ -98,7 +98,9 @@ export default function PBStepProceed({ data, setField, sf, estimate, onSubmit, 
   }
 
   const contactValid =
-    data.full_name.trim() !== "" && /.+@.+\..+/.test(data.email) && data.phone.trim() !== "";
+    data.full_name.trim() !== "" &&
+    /.+@.+\..+/.test(data.email) &&
+    data.phone.replace(/\D/g, "").length >= 10;
 
   const handleSubmit = () => {
     if (!contactValid) {
@@ -220,7 +222,7 @@ export default function PBStepProceed({ data, setField, sf, estimate, onSubmit, 
 
       {contactError && !contactValid && (
         <p className="mt-6 text-sm font-semibold text-destructive">
-          Please add your name, email and phone so we can schedule your project review.
+          Please add your name, email and a 10-digit phone number so we can schedule your project review.
         </p>
       )}
       {error && <p className="mt-6 text-sm font-semibold text-destructive">{error}</p>}

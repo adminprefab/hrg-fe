@@ -62,7 +62,7 @@ export default function ProjectBuilder() {
   const contactValid =
     form.full_name.trim() !== "" &&
     /.+@.+\..+/.test(form.email) &&
-    form.phone.trim() !== "";
+    form.phone.replace(/\D/g, "").length >= 10;
 
   const canContinue = () => {
     switch (step) {
@@ -255,9 +255,9 @@ export default function ProjectBuilder() {
                 </div>
                 {form.plumbing === "No" && sf === 100 && (
                   <p className="mt-6 text-sm font-semibold text-primary">
-                    Your Expected Project Budget includes a{" "}
-                    {money(PRICING.noPlumbingAdjustment)} no-plumbing
-                    adjustment.
+                    {form.site_work
+                      ? `Your Expected Project Budget includes a ${money(PRICING.noPlumbingAdjustment)} no-plumbing credit on Site Work + Assembly.`
+                      : `Add Site Work + Assembly to apply the ${money(PRICING.noPlumbingAdjustment)} no-plumbing credit.`}
                   </p>
                 )}
               </div>

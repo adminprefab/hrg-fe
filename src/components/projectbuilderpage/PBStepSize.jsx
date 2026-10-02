@@ -1,5 +1,5 @@
 import React from "react";
-import { PRICING } from "@/lib/projectPricing";
+import { PRICING, clampSfInput } from "@/lib/projectPricing";
 import StepHeading from "./StepHeading";
 
 const QUICK_SIZES = [100, 400, 800, 1200, 1600, 2000, 2500, 3000];
@@ -18,7 +18,7 @@ export default function PBStepSize({ data, setField }) {
       <div className="mt-8 flex items-end gap-4 max-w-md">
         <input
           value={data.sf}
-          onChange={(e) => setField("sf", e.target.value.replace(/\D/g, "").slice(0, 4))}
+          onChange={(e) => setField("sf", clampSfInput(e.target.value))}
           inputMode="numeric"
           placeholder="0"
           className="w-48 text-6xl md:text-7xl font-heading font-bold bg-transparent border-0 border-b-2 border-primary focus:outline-none py-1 text-foreground/30 placeholder:text-foreground/25"
@@ -27,9 +27,14 @@ export default function PBStepSize({ data, setField }) {
           SQ. FT.
         </span>
       </div>
+      {data.sf !== "" && sf < PRICING.sfMin && (
+        <p className="mt-3 text-sm font-semibold text-primary">
+          Minimum {PRICING.sfMin} SF · enter {PRICING.sfMin} or more to see your budget.
+        </p>
+      )}
 
-      {/* Slider */}
-      <div className="mt-8 max-w-md">
+      {/* Slider: dimmed until a size is set, so it never shows a size the budget isn't using */}
+      <div className={`mt-8 max-w-md transition-opacity ${sf >= PRICING.sfMin ? "" : "opacity-40"}`}>
         <input
           type="range"
           min={PRICING.sfMin}

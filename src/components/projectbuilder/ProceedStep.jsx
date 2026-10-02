@@ -160,6 +160,11 @@ export default function ProceedStep({ form, setField, estimate, sf, onSubmit, lo
       >
         {loading ? "Scheduling..." : "Schedule Project Review"}
       </button>
+      {disabled && (
+        <p className="mt-3 text-xs text-foreground/50 text-center">
+          Add your name, email and a 10-digit phone number to schedule your review.
+        </p>
+      )}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Loader2, MapPin } from "lucide-react";
+import { searchAddresses } from "@/lib/addressSearch";
 import StepHeading from "./StepHeading";
 
 const inputClass =
@@ -11,6 +12,7 @@ export default function PBStepProperty({ data, setField }) {
   const [searching, setSearching] = useState(false);
   const [showList, setShowList] = useState(false);
   const skipRef = useRef(false);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     if (skipRef.current) {
@@ -29,21 +31,11 @@ export default function PBStepProperty({ data, setField }) {
     const timer = setTimeout(async () => {
       setSearching(true);
       try {
-        const res = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=5&countrycodes=us&q=${encodeURIComponent(q)}`
-        );
-        const results = await res.json();
+        const results = await searchAddresses(q);
         if (!cancelled) {
-          setSuggestions(
-            results.map((r) => ({
-              id: r.place_id,
-              label: r.display_name,
-              city: r.address?.city || r.address?.town || r.address?.village || "",
-              zip: r.address?.postcode || "",
-              county: r.address?.county || "",
-            }))
-          );
-          setShowList(true);
+          setSuggestions(results);
+          // Results can land after the visitor has moved on; only open the list while they are still typing here.
+          setShowList(document.activeElement === inputRef.current);
         }
       } catch {
         if (!cancelled) setSuggestions([]);
@@ -60,10 +52,10 @@ export default function PBStepProperty({ data, setField }) {
 
   const pick = (s) => {
     skipRef.current = true;
-    setField("street", s.label);
+    setField("street", s.street);
     if (s.city) setField("city", s.city);
     if (s.zip) setField("zip", s.zip);
-    if (s.county) setField("jurisdiction", s.county);
+    setField("jurisdiction", s.jurisdiction);
     setSuggestions([]);
     setShowList(false);
   };
@@ -84,7 +76,11 @@ export default function PBStepProperty({ data, setField }) {
           <input
             id="pb-street"
             value={data.street}
-            onChange={(e) => setField("street", e.target.value)}
+            onChange={(e) => {
+              setField("street", e.target.value);
+              if (data.jurisdiction) setField("jurisdiction", ""); // the old pick no longer applies
+            }}
+            ref={inputRef}
             onFocus={() => suggestions.length > 0 && setShowList(true)}
             onBlur={() => setTimeout(() => setShowList(false), 150)}
             autoComplete="off"
@@ -147,6 +143,11 @@ export default function PBStepProperty({ data, setField }) {
           {data.jurisdiction || "Set automatically from your address"}
         </span>
       </p>
+      {data.street.trim().length >= 3 && !data.jurisdiction && !searching && !showList && (
+        <p className="mt-2 text-xs text-foreground/50">
+          Pick your address from the list to set the jurisdiction. Not listed? City and ZIP are enough.
+        </p>
+      )}
     </div>
   );
 }

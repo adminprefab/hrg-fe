@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Loader2, MapPin } from "lucide-react";
+import { searchAddresses } from "@/lib/addressSearch";
 
 export default function AddressLookup({ form, setField }) {
   const [suggestions, setSuggestions] = useState([]);
   const [searching, setSearching] = useState(false);
   const [showList, setShowList] = useState(false);
   const skipRef = useRef(false);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     if (skipRef.current) {
@@ -24,21 +26,11 @@ export default function AddressLookup({ form, setField }) {
     const timer = setTimeout(async () => {
       setSearching(true);
       try {
-        const res = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=5&countrycodes=us&q=${encodeURIComponent(q)}`
-        );
-        const data = await res.json();
+        const results = await searchAddresses(q);
         if (!cancelled) {
-          setSuggestions(
-            data.map((r) => ({
-              id: r.place_id,
-              label: r.display_name,
-              city: r.address?.city || r.address?.town || r.address?.village || "",
-              zip: r.address?.postcode || "",
-              county: r.address?.county || "",
-            }))
-          );
-          setShowList(true);
+          setSuggestions(results);
+          // Results can land after the visitor has moved on; only open the list while they are still typing here.
+          setShowList(document.activeElement === inputRef.current);
         }
       } catch {
         if (!cancelled) setSuggestions([]);
@@ -55,10 +47,10 @@ export default function AddressLookup({ form, setField }) {
 
   const pick = (s) => {
     skipRef.current = true;
-    setField("property_address", s.label);
+    setField("property_address", s.street);
     if (s.city) setField("city", s.city);
     if (s.zip) setField("zip_code", s.zip);
-    if (s.county) setField("jurisdiction", s.county);
+    setField("jurisdiction", s.jurisdiction);
     setSuggestions([]);
     setShowList(false);
   };
@@ -76,7 +68,11 @@ export default function AddressLookup({ form, setField }) {
         <input
           name="property_address"
           value={form.property_address}
-          onChange={(e) => setField("property_address", e.target.value)}
+          onChange={(e) => {
+            setField("property_address", e.target.value);
+            if (form.jurisdiction) setField("jurisdiction", ""); // the old pick no longer applies
+          }}
+          ref={inputRef}
           onFocus={() => suggestions.length > 0 && setShowList(true)}
           onBlur={() => setTimeout(() => setShowList(false), 150)}
           autoComplete="off"

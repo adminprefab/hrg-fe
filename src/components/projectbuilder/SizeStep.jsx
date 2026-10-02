@@ -1,12 +1,12 @@
 import React from "react";
-import { PRICING, buildProject, money } from "@/lib/projectPricing";
+import { PRICING, buildProject, clampSfInput, money } from "@/lib/projectPricing";
 import ValuePrompt from "./ValuePrompt";
 
 export default function SizeStep({ form, setField }) {
   const sf = Number(form.sf) || 0;
   const estimate = buildProject({ sf }); // complete project (all three scopes)
 
-  const handleType = (e) => setField("sf", e.target.value.replace(/\D/g, "").slice(0, 4));
+  const handleType = (e) => setField("sf", clampSfInput(e.target.value));
 
   return (
     <div>
@@ -29,15 +29,20 @@ export default function SizeStep({ form, setField }) {
           SQ. FT.
         </span>
       </div>
+      {form.sf !== "" && sf < PRICING.sfMin && (
+        <p className="mt-3 text-sm font-semibold text-primary">
+          Minimum {PRICING.sfMin} SF · enter {PRICING.sfMin} or more to see your estimate.
+        </p>
+      )}
 
       <input
         type="range"
         min={PRICING.sfMin}
         max={PRICING.sfMax}
         step={10}
-        value={sf || PRICING.sfMin}
+        value={Math.max(sf, PRICING.sfMin)}
         onChange={(e) => setField("sf", String(e.target.value))}
-        className="mt-6 w-full max-w-md accent-primary"
+        className={`mt-6 w-full max-w-md accent-primary transition-opacity ${sf >= PRICING.sfMin ? "" : "opacity-40"}`}
       />
 
       {sf >= PRICING.sfMin && (

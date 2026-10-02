@@ -5,6 +5,7 @@ import {
   materialsCost,
   deliveryCost,
   siteWorkCost,
+  SITE_WORK_RATE,
   money,
 } from "@/lib/projectPricing";
 import StepHeading from "./StepHeading";
@@ -198,7 +199,9 @@ export default function PBStepScopes({ data, setField, sf }) {
                 {hasSf ? money(siteWorkCost(sf)) : money(PRICING.siteWorkMin)}
               </span>
               <span className="block mt-0.5 text-xs text-foreground/50">
-                Project minimum applies ({money(PRICING.siteWorkMin)})
+                {hasSf && siteWorkCost(sf) > PRICING.siteWorkMin
+                  ? `${money(SITE_WORK_RATE)}/SF × ${sf.toLocaleString("en-US")} SF`
+                  : `Project minimum applies (${money(PRICING.siteWorkMin)})`}
               </span>
             </div>
             <AddOnButton
