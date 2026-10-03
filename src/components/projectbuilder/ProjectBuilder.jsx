@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Check } from "lucide-react";
 import { base44 } from "@/api/base44Client";
-import { leadDetails, sendLeadEmail, uploadNote } from "@/lib/leadEmail";
+import { landDevFields, leadDetails, sendLeadEmail, uploadNote } from "@/lib/leadEmail";
 import { PRICING, buildProject, money } from "@/lib/projectPricing";
 import AddressLookup from "./AddressLookup";
 import SizeStep from "./SizeStep";
@@ -33,14 +33,15 @@ export default function ProjectBuilder() {
     sf: "",
     original_sf: null,
     plumbing: "",
-    land_dev: true,
+    has_drawings: "",
+    has_permits: "",
+    lot_slope: "",
     materials: true,
     site_work: true,
     full_name: "",
     email: "",
     phone: "",
     timeline: "",
-    has_plans: "",
     city_contact: "",
     sewer_type: "",
     utility_info: "",
@@ -53,12 +54,12 @@ export default function ProjectBuilder() {
   const estimate = buildProject({
     sf,
     plumbing: form.plumbing || "Yes",
-    landDev: form.land_dev,
+    landDevAnswers: form,
     materials: form.materials,
     siteWork: form.site_work,
   });
 
-  const anyScope = form.land_dev || form.materials || form.site_work;
+  const anyScope = estimate.p1 > 0 || form.materials || form.site_work;
   const contactValid =
     form.full_name.trim() !== "" &&
     /.+@.+\..+/.test(form.email) &&
@@ -111,7 +112,6 @@ export default function ProjectBuilder() {
         original_sf: form.original_sf || sf,
         final_sf: sf,
         plumbing: form.plumbing,
-        scope_land_dev: form.land_dev,
         scope_materials: form.materials,
         scope_site_work: form.site_work,
         p1_estimate: estimate.p1,
@@ -120,7 +120,7 @@ export default function ProjectBuilder() {
         p3_estimate: estimate.p3,
         adjustment_amount: estimate.adjustment,
         expected_budget: estimate.total,
-        has_plans: form.has_plans === "Yes" ? true : form.has_plans === "No" ? false : undefined,
+        ...landDevFields(form, estimate).entity,
         city_contact: form.city_contact || undefined,
         sewer_type: form.sewer_type || undefined,
         utility_info: form.utility_info || undefined,
@@ -137,12 +137,11 @@ export default function ProjectBuilder() {
           [form.property_address, form.city, form.zip_code].filter(Boolean).join(", ") || "-",
         final_sf: sf,
         plumbing: form.plumbing || "-",
-        scope_land_dev: form.land_dev ? "Yes" : "No",
         scope_materials: form.materials ? "Yes" : "No",
         scope_site_work: form.site_work ? "Yes" : "No",
         expected_budget: money(estimate.total),
         timeline: form.timeline || "-",
-        has_plans: form.has_plans || "-",
+        ...landDevFields(form, estimate).email,
         plans_file_url: uploadNote(!!form.plans_file, plans_file_url),
         jurisdiction: form.jurisdiction || "-",
         city_contact: form.city_contact || "-",
@@ -258,7 +257,7 @@ export default function ProjectBuilder() {
                     </button>
                   ))}
                 </div>
-                {form.plumbing === "No" && sf === 100 && (
+                {form.plumbing === "No" && sf >= PRICING.sfMin && (
                   <p className="mt-6 text-sm font-semibold text-primary">
                     {form.site_work
                       ? `Your Expected Project Budget includes a ${money(PRICING.noPlumbingAdjustment)} no-plumbing credit on Site Work + Assembly.`
@@ -268,7 +267,7 @@ export default function ProjectBuilder() {
               </div>
             )}
             {step === 4 && (
-              <ScopeCards form={form} setField={setField} sf={sf} />
+              <ScopeCards form={form} setField={setField} sf={sf} estimate={estimate} />
             )}
             {step === 5 && (
               <BudgetPanel

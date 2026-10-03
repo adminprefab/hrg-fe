@@ -1,19 +1,8 @@
 import React from "react";
-import { PRICING, landDevelopmentCost, materialsCost, deliveryCost, siteWorkCost, money } from "@/lib/projectPricing";
+import { PRICING, materialsCost, deliveryCost, siteWorkCost, money } from "@/lib/projectPricing";
+import LandDevQuestions from "./LandDevQuestions";
 
 const SCOPES = [
-  {
-    key: "land_dev",
-    num: "01",
-    name: "Land Development",
-    tagline: "From property to permit",
-    copy: "We establish what can be built and coordinate the professional work required to move the project toward approval.",
-    items: ["Feasibility", "Architectural design", "Engineering", "Permit preparation", "Permit coordination"],
-    note: `Minimum ${money(PRICING.landDevMin)}`,
-    cost: (sf) => money(landDevelopmentCost()),
-    addLabel: "+ Add Land Development",
-    removeLabel: "Remove Land Development",
-  },
   {
     key: "materials",
     num: "02",
@@ -51,17 +40,28 @@ const SCOPES = [
   },
 ];
 
-export default function ScopeCards({ form, setField, sf }) {
+export default function ScopeCards({ form, setField, sf, estimate }) {
   return (
     <div>
       <h2 className="font-heading text-3xl md:text-4xl font-bold text-balance">
         Build your project.
       </h2>
       <p className="mt-3 text-foreground/60 leading-relaxed">
-        Choose one, two or all three scopes · your budget updates as you build.
+        Tell us what you already have, then choose your scopes · your budget updates as you build.
       </p>
 
       <div className="mt-8 space-y-4">
+        <div
+          className={`rounded-lg border p-6 md:p-8 transition-colors ${
+            estimate.p1 > 0 ? "border-primary" : "border-border"
+          }`}
+        >
+          <span className="font-heading text-3xl font-bold text-primary/30 leading-none">01</span>
+          <h3 className="mt-2 mb-4 font-heading text-xl font-bold uppercase tracking-wide">
+            Land Development
+          </h3>
+          <LandDevQuestions answers={form} setField={setField} estimate={estimate} />
+        </div>
         {SCOPES.map((s) => {
           const added = form[s.key];
           return (

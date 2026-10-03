@@ -1,4 +1,5 @@
 import emailjs from "@emailjs/browser";
+import { money } from "@/lib/projectPricing";
 
 // File types the plans upload accepts (both builders).
 export const PLAN_FILE_TYPES =
@@ -20,6 +21,36 @@ export function leadDetails({ flow, jurisdiction, cityContact, sewerType, utilit
   ]
     .filter(Boolean)
     .join("\n");
+}
+
+// Land Development answers and amounts, for the Lead record (entity) and the email (email).
+// has_plans comes from the drawings question, which replaced the old plans question.
+export function landDevFields(answers, estimate) {
+  const amount = (key) => estimate.landDev.find((l) => l.key === key).amount;
+  const yesNo = (v) => (v === "Yes" ? true : v === "No" ? false : undefined);
+  return {
+    entity: {
+      scope_land_dev: estimate.p1 > 0,
+      has_plans: yesNo(answers.has_drawings),
+      has_drawings: answers.has_drawings || undefined,
+      has_permits: answers.has_permits || undefined,
+      lot_slope: answers.lot_slope || undefined,
+      land_dev_drawings: amount("drawings"),
+      land_dev_permits: amount("permits"),
+      land_dev_site: amount("site"),
+    },
+    email: {
+      scope_land_dev: estimate.p1 > 0 ? "Yes" : "No",
+      has_plans: answers.has_drawings || "-",
+      has_drawings: answers.has_drawings || "Not answered",
+      has_permits: answers.has_permits || "Not answered",
+      lot_slope: answers.lot_slope || "Not answered",
+      land_dev_total: money(estimate.p1),
+      land_dev_drawings: money(amount("drawings")),
+      land_dev_permits: money(amount("permits")),
+      land_dev_site: money(amount("site")),
+    },
+  };
 }
 
 // The lead is already saved by the time this runs, so a failed email never blocks the visitor.

@@ -1,6 +1,7 @@
 import React from "react";
 import { money } from "@/lib/projectPricing";
 import { PLAN_FILE_TYPES } from "@/lib/leadEmail";
+import { BALLPARK_NOTE, LandDevSubLines } from "@/components/projectbuilder/LandDevQuestions";
 
 const TIMELINES = ["ASAP", "1-3 months", "3-6 months", "6+ months", "Just exploring"];
 const SEWER_OPTIONS = ["City sewer", "Septic system", "Neither / new connection needed", "Not sure"];
@@ -74,7 +75,12 @@ export default function ProceedStep({ form, setField, estimate, sf, onSubmit, lo
         <SummaryRow label="Property" value={form.property_address} />
         <SummaryRow label="Square Footage" value={`${sf} SF`} />
         <SummaryRow label="Bathroom / Plumbing" value={form.plumbing} />
-        {form.land_dev && <SummaryRow label="Land Development" value={money(estimate.p1)} />}
+        {estimate.p1 > 0 && (
+          <>
+            <SummaryRow label="Land Development" value={money(estimate.p1)} />
+            <LandDevSubLines estimate={estimate} />
+          </>
+        )}
         {form.materials && (
           <SummaryRow
             label="Materials + Delivery"
@@ -91,6 +97,7 @@ export default function ProceedStep({ form, setField, estimate, sf, onSubmit, lo
           value={<span className="font-heading text-xl font-bold text-primary">{money(estimate.total)}</span>}
         />
       </div>
+      <p className="mt-2 text-xs font-semibold text-foreground/60">{BALLPARK_NOTE}</p>
 
       {/* Contact details */}
       <div className="mt-10 grid gap-6 md:grid-cols-2">
@@ -115,7 +122,6 @@ export default function ProceedStep({ form, setField, estimate, sf, onSubmit, lo
           placeholder="(555) 000-0000"
         />
         <Choice label="Desired timeline" name="timeline" value={form.timeline} options={TIMELINES} onSelect={setField} />
-        <Choice label="Existing plans / drawings" name="has_plans" value={form.has_plans} options={["Yes", "No"]} onSelect={setField} />
         <Choice
           label="Have you spoken with the city?"
           name="city_contact"

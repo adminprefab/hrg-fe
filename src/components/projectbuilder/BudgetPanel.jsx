@@ -1,5 +1,6 @@
 import React from "react";
 import { money } from "@/lib/projectPricing";
+import { BALLPARK_NOTE, LandDevSubLines } from "./LandDevQuestions";
 
 function Row({ label, value, action }) {
   return (
@@ -42,11 +43,12 @@ export default function BudgetPanel({ form, setField, estimate }) {
       <div className="mt-8">
         <Row label="Property" value={form.property_address} />
         <Row label="Project Size" value={`${sf} SF`} />
-        <Row
-          label="Land Development"
-          value={form.land_dev ? money(estimate.p1) : "Not included"}
-          action={<ScopeToggle added={form.land_dev} onToggle={() => setField("land_dev", !form.land_dev)} />}
-        />
+        {estimate.p1 > 0 && (
+          <>
+            <Row label="Land Development" value={money(estimate.p1)} />
+            <LandDevSubLines estimate={estimate} />
+          </>
+        )}
         <Row
           label="Materials"
           value={form.materials ? money(estimate.mats) : "Not included"}
@@ -58,10 +60,9 @@ export default function BudgetPanel({ form, setField, estimate }) {
           value={form.site_work ? money(estimate.p3) : "Not included"}
           action={<ScopeToggle added={form.site_work} onToggle={() => setField("site_work", !form.site_work)} />}
         />
-        <Row
-          label="Adjustment / Credit"
-          value={estimate.adjustment !== 0 ? money(estimate.adjustment) : "—"}
-        />
+        {estimate.adjustment !== 0 && (
+          <Row label="No-Plumbing Credit" value={money(estimate.adjustment)} />
+        )}
       </div>
 
       <div className="mt-8 pt-6 border-t-2 border-foreground/20 flex items-baseline justify-between gap-4">
@@ -72,6 +73,8 @@ export default function BudgetPanel({ form, setField, estimate }) {
           {money(estimate.total)}
         </span>
       </div>
+
+      <p className="mt-2 text-xs font-semibold text-foreground/60">{BALLPARK_NOTE}</p>
 
       <p className="mt-6 text-xs text-foreground/50 leading-relaxed">
         Your Expected Project Budget is calculated using the property and project information

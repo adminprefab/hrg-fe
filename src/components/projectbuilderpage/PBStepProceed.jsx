@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { money } from "@/lib/projectPricing";
 import { PLAN_FILE_TYPES } from "@/lib/leadEmail";
+import { BALLPARK_NOTE, LandDevSubLines } from "@/components/projectbuilder/LandDevQuestions";
 import StepHeading from "./StepHeading";
 
 const TIMELINES = [
@@ -143,7 +144,12 @@ export default function PBStepProceed({ data, setField, sf, estimate, onSubmit, 
             value={`${money(estimate.mats)} + ${money(estimate.del)}`}
           />
         )}
-        {data.land_dev && <SummaryRow label="Land Development" value={money(estimate.p1)} />}
+        {estimate.p1 > 0 && (
+          <>
+            <SummaryRow label="Land Development" value={money(estimate.p1)} />
+            <LandDevSubLines estimate={estimate} />
+          </>
+        )}
         {data.site_work && <SummaryRow label="Site Work + Assembly" value={money(estimate.p3)} />}
         {estimate.adjustment !== 0 && (
           <SummaryRow label="No-Plumbing Adjustment" value={money(estimate.adjustment)} />
@@ -154,6 +160,7 @@ export default function PBStepProceed({ data, setField, sf, estimate, onSubmit, 
           value={<span className="font-heading text-xl font-bold text-primary">{money(estimate.total)}</span>}
         />
       </div>
+      <p className="mt-2 text-xs font-semibold text-foreground/60">{BALLPARK_NOTE}</p>
 
       <div className="mt-8 grid gap-6 md:grid-cols-2">
         <Text
@@ -177,13 +184,6 @@ export default function PBStepProceed({ data, setField, sf, estimate, onSubmit, 
           placeholder="(555) 000-0000"
         />
         <Choice label="Desired timeline" name="timeline" value={data.timeline} options={TIMELINES} onSelect={setField} />
-        <Choice
-          label="Do you have existing plans or drawings?"
-          name="has_plans"
-          value={data.has_plans}
-          options={[{ label: "Yes", value: "Yes" }, { label: "No", value: "No" }]}
-          onSelect={setField}
-        />
         <Choice
           label="Have you spoken with the city?"
           name="city_contact"

@@ -1,7 +1,6 @@
 import React from "react";
 import {
   PRICING,
-  landDevelopmentCost,
   materialsCost,
   deliveryCost,
   siteWorkCost,
@@ -9,14 +8,7 @@ import {
   money,
 } from "@/lib/projectPricing";
 import StepHeading from "./StepHeading";
-
-const TAGS_LAND = [
-  "Feasibility",
-  "Architectural design",
-  "Engineering",
-  "Permit preparation",
-  "Permit coordination",
-];
+import LandDevQuestions from "@/components/projectbuilder/LandDevQuestions";
 
 const TAGS_SITE = [
   "Site preparation",
@@ -52,7 +44,7 @@ function AddOnButton({ added, onToggle, addLabel }) {
   );
 }
 
-export default function PBStepScopes({ data, setField, sf }) {
+export default function PBStepScopes({ data, setField, sf, estimate }) {
   const hasSf = sf >= PRICING.sfMin;
   const perSf = PRICING.materialsRate + PRICING.materialsRate * PRICING.deliveryPct;
 
@@ -60,9 +52,9 @@ export default function PBStepScopes({ data, setField, sf }) {
     <div>
       <StepHeading num="04" title="Your building, plus any add-ons." />
       <p className="mt-3 text-foreground/60 leading-relaxed max-w-xl">
-        Building materials are included at $100 per square foot. Add land development or site work
-        and assembly to include their projected budgets in your total. You can add or remove
-        anything at any time.
+        Building materials are included at $100 per square foot. Land development depends on what
+        you already have, and site work and assembly is optional. You can change anything at any
+        time.
       </p>
 
       <div className="mt-8 space-y-5">
@@ -131,43 +123,16 @@ export default function PBStepScopes({ data, setField, sf }) {
           </div>
         </div>
 
-        {/* Land development · optional add-on */}
+        {/* Land development · priced by three questions about the property */}
         <div
           className={`rounded-lg border bg-secondary/50 p-6 md:p-8 ${
-            data.land_dev ? "border-primary" : "border-border"
+            estimate.p1 > 0 ? "border-primary" : "border-border"
           }`}
         >
-          <span className="block text-xs font-semibold uppercase tracking-[0.15em] text-foreground/60">
-            Optional add-on · Land Development
+          <span className="block mb-3 text-xs font-semibold uppercase tracking-[0.15em] text-foreground/60">
+            Land Development
           </span>
-          <h4 className="mt-3 font-heading text-2xl font-bold">From property to permit</h4>
-          <p className="mt-2 text-sm text-foreground/60 leading-relaxed">
-            We establish what can be built and coordinate the professional work required to move
-            the project toward approval.
-          </p>
-          <div className="mt-5 flex flex-wrap gap-2">
-            {TAGS_LAND.map((t) => (
-              <Tag key={t}>{t}</Tag>
-            ))}
-          </div>
-          <div className="mt-5 pt-5 border-t border-border flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <span className="block text-xs font-semibold uppercase tracking-[0.15em] text-foreground/60">
-                Projected budget
-              </span>
-              <span className="block mt-1 font-heading text-3xl font-bold">
-                {money(landDevelopmentCost())}
-              </span>
-              <span className="block mt-0.5 text-xs text-foreground/50">
-                Minimum {money(PRICING.landDevMin)}
-              </span>
-            </div>
-            <AddOnButton
-              added={data.land_dev}
-              onToggle={() => setField("land_dev", !data.land_dev)}
-              addLabel="+ Add Land Development"
-            />
-          </div>
+          <LandDevQuestions answers={data} setField={setField} estimate={estimate} />
         </div>
 
         {/* Site work + assembly · optional add-on */}

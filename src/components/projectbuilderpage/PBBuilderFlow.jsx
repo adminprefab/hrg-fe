@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { leadDetails, sendLeadEmail, uploadNote } from "@/lib/leadEmail";
+import { landDevFields, leadDetails, sendLeadEmail, uploadNote } from "@/lib/leadEmail";
 import { PRICING, buildProject, money } from "@/lib/projectPricing";
 import StepHeading from "./StepHeading";
 import PBStepProperty from "./PBStepProperty";
@@ -23,13 +23,14 @@ export default function PBBuilderFlow() {
     original_sf: null,
     plumbing: "",
     materials: true,
-    land_dev: false,
+    has_drawings: "",
+    has_permits: "",
+    lot_slope: "",
     site_work: false,
     full_name: "",
     email: "",
     phone: "",
     timeline: "",
-    has_plans: "",
     city_contact: "",
     sewer_type: "",
     utility_info: "",
@@ -57,7 +58,7 @@ export default function PBBuilderFlow() {
   const estimate = buildProject({
     sf,
     plumbing: data.plumbing || "Yes",
-    landDev: data.land_dev,
+    landDevAnswers: data,
     materials: data.materials,
     siteWork: data.site_work,
   });
@@ -90,7 +91,6 @@ export default function PBBuilderFlow() {
         original_sf: data.original_sf || sf,
         final_sf: sf,
         plumbing: data.plumbing || undefined,
-        scope_land_dev: data.land_dev,
         scope_materials: data.materials,
         scope_site_work: data.site_work,
         p1_estimate: estimate.p1,
@@ -99,12 +99,7 @@ export default function PBBuilderFlow() {
         p3_estimate: estimate.p3,
         adjustment_amount: estimate.adjustment,
         expected_budget: estimate.total,
-        has_plans:
-          data.has_plans === "Yes"
-            ? true
-            : data.has_plans === "No"
-              ? false
-              : undefined,
+        ...landDevFields(data, estimate).entity,
         city_contact: data.city_contact || undefined,
         sewer_type: data.sewer_type || undefined,
         utility_info: data.utility_info || undefined,
@@ -120,12 +115,11 @@ export default function PBBuilderFlow() {
           [data.street, data.city, data.zip].filter(Boolean).join(", ") || "-",
         final_sf: sf,
         plumbing: data.plumbing || "-",
-        scope_land_dev: data.land_dev ? "Yes" : "No",
         scope_materials: data.materials ? "Yes" : "No",
         scope_site_work: data.site_work ? "Yes" : "No",
         expected_budget: money(estimate.total),
         timeline: data.timeline || "-",
-        has_plans: data.has_plans || "-",
+        ...landDevFields(data, estimate).email,
         plans_file_url: uploadNote(!!data.plans_file, plans_file_url),
         jurisdiction: data.jurisdiction || "-",
         city_contact: data.city_contact || "-",
@@ -214,7 +208,7 @@ export default function PBBuilderFlow() {
                     </button>
                   ))}
                 </div>
-                {data.plumbing === "No" && sf === 100 && (
+                {data.plumbing === "No" && sf >= PRICING.sfMin && (
                   <p className="mt-6 text-sm font-semibold text-primary">
                     {data.site_work
                       ? `Your Expected Project Budget includes a ${money(PRICING.noPlumbingAdjustment)} no-plumbing credit on Site Work + Assembly.`
@@ -227,7 +221,7 @@ export default function PBBuilderFlow() {
             {/* 04 · Scopes */}
             {!submitted && (
               <div className={CARD}>
-                <PBStepScopes data={data} setField={setField} sf={sf} />
+                <PBStepScopes data={data} setField={setField} sf={sf} estimate={estimate} />
               </div>
             )}
 

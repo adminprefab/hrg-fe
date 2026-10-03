@@ -1,5 +1,6 @@
 import React from "react";
 import { PRICING, money } from "@/lib/projectPricing";
+import { BALLPARK_NOTE, LandDevSubLines } from "@/components/projectbuilder/LandDevQuestions";
 
 function SummaryRow({ label, value, muted = false }) {
   return (
@@ -59,7 +60,7 @@ export default function PBProjectCard({ data, setField, estimate, sf }) {
   const matsTotal = estimate.mats + estimate.del;
   const perSf = PRICING.materialsRate + PRICING.materialsRate * PRICING.deliveryPct;
   const included = [
-    data.land_dev && "land development",
+    estimate.p1 > 0 && "land development",
     data.materials && "building materials",
     data.site_work && "site work + assembly",
   ].filter(Boolean);
@@ -97,13 +98,17 @@ export default function PBProjectCard({ data, setField, estimate, sf }) {
           }
           value={hasSf ? money(matsTotal) : `${money(perSf)}/SF`}
         />
-        <ScopeBlock
-          added={data.land_dev}
-          onToggle={() => setField("land_dev", !data.land_dev)}
-          title="Land Development"
-          sub="Optional add-on"
-          value={money(estimate.p1)}
-        />
+        {estimate.p1 > 0 && (
+          <div className="rounded-md border border-primary/40 px-4 py-3">
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-sm font-semibold">Land Development</span>
+              <span className="text-sm font-bold">{money(estimate.p1)}</span>
+            </div>
+            <div className="-ml-4 mt-1">
+              <LandDevSubLines estimate={estimate} />
+            </div>
+          </div>
+        )}
         <ScopeBlock
           added={data.site_work}
           onToggle={() => setField("site_work", !data.site_work)}
@@ -113,11 +118,13 @@ export default function PBProjectCard({ data, setField, estimate, sf }) {
         />
       </div>
 
-      {/* Adjustment */}
-      <div className="mt-3 pt-3 flex items-center justify-between">
-        <span className="text-sm font-semibold text-foreground/60">Adjustment / Credit</span>
-        <span className="text-sm font-bold">{money(estimate.adjustment)}</span>
-      </div>
+      {/* No-plumbing credit */}
+      {estimate.adjustment !== 0 && (
+        <div className="mt-3 pt-3 flex items-center justify-between">
+          <span className="text-sm font-semibold text-foreground/60">No-plumbing credit</span>
+          <span className="text-sm font-bold">{money(estimate.adjustment)}</span>
+        </div>
+      )}
 
       {/* Footer */}
       <div className="mt-4 pt-5 border-t-2 border-foreground">
@@ -128,6 +135,7 @@ export default function PBProjectCard({ data, setField, estimate, sf }) {
           {money(estimate.total)}
         </span>
         <p className="mt-1.5 text-xs text-foreground/50">{helper}</p>
+        <p className="mt-1.5 text-xs font-semibold text-foreground/60">{BALLPARK_NOTE}</p>
         <a
           href="#proceed"
           className="mt-5 block w-full px-6 py-3.5 rounded-md bg-primary text-primary-foreground text-center text-sm font-bold uppercase tracking-wide hover:bg-primary/90 transition-colors"
