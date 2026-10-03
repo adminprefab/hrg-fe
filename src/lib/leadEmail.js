@@ -1,4 +1,5 @@
 import emailjs from "@emailjs/browser";
+import { base44 } from "@/api/base44Client";
 import { money } from "@/lib/projectPricing";
 
 // File types the plans upload accepts (both builders).
@@ -23,7 +24,8 @@ export function leadDetails({ flow, jurisdiction, cityContact, sewerType, utilit
     .join("\n");
 }
 
-// Land Development answers and amounts, for the Lead record (entity) and the email (email).
+// Land Development answers and amounts: Lead fields that already existed (entity), Lead
+// fields added with the three questions (entityNew), and the email (email).
 // has_plans comes from the drawings question, which replaced the old plans question.
 export function landDevFields(answers, estimate) {
   const amount = (key) => estimate.landDev.find((l) => l.key === key).amount;
@@ -32,6 +34,8 @@ export function landDevFields(answers, estimate) {
     entity: {
       scope_land_dev: estimate.p1 > 0,
       has_plans: yesNo(answers.has_drawings),
+    },
+    entityNew: {
       has_drawings: answers.has_drawings || undefined,
       has_permits: answers.has_permits || undefined,
       lot_slope: answers.lot_slope || undefined,
@@ -51,6 +55,18 @@ export function landDevFields(answers, estimate) {
       land_dev_site: money(amount("site")),
     },
   };
+}
+
+// Saves the lead. If the hosted Lead schema refuses the newer fields (it lags behind
+// base44/entities/Lead.jsonc until that is pushed), save without them rather than lose
+// the lead; the email still carries every answer.
+export async function createLead(fields, newerFields) {
+  try {
+    return await base44.entities.Lead.create({ ...fields, ...newerFields });
+  } catch (err) {
+    console.error("Lead save with the newer fields failed; saving without them.", err);
+    return base44.entities.Lead.create(fields);
+  }
 }
 
 // The lead is already saved by the time this runs, so a failed email never blocks the visitor.

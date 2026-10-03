@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Check } from "lucide-react";
 import { base44 } from "@/api/base44Client";
-import { landDevFields, leadDetails, sendLeadEmail, uploadNote } from "@/lib/leadEmail";
+import { createLead, landDevFields, leadDetails, sendLeadEmail, uploadNote } from "@/lib/leadEmail";
 import { PRICING, buildProject, money } from "@/lib/projectPricing";
 import AddressLookup from "./AddressLookup";
 import SizeStep from "./SizeStep";
@@ -101,7 +101,8 @@ export default function ProjectBuilder() {
           // a failed upload shouldn't block the lead
         }
       }
-      await base44.entities.Lead.create({
+      const landDev = landDevFields(form, estimate);
+      await createLead({
         full_name: form.full_name.trim(),
         email: form.email.trim(),
         phone: form.phone.trim(),
@@ -120,14 +121,14 @@ export default function ProjectBuilder() {
         p3_estimate: estimate.p3,
         adjustment_amount: estimate.adjustment,
         expected_budget: estimate.total,
-        ...landDevFields(form, estimate).entity,
+        ...landDev.entity,
         city_contact: form.city_contact || undefined,
         sewer_type: form.sewer_type || undefined,
         utility_info: form.utility_info || undefined,
         timeline: form.timeline || undefined,
         plans_file_url: plans_file_url || undefined,
         lead_flow: "Project Builder",
-      });
+      }, landDev.entityNew);
 
       await sendLeadEmail({
         full_name: form.full_name.trim(),
@@ -141,7 +142,7 @@ export default function ProjectBuilder() {
         scope_site_work: form.site_work ? "Yes" : "No",
         expected_budget: money(estimate.total),
         timeline: form.timeline || "-",
-        ...landDevFields(form, estimate).email,
+        ...landDev.email,
         plans_file_url: uploadNote(!!form.plans_file, plans_file_url),
         jurisdiction: form.jurisdiction || "-",
         city_contact: form.city_contact || "-",

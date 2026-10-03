@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { landDevFields, leadDetails, sendLeadEmail, uploadNote } from "@/lib/leadEmail";
+import { createLead, landDevFields, leadDetails, sendLeadEmail, uploadNote } from "@/lib/leadEmail";
 import { PRICING, buildProject, money } from "@/lib/projectPricing";
 import StepHeading from "./StepHeading";
 import PBStepProperty from "./PBStepProperty";
@@ -80,7 +80,8 @@ export default function PBBuilderFlow() {
           // a failed upload shouldn't block the lead
         }
       }
-      await base44.entities.Lead.create({
+      const landDev = landDevFields(data, estimate);
+      await createLead({
         full_name: data.full_name.trim(),
         email: data.email.trim(),
         phone: data.phone.trim(),
@@ -99,14 +100,14 @@ export default function PBBuilderFlow() {
         p3_estimate: estimate.p3,
         adjustment_amount: estimate.adjustment,
         expected_budget: estimate.total,
-        ...landDevFields(data, estimate).entity,
+        ...landDev.entity,
         city_contact: data.city_contact || undefined,
         sewer_type: data.sewer_type || undefined,
         utility_info: data.utility_info || undefined,
         timeline: data.timeline || undefined,
         plans_file_url: plans_file_url || undefined,
         lead_flow: "Project Builder Page",
-      });
+      }, landDev.entityNew);
       await sendLeadEmail({
         full_name: data.full_name.trim(),
         email: data.email.trim(),
@@ -119,7 +120,7 @@ export default function PBBuilderFlow() {
         scope_site_work: data.site_work ? "Yes" : "No",
         expected_budget: money(estimate.total),
         timeline: data.timeline || "-",
-        ...landDevFields(data, estimate).email,
+        ...landDev.email,
         plans_file_url: uploadNote(!!data.plans_file, plans_file_url),
         jurisdiction: data.jurisdiction || "-",
         city_contact: data.city_contact || "-",

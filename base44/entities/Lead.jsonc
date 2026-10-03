@@ -339,6 +339,37 @@
     "has_plans": {
       "type": "boolean"
     },
+    "has_drawings": {
+      "type": "string",
+      "enum": [
+        "Yes",
+        "No"
+      ]
+    },
+    "has_permits": {
+      "type": "string",
+      "enum": [
+        "Yes",
+        "No"
+      ]
+    },
+    "lot_slope": {
+      "type": "string",
+      "enum": [
+        "Flat",
+        "Sloped",
+        "Not sure"
+      ]
+    },
+    "land_dev_drawings": {
+      "type": "number"
+    },
+    "land_dev_permits": {
+      "type": "number"
+    },
+    "land_dev_site": {
+      "type": "number"
+    },
     "scope_land_dev": {
       "type": "boolean"
     },
