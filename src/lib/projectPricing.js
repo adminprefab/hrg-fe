@@ -61,18 +61,19 @@ export const clampSfInput = (raw) => {
 // Project estimate across the three scopes. Scopes left out contribute 0.
 // A size below the minimum isn't priced yet, and the total is never negative.
 // Land Development is always part of the budget; the answers decide how much of it applies.
+// Until there is a size there is no building to budget, so p1 and the total stay at 0 rather
+// than showing a budget made of nothing but add-ons. landDev still carries each item's amount.
 export function buildProject({ sf, plumbing = "Yes", landDevAnswers = {}, materials = true, siteWork = true }) {
   const billableSf = sf >= PRICING.sfMin ? Math.min(sf, PRICING.sfMax) : 0;
   const landDev = landDevLines(landDevAnswers);
-  const p1 = landDev.reduce((sum, l) => sum + l.amount, 0);
+  const p1 = billableSf ? landDev.reduce((sum, l) => sum + l.amount, 0) : 0;
   const mats = materialsCost(billableSf);
   const del = deliveryCost(billableSf);
   const p3 = siteWorkCost(billableSf);
   const adjustment = siteWork ? adjustmentFor(billableSf, plumbing, p3) : 0;
-  const total = Math.max(
-    0,
-    p1 + (materials ? mats + del : 0) + (siteWork ? p3 : 0) + adjustment
-  );
+  const total = billableSf
+    ? Math.max(0, p1 + (materials ? mats + del : 0) + (siteWork ? p3 : 0) + adjustment)
+    : 0;
   return { p1, landDev, mats, del, p3, adjustment, total };
 }
 

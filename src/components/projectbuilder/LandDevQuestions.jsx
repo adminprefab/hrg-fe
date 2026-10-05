@@ -51,7 +51,9 @@ export default function LandDevQuestions({ answers, setField, estimate }) {
         <span className="block text-xs font-semibold uppercase tracking-[0.15em] text-foreground/60">
           Land Development
         </span>
-        <span className="block mt-1 font-heading text-3xl font-bold">{money(estimate.p1)}</span>
+        <span className="block mt-1 font-heading text-3xl font-bold">
+          {money(estimate.landDev.reduce((sum, l) => sum + l.amount, 0))}
+        </span>
       </div>
     </div>
   );

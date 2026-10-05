@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { money } from "@/lib/projectPricing";
+import { PRICING, money } from "@/lib/projectPricing";
 import { PLAN_FILE_TYPES } from "@/lib/leadEmail";
 import { BALLPARK_NOTE, LandDevSubLines } from "@/components/projectbuilder/LandDevQuestions";
 import StepHeading from "./StepHeading";
@@ -105,9 +105,16 @@ export default function PBStepProceed({ data, setField, sf, estimate, onSubmit, 
     data.phone.replace(/\D/g, "").length >= 10;
   // Something to quote against: a street address, or at least city and ZIP.
   const addressValid = data.street.trim() !== "" || (data.city.trim() !== "" && data.zip.length >= 5);
+  // A lead with no size has no budget to review.
+  const sizeValid = sf >= PRICING.sfMin;
 
   const handleSubmit = () => {
     if (!addressValid) {
+      setContactError(true);
+      document.getElementById("build")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    if (!sizeValid) {
       setContactError(true);
       document.getElementById("build")?.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
@@ -233,7 +240,12 @@ export default function PBStepProceed({ data, setField, sf, estimate, onSubmit, 
           Please add the property address (or city and ZIP) in step 01 so we can review your project.
         </p>
       )}
-      {contactError && addressValid && !contactValid && (
+      {contactError && addressValid && !sizeValid && (
+        <p className="mt-6 text-sm font-semibold text-destructive">
+          Please add your project size in step 02 (at least {PRICING.sfMin} SF) so we can review your project.
+        </p>
+      )}
+      {contactError && addressValid && sizeValid && !contactValid && (
         <p className="mt-6 text-sm font-semibold text-destructive">
           Please add your name, email and a 10-digit phone number so we can schedule your project review.
         </p>
