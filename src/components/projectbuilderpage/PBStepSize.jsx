@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { PRICING, clampSfInput } from "@/lib/projectPricing";
 import StepHeading from "./StepHeading";
 
@@ -6,6 +6,19 @@ const QUICK_SIZES = [100, 400, 800, 1200, 1600, 2000, 2500, 3000];
 
 export default function PBStepSize({ data, setField }) {
   const sf = Number(data.sf) || 0;
+
+  // "3,000+" mode: the slider stops at 3,000, so larger sizes are typed in.
+  const [large, setLarge] = useState(sf > PRICING.sfMax);
+  const inputRef = useRef(null);
+  const chooseLarge = () => {
+    setLarge(true);
+    if (sf <= PRICING.sfMax) setField("sf", "");
+    setTimeout(() => inputRef.current?.focus(), 0);
+  };
+  const choose = (size) => {
+    setLarge(false);
+    setField("sf", String(size));
+  };
 
   return (
     <div>
@@ -18,9 +31,10 @@ export default function PBStepSize({ data, setField }) {
       <div className="mt-8 flex items-end gap-4 max-w-md">
         <input
           value={data.sf}
-          onChange={(e) => setField("sf", clampSfInput(e.target.value))}
+          ref={inputRef}
+          onChange={(e) => setField("sf", clampSfInput(e.target.value, large))}
           inputMode="numeric"
-          placeholder="0"
+          placeholder={large ? "3500" : "0"}
           className="w-48 text-6xl md:text-7xl font-heading font-bold bg-transparent border-0 border-b-2 border-primary focus:outline-none py-1 text-foreground/30 placeholder:text-foreground/25"
         />
         <span className="text-sm font-bold uppercase tracking-[0.15em] text-foreground/50 pb-4">
@@ -33,7 +47,15 @@ export default function PBStepSize({ data, setField }) {
         </p>
       )}
 
+      {large && (
+        <p className="mt-3 text-sm font-semibold text-primary">
+          Type your square footage (up to {PRICING.sfLargeMax.toLocaleString("en-US")} SF). Projects over{" "}
+          {PRICING.sfMax.toLocaleString("en-US")} SF are confirmed individually during your project review.
+        </p>
+      )}
+
       {/* Slider: dimmed until a size is set, so it never shows a size the budget isn't using */}
+      {!large && (
       <div className={`mt-8 max-w-md transition-opacity ${sf >= PRICING.sfMin ? "" : "opacity-40"}`}>
         <input
           type="range"
@@ -59,6 +81,7 @@ export default function PBStepSize({ data, setField }) {
           <span>3,000</span>
         </div>
       </div>
+      )}
 
       {/* Quick picks */}
       <div className="mt-8 flex flex-wrap gap-3">
@@ -66,9 +89,9 @@ export default function PBStepSize({ data, setField }) {
           <button
             key={size}
             type="button"
-            onClick={() => setField("sf", String(size))}
+            onClick={() => choose(size)}
             className={`px-5 py-3 rounded-md border font-heading font-bold transition-colors ${
-              sf === size
+              !large && sf === size
                 ? "border-primary bg-primary text-primary-foreground"
                 : "border-border bg-card hover:border-primary/50"
             }`}
@@ -76,6 +99,17 @@ export default function PBStepSize({ data, setField }) {
             {size.toLocaleString("en-US")}
           </button>
         ))}
+        <button
+          type="button"
+          onClick={chooseLarge}
+          className={`px-5 py-3 rounded-md border font-heading font-bold transition-colors ${
+            large
+              ? "border-primary bg-primary text-primary-foreground"
+              : "border-border bg-card hover:border-primary/50"
+          }`}
+        >
+          {PRICING.sfMax.toLocaleString("en-US")}+
+        </button>
       </div>
     </div>
   );

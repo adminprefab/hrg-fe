@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { PRICING, buildProject, clampSfInput, money } from "@/lib/projectPricing";
 import ValuePrompt from "./ValuePrompt";
 
@@ -6,7 +6,16 @@ export default function SizeStep({ form, setField }) {
   const sf = Number(form.sf) || 0;
   const estimate = buildProject({ sf }); // complete project (all three scopes)
 
-  const handleType = (e) => setField("sf", clampSfInput(e.target.value));
+  // "3,000+" mode: the slider stops at 3,000, so larger sizes are typed in.
+  const [large, setLarge] = useState(sf > PRICING.sfMax);
+  const inputRef = useRef(null);
+  const chooseLarge = () => {
+    setLarge(true);
+    if (sf <= PRICING.sfMax) setField("sf", "");
+    setTimeout(() => inputRef.current?.focus(), 0);
+  };
+
+  const handleType = (e) => setField("sf", clampSfInput(e.target.value, large));
 
   return (
     <div>
@@ -19,6 +28,7 @@ export default function SizeStep({ form, setField }) {
 
       <div className="mt-10 flex items-end gap-3 max-w-md">
         <input
+          ref={inputRef}
           value={form.sf}
           onChange={handleType}
           inputMode="numeric"
@@ -35,6 +45,14 @@ export default function SizeStep({ form, setField }) {
         </p>
       )}
 
+{large && (
+        <p className="mt-3 text-sm font-semibold text-primary">
+          Type your square footage (up to {PRICING.sfLargeMax.toLocaleString("en-US")} SF). Projects over{" "}
+          {PRICING.sfMax.toLocaleString("en-US")} SF are confirmed individually during your project review.
+        </p>
+      )}
+
+      {!large && (
       <input
         type="range"
         min={PRICING.sfMin}
@@ -44,6 +62,30 @@ export default function SizeStep({ form, setField }) {
         onChange={(e) => setField("sf", String(e.target.value))}
         className={`mt-6 w-full max-w-md accent-primary transition-opacity ${sf >= PRICING.sfMin ? "" : "opacity-40"}`}
       />
+      )}
+
+      <div className="mt-4 flex flex-wrap gap-3">
+        <button
+          type="button"
+          onClick={chooseLarge}
+          className={`px-5 py-3 rounded-md border font-heading font-bold transition-colors ${
+            large
+              ? "border-primary bg-primary text-primary-foreground"
+              : "border-border bg-card hover:border-primary/50"
+          }`}
+        >
+          {PRICING.sfMax.toLocaleString("en-US")}+
+        </button>
+        {large && (
+          <button
+            type="button"
+            onClick={() => { setLarge(false); setField("sf", String(PRICING.sfMax)); }}
+            className="px-5 py-3 rounded-md border border-border bg-card font-heading font-bold hover:border-primary/50 transition-colors"
+          >
+            Back to the slider
+          </button>
+        )}
+      </div>
 
       {sf >= PRICING.sfMin && (
         <div className="mt-8">

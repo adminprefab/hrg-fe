@@ -70,7 +70,7 @@ export default function ProjectBuilder() {
       case 1:
         return form.property_address.trim() !== "";
       case 2:
-        return sf >= PRICING.sfMin && sf <= PRICING.sfMax;
+        return sf >= PRICING.sfMin && sf <= PRICING.sfLargeMax;
       case 3:
         return form.plumbing !== "";
       case 4:

@@ -15,7 +15,8 @@ export const PRICING = {
   smallProjectTriggerSF: 250, // below this, show the value prompt
   comparisonSizes: [250, 350, 500],
   sfMin: 100,
-  sfMax: 3000,
+  sfMax: 3000, // top of the slider and quick picks
+  sfLargeMax: 20000, // largest size accepted when typed in through the "3,000+" option
 };
 
 // Working site work rate: midpoint of the low/high band.
@@ -53,9 +54,11 @@ export const landDevLines = (answers = {}) =>
 export const landDevelopmentCost = (answers) => landDevLines(answers).reduce((sum, l) => sum + l.amount, 0);
 
 // What the square-footage box accepts: digits only, never more than the maximum.
-export const clampSfInput = (raw) => {
-  const digits = String(raw).replace(/\D/g, "").slice(0, 4);
-  return digits && Number(digits) > PRICING.sfMax ? String(PRICING.sfMax) : digits;
+// `large` is the "3,000+" mode, where the visitor types a size above the slider's range.
+export const clampSfInput = (raw, large = false) => {
+  const max = large ? PRICING.sfLargeMax : PRICING.sfMax;
+  const digits = String(raw).replace(/\D/g, "").slice(0, String(max).length);
+  return digits && Number(digits) > max ? String(max) : digits;
 };
 
 // Project estimate across the three scopes. Scopes left out contribute 0.
@@ -64,7 +67,7 @@ export const clampSfInput = (raw) => {
 // Until there is a size there is no building to budget, so p1 and the total stay at 0 rather
 // than showing a budget made of nothing but add-ons. landDev still carries each item's amount.
 export function buildProject({ sf, plumbing = "Yes", landDevAnswers = {}, materials = true, siteWork = true }) {
-  const billableSf = sf >= PRICING.sfMin ? Math.min(sf, PRICING.sfMax) : 0;
+  const billableSf = sf >= PRICING.sfMin ? Math.min(sf, PRICING.sfLargeMax) : 0;
   const landDev = landDevLines(landDevAnswers);
   const p1 = billableSf ? landDev.reduce((sum, l) => sum + l.amount, 0) : 0;
   const mats = materialsCost(billableSf);
