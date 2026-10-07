@@ -10,9 +10,6 @@ import ClickableImage from "@/components/shared/ClickableImage";
 const POOL_BASE = "https://media.base44.com/images/public/6a3d99160f311f943d2b9488";
 
 const poolGalleryImages = [
-  { src: `${POOL_BASE}/73f42fe3b_Poolcatalg-40.png`, label: "Grandview Acrylic · Premium Acrylic for Pool & Aqua" },
-  { src: `${POOL_BASE}/ea3b2dcc6_Poolcatalg-01.png`, label: "Project Cases · Acrylic Pools & Aquariums" },
-  { src: `${POOL_BASE}/374c5f451_Poolcatalg-02.png`, label: "GCC / Middle East / West Asia Projects" },
   { src: `${POOL_BASE}/c62a23ced_Poolcatalg-03.png`, label: "BINGHATTI Apartment Balcony Pools, Dubai" },
   { src: `${POOL_BASE}/794d3d888_Poolcatalg-04.png`, label: "Villa of UMM SEQUIM, Dubai" },
   { src: `${POOL_BASE}/7433b4774_Poolcatalg-05.png`, label: "Villa Sky, Dubai Hills Estate" },
@@ -24,7 +21,6 @@ const poolGalleryImages = [
   { src: `${POOL_BASE}/7013b2df9_Poolcatalg-11.png`, label: "Water Pool Villa, Muscat, Oman" },
   { src: `${POOL_BASE}/de69be7e0_Poolcatalg-12.png`, label: "Home Acrylic Swimming Pool, Baghdad, Iraq" },
   { src: `${POOL_BASE}/58fa19430_Poolcatalg-13.png`, label: "Georgian National University SEU, Tbilisi" },
-  { src: `${POOL_BASE}/6e4fab1dd_Poolcatalg-14.png`, label: "Europe / America / Africa Projects" },
   { src: `${POOL_BASE}/c263637ca_Poolcatalg-15.png`, label: "VAI Resort, Glendale, AZ, USA" },
   { src: `${POOL_BASE}/fa44ed4fe_Poolcatalg-16.png`, label: "Curved Acrylic Window, Oregon, USA" },
   { src: `${POOL_BASE}/6360a9d6b_Poolcatalg-17.png`, label: "Swimming Pool on Yacht, Ancona, Italy" },
@@ -36,7 +32,6 @@ const poolGalleryImages = [
   { src: `${POOL_BASE}/15f9f0feb_Poolcatalg-23.png`, label: "Backyard SPA Pool, El Dorado Hills, CA, USA" },
   { src: `${POOL_BASE}/53fd6b24d_Poolcatalg-24.png`, label: "Rooftop Pool, South Sudan" },
   { src: `${POOL_BASE}/74ca05041_Poolcatalg-25.png`, label: "House Pool, Tirana, Albania" },
-  { src: `${POOL_BASE}/7a0ee9c6f_Poolcatalg-26.png`, label: "Southeast / South / East Asia Projects" },
   { src: `${POOL_BASE}/55eae5455_Poolcatalg-27.png`, label: "Finolhu Resort Villas, Maldives" },
   { src: `${POOL_BASE}/ec5eed820_Poolcatalg-28.png`, label: "Meyyafushi Underwater Resort, Maldives" },
   { src: `${POOL_BASE}/e9cc6623a_Poolcatalg-29.png`, label: "Gujarat Science City Aquarium, India" },
@@ -89,6 +84,53 @@ const products = [
   { name: "Acrylic Tunnel", desc: "Walk-through aquarium tunnels. Curved extrusion, available up to 3.5m diameter." },
   { name: "Acrylic Cylinder & Aquarium", desc: "Custom shapes for aquariums, hotel lobbies, and commercial spaces. Up to 72,000 liters capacity." },
 ];
+
+// Project list: a table where there is room for five columns, one card per project on phones,
+// where the table would otherwise be squeezed into a sideways scroll.
+function ProjectList({ projects, productLabel }) {
+  return (
+    <>
+      <div className="hidden md:block overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="bg-brand-dark text-white">
+              <th className="text-left p-4 font-semibold">Project</th>
+              <th className="text-left p-4 font-semibold">{productLabel}</th>
+              <th className="text-left p-4 font-semibold">Max Thickness</th>
+              <th className="text-left p-4 font-semibold">Approx. Amount</th>
+              <th className="text-left p-4 font-semibold">Location</th>
+            </tr>
+          </thead>
+          <tbody>
+            {projects.map((p, i) => (
+              <tr key={i} className={i % 2 === 0 ? "bg-card" : "bg-secondary/20"}>
+                <td className="p-4 font-semibold text-foreground">{p.project}</td>
+                <td className="p-4 text-muted-foreground">{p.usage}</td>
+                <td className="p-4 text-muted-foreground">{p.thick}</td>
+                <td className="p-4 font-bold text-primary">{p.amount}</td>
+                <td className="p-4 text-muted-foreground">{p.location}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="md:hidden space-y-3">
+        {projects.map((p, i) => (
+          <div key={i} className="bg-card border border-border rounded-lg p-4">
+            <div className="flex items-start justify-between gap-3">
+              <h4 className="font-semibold text-foreground leading-snug">{p.project}</h4>
+              <span className="font-bold text-primary text-sm whitespace-nowrap">{p.amount}</span>
+            </div>
+            <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-foreground/50">{p.location}</p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              {p.usage} · {p.thick}
+            </p>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
 
 export default function Pool() {
   return (
@@ -188,30 +230,7 @@ export default function Pool() {
           </div>
 
           {/* GCC Projects Table */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="bg-brand-dark text-white">
-                  <th className="text-left p-4 font-semibold">Project</th>
-                  <th className="text-left p-4 font-semibold">Usage</th>
-                  <th className="text-left p-4 font-semibold">Max Thickness</th>
-                  <th className="text-left p-4 font-semibold">Approx. Amount</th>
-                  <th className="text-left p-4 font-semibold">Location</th>
-                </tr>
-              </thead>
-              <tbody>
-                {projectsGCC.map((p, i) => (
-                  <tr key={i} className={i % 2 === 0 ? "bg-card" : "bg-secondary/20"}>
-                    <td className="p-4 font-semibold text-foreground">{p.project}</td>
-                    <td className="p-4 text-muted-foreground">{p.usage}</td>
-                    <td className="p-4 text-muted-foreground">{p.thick}</td>
-                    <td className="p-4 font-bold text-primary">{p.amount}</td>
-                    <td className="p-4 text-muted-foreground">{p.location}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <ProjectList projects={projectsGCC} productLabel="Usage" />
         </div>
       </section>
 
@@ -237,30 +256,7 @@ export default function Pool() {
           </motion.div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-brand-dark text-white">
-                <th className="text-left p-4 font-semibold">Project</th>
-                <th className="text-left p-4 font-semibold">Product</th>
-                <th className="text-left p-4 font-semibold">Max Thickness</th>
-                <th className="text-left p-4 font-semibold">Approx. Amount</th>
-                <th className="text-left p-4 font-semibold">Location</th>
-              </tr>
-            </thead>
-            <tbody>
-              {projectsEurope.map((p, i) => (
-                <tr key={i} className={i % 2 === 0 ? "bg-card" : "bg-secondary/20"}>
-                  <td className="p-4 font-semibold text-foreground">{p.project}</td>
-                  <td className="p-4 text-muted-foreground">{p.usage}</td>
-                  <td className="p-4 text-muted-foreground">{p.thick}</td>
-                  <td className="p-4 font-bold text-primary">{p.amount}</td>
-                  <td className="p-4 text-muted-foreground">{p.location}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <ProjectList projects={projectsEurope} productLabel="Product" />
       </section>
 
       {/* Southeast Asia */}
@@ -286,30 +282,7 @@ export default function Pool() {
             </motion.div>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="bg-brand-dark text-white">
-                  <th className="text-left p-4 font-semibold">Project</th>
-                  <th className="text-left p-4 font-semibold">Product</th>
-                  <th className="text-left p-4 font-semibold">Max Thickness</th>
-                  <th className="text-left p-4 font-semibold">Approx. Amount</th>
-                  <th className="text-left p-4 font-semibold">Location</th>
-                </tr>
-              </thead>
-              <tbody>
-                {projectsAsia.map((p, i) => (
-                  <tr key={i} className={i % 2 === 0 ? "bg-card" : "bg-secondary/20"}>
-                    <td className="p-4 font-semibold text-foreground">{p.project}</td>
-                    <td className="p-4 text-muted-foreground">{p.usage}</td>
-                    <td className="p-4 text-muted-foreground">{p.thick}</td>
-                    <td className="p-4 font-bold text-primary">{p.amount}</td>
-                    <td className="p-4 text-muted-foreground">{p.location}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <ProjectList projects={projectsAsia} productLabel="Product" />
         </div>
       </section>
 
