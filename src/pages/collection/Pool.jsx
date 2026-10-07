@@ -48,32 +48,32 @@ const poolGalleryImages = [
 ];
 
 const projectsGCC = [
-  { project: "BINGHATTI Apartments", usage: "Acrylic side panel for balcony swimming pool", thick: "60 mm", amount: "US$1.2 million", location: "Jumeirah Village Circle, Dubai" },
-  { project: "Villa of UMM SEQUIM", usage: "Acrylic floor panel, side panel for pool", thick: "120 mm", amount: "US$69 K", location: "UMM SEQUIM, Dubai" },
-  { project: "Villa in Mille Colline", usage: "Acrylic Floor Panel, Wall Panel", thick: "120 mm", amount: "US$260 K", location: "Mille Colline, Dubai" },
-  { project: "Private Villa Al Barari", usage: "Acrylic side panel, floor panel", thick: "150 mm", amount: "US$66 K", location: "Al Barari, Dubai" },
-  { project: "Al-Mana Hotel, Doha Qatar", usage: "Hanging acrylic pool", thick: "130 mm", amount: "US$120 K", location: "Doha, Qatar" },
-  { project: "Resort Hotel, Jeddah Saudi", usage: "Acrylic Side Panel", thick: "150 mm", amount: "US$200 K", location: "Jeddah, Saudi Arabia" },
-  { project: "Acrylic Swimming Pool", usage: "Acrylic Side Panel", thick: "120 mm", amount: "US$10 K", location: "Riyadh, Saudi Arabia" },
-  { project: "Water Pool in Villa", usage: "Acrylic Floor", thick: "100 mm", amount: "US$60 K", location: "Muscat, Oman" },
+  { project: "BINGHATTI Apartments", usage: "Acrylic side panel for balcony swimming pool", thick: "60 mm", location: "Jumeirah Village Circle, Dubai" },
+  { project: "Villa of UMM SEQUIM", usage: "Acrylic floor panel, side panel for pool", thick: "120 mm", location: "UMM SEQUIM, Dubai" },
+  { project: "Villa in Mille Colline", usage: "Acrylic Floor Panel, Wall Panel", thick: "120 mm", location: "Mille Colline, Dubai" },
+  { project: "Private Villa Al Barari", usage: "Acrylic side panel, floor panel", thick: "150 mm", location: "Al Barari, Dubai" },
+  { project: "Al-Mana Hotel, Doha Qatar", usage: "Hanging acrylic pool", thick: "130 mm", location: "Doha, Qatar" },
+  { project: "Resort Hotel, Jeddah Saudi", usage: "Acrylic Side Panel", thick: "150 mm", location: "Jeddah, Saudi Arabia" },
+  { project: "Acrylic Swimming Pool", usage: "Acrylic Side Panel", thick: "120 mm", location: "Riyadh, Saudi Arabia" },
+  { project: "Water Pool in Villa", usage: "Acrylic Floor", thick: "100 mm", location: "Muscat, Oman" },
 ];
 
 const projectsEurope = [
-  { project: "VAI Resort Swimming Pool", usage: "Acrylic side panel", thick: "60 mm", amount: "US$70 K", location: "Glendale, AZ, United States" },
-  { project: "Swimming Pool for House (Oregon)", usage: "Acrylic curved Side Panel", thick: "100 mm", amount: "US$46 K", location: "Oregon, U.S." },
-  { project: "Swimming Pool on YACHT", usage: "Acrylic side panel", thick: "130 mm", amount: "US$16 K", location: "Ancona, Italy" },
-  { project: "Sky Roof Pool", usage: "Acrylic sky window", thick: "120 mm", amount: "US$76 K", location: "Copenhagen, Denmark" },
-  { project: "Backyard SPO Swimming Pool", usage: "Acrylic side panel for SPO Pool", thick: "60 mm", amount: "US$7 K", location: "El Dorado Hills, CO, U.S." },
-  { project: "Swimming Pool in Backyard (Kosovo)", usage: "Acrylic window", thick: "100 mm", amount: "US$66 K", location: "Suhareka, Kosovo" },
+  { project: "VAI Resort Swimming Pool", usage: "Acrylic side panel", thick: "60 mm", location: "Glendale, AZ, United States" },
+  { project: "Swimming Pool for House (Oregon)", usage: "Acrylic curved Side Panel", thick: "100 mm", location: "Oregon, U.S." },
+  { project: "Swimming Pool on YACHT", usage: "Acrylic side panel", thick: "130 mm", location: "Ancona, Italy" },
+  { project: "Sky Roof Pool", usage: "Acrylic sky window", thick: "120 mm", location: "Copenhagen, Denmark" },
+  { project: "Backyard SPO Swimming Pool", usage: "Acrylic side panel for SPO Pool", thick: "60 mm", location: "El Dorado Hills, CO, U.S." },
+  { project: "Swimming Pool in Backyard (Kosovo)", usage: "Acrylic window", thick: "100 mm", location: "Suhareka, Kosovo" },
 ];
 
 const projectsAsia = [
-  { project: "Finolhu Island Resort Villas", usage: "Acrylic floor panel, side panel", thick: "60–110 mm", amount: "US$175 K", location: "Finolhu Baa Atoll, Maldives" },
-  { project: "Nayyahuchi Underwater Resort", usage: "Acrylic Panels for Underwater Window", thick: "120 mm", amount: "US$70 K", location: "Nayyahuchi Island, Maldives" },
-  { project: "Gujarat Science City Aquarium", usage: "Acrylic Panel, Tunnel, Cylinder", thick: "330 mm", amount: "US$1+ million", location: "Gujarat, India" },
-  { project: "SKY Pool, Da-Nang Vietnam", usage: "Acrylic side pool (4 sides)", thick: "250 mm", amount: "US$300 K", location: "Da-Nang, Vietnam" },
-  { project: "Acrylic SKY Swimming Pool, Cambodia", usage: "Acrylic Side Panel, Floor Panel", thick: "130 mm", amount: "US$360 K", location: "Phnom Penh, Cambodia" },
-  { project: "Lee Residence Swimming Pool, Philippines", usage: "Acrylic side panels and floor panel", thick: "110 mm", amount: "US$63 K", location: "Pampanga, Philippines" },
+  { project: "Finolhu Island Resort Villas", usage: "Acrylic floor panel, side panel", thick: "60–110 mm", location: "Finolhu Baa Atoll, Maldives" },
+  { project: "Nayyahuchi Underwater Resort", usage: "Acrylic Panels for Underwater Window", thick: "120 mm", location: "Nayyahuchi Island, Maldives" },
+  { project: "Gujarat Science City Aquarium", usage: "Acrylic Panel, Tunnel, Cylinder", thick: "330 mm", location: "Gujarat, India" },
+  { project: "SKY Pool, Da-Nang Vietnam", usage: "Acrylic side pool (4 sides)", thick: "250 mm", location: "Da-Nang, Vietnam" },
+  { project: "Acrylic SKY Swimming Pool, Cambodia", usage: "Acrylic Side Panel, Floor Panel", thick: "130 mm", location: "Phnom Penh, Cambodia" },
+  { project: "Lee Residence Swimming Pool, Philippines", usage: "Acrylic side panels and floor panel", thick: "110 mm", location: "Pampanga, Philippines" },
 ];
 
 const products = [
@@ -97,7 +97,6 @@ function ProjectList({ projects, productLabel }) {
               <th className="text-left p-4 font-semibold">Project</th>
               <th className="text-left p-4 font-semibold">{productLabel}</th>
               <th className="text-left p-4 font-semibold">Max Thickness</th>
-              <th className="text-left p-4 font-semibold">Approx. Amount</th>
               <th className="text-left p-4 font-semibold">Location</th>
             </tr>
           </thead>
@@ -107,7 +106,6 @@ function ProjectList({ projects, productLabel }) {
                 <td className="p-4 font-semibold text-foreground">{p.project}</td>
                 <td className="p-4 text-muted-foreground">{p.usage}</td>
                 <td className="p-4 text-muted-foreground">{p.thick}</td>
-                <td className="p-4 font-bold text-primary">{p.amount}</td>
                 <td className="p-4 text-muted-foreground">{p.location}</td>
               </tr>
             ))}
@@ -117,10 +115,7 @@ function ProjectList({ projects, productLabel }) {
       <div className="md:hidden space-y-3">
         {projects.map((p, i) => (
           <div key={i} className="bg-card border border-border rounded-lg p-4">
-            <div className="flex items-start justify-between gap-3">
-              <h4 className="font-semibold text-foreground leading-snug">{p.project}</h4>
-              <span className="font-bold text-primary text-sm whitespace-nowrap">{p.amount}</span>
-            </div>
+            <h4 className="font-semibold text-foreground leading-snug">{p.project}</h4>
             <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-foreground/50">{p.location}</p>
             <p className="mt-2 text-sm text-muted-foreground">
               {p.usage} · {p.thick}
@@ -137,16 +132,16 @@ export default function Pool() {
     <div className="bg-background min-h-screen">
       <PageHero
         breadcrumb="Pools"
-        label="Grandview Acrylic"
+        label="Acrylic Pools"
         title={<>Premium Acrylic for Pool & <em className="not-italic font-bold">Aquarium</em></>}
-        subtitle="Your acrylic panels solution provider and factory. Serving GCC, Europe, America, Africa, Southeast Asia, South Asia, and East Asia."
+        subtitle="Transparent acrylic pool walls, floors and sky windows, engineered to specification and added to your HRG project."
         image="https://images.unsplash.com/photo-1603085429201-64dadaec4061?w=1600&q=80"
       />
 
       {/* Slideable Catalogue Gallery */}
       <section className="max-w-7xl mx-auto px-6 py-16">
         <div className="text-center mb-10">
-          <SectionLabel>Grandview Acrylic</SectionLabel>
+          <SectionLabel>Acrylic Pools</SectionLabel>
           <AnimatedHeading className="font-heading text-3xl font-normal text-foreground">
             Pool & Aquarium <em className="not-italic font-bold">Gallery</em>
           </AnimatedHeading>
@@ -211,15 +206,11 @@ export default function Pool() {
             >
               <div className="text-xs font-bold text-primary uppercase tracking-widest mb-2">Dubai, UAE</div>
               <h3 className="font-heading text-2xl font-bold text-foreground mb-4">BINGHATTI Apartment Balcony Pools</h3>
-              <p className="text-muted-foreground leading-relaxed mb-4">Grandview Acrylic provided acrylic panels for the transparent swimming pool walls on the balconies of several apartment buildings: BINGHATTI ONYX, BINGHATTI OLIVER, BINGHATTI ORCHID, BINGHATTI Gardenia, and more.</p>
+              <p className="text-muted-foreground leading-relaxed mb-4">Acrylic panels form the transparent swimming pool walls on the balconies of several apartment buildings: BINGHATTI ONYX, BINGHATTI OLIVER, BINGHATTI ORCHID, BINGHATTI Gardenia, and more.</p>
               <div className="flex gap-4 text-sm">
                 <div className="bg-card border border-border rounded-lg p-3 text-center">
                   <div className="font-bold text-primary">60 mm</div>
                   <div className="text-xs text-muted-foreground">Panel Thickness</div>
-                </div>
-                <div className="bg-card border border-border rounded-lg p-3 text-center">
-                  <div className="font-bold text-primary">US$1.2M</div>
-                  <div className="text-xs text-muted-foreground">Project Value</div>
                 </div>
                 <div className="bg-card border border-border rounded-lg p-3 text-center">
                   <div className="font-bold text-primary">Ongoing</div>
@@ -273,12 +264,12 @@ export default function Pool() {
             <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
               <ClickableImage src={`${POOL_BASE}/55eae5455_Poolcatalg-27.png`} alt="Maldives Pool" className="w-full h-64 mb-4" label="Finolhu Island Resort Villas, Maldives" />
               <h3 className="font-heading font-bold text-foreground mb-1">Finolhu Island Resort Villas, Maldives</h3>
-              <p className="text-sm text-muted-foreground">Grandview Acrylic supplied acrylic panels for 7 villas with transparent swimming pool wall and floor. Acrylic Floor Panels for 7 Villas, each villa 3 panels, total 21 panels, 4640 × 1200 mm × 80 mm.</p>
+              <p className="text-sm text-muted-foreground">Acrylic panels for 7 villas with transparent swimming pool wall and floor. Acrylic Floor Panels for 7 Villas, each villa 3 panels, total 21 panels, 4640 × 1200 mm × 80 mm.</p>
             </motion.div>
             <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
               <ClickableImage src={`${POOL_BASE}/e9cc6623a_Poolcatalg-29.png`} alt="Gujarat Science City" className="w-full h-64 mb-4" label="Gujarat Science City Aquarium, India" />
               <h3 className="font-heading font-bold text-foreground mb-1">Gujarat Science City Aquarium, India</h3>
-              <p className="text-sm text-muted-foreground">Acrylic Panel, Acrylic Tunnel, Acrylic Cylinder for Aquarium. Thickness 330 mm. Project value exceeding US$1 million, one of the largest acrylic aquarium projects in South Asia.</p>
+              <p className="text-sm text-muted-foreground">Acrylic Panel, Acrylic Tunnel, Acrylic Cylinder for Aquarium. Thickness 330 mm. One of the largest acrylic aquarium projects in South Asia.</p>
             </motion.div>
           </div>
 
