@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from "lucide-react";
 import { base44 } from "@/api/base44Client";
+import { sendLeadEmail } from "@/lib/leadEmail";
 import PageHero from "@/components/shared/PageHero";
 
 const contacts = [
@@ -38,6 +39,7 @@ export default function Contact() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -46,14 +48,38 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
     try {
-      await base44.entities.Lead.create({
-        ...form,
-        project_type: form.project_type || "Not sure yet",
+      const projectType = form.project_type || "Not sure yet";
+      await base44.entities.Lead.create({ ...form, project_type: projectType, lead_flow: "Contact Page" });
+      // Same notification as the builder, so these inquiries reach the sales inbox (and the
+      // CRM, which files every "New Project Inquiry" email). Saved first, so a failed email
+      // never loses the inquiry.
+      await sendLeadEmail({
+        full_name: form.full_name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        property_address: form.zip_code ? `ZIP ${form.zip_code}` : "-",
+        final_sf: "-",
+        plumbing: "-",
+        scope_land_dev: "-",
+        scope_materials: "-",
+        scope_site_work: "-",
+        expected_budget: "-",
+        timeline: "-",
+        has_plans: "-",
+        plans_file_url: "No file uploaded",
+        jurisdiction: "-",
+        city_contact: "-",
+        sewer_type: "-",
+        utility_info: `${projectType}: ${form.message.trim() || "(no message)"}`,
+        lead_flow: "Contact Page",
+        details: `Form: Contact page\nProject type: ${projectType}\nMessage: ${form.message.trim() || "-"}`,
       });
       setSubmitted(true);
     } catch (err) {
       console.error(err);
+      setError("Something went wrong sending your message. Please try again, or call us at (909) 616-1182.");
     } finally {
       setLoading(false);
     }
@@ -199,6 +225,7 @@ export default function Contact() {
                   {loading ? "Sending..." : "Request Free Estimate"}
                   {!loading && <Send className="w-4 h-4" />}
                 </button>
+                {error && <p className="mt-4 text-sm font-semibold text-destructive">{error}</p>}
               </form>
             )}
           </div>

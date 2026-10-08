@@ -39,7 +39,12 @@ export default function Testimonials() {
                 <Quote className="w-10 h-10 text-primary/30 mb-4" />
                 <p className="text-foreground/70 leading-relaxed mb-6 italic">"{t.text}"</p>
                 <div className="flex items-center gap-3">
-                  <img src={t.avatar} alt={t.name} className="w-11 h-11 rounded-full object-cover" />
+                  <span
+                    aria-hidden="true"
+                    className="w-11 h-11 rounded-full bg-primary/10 text-primary font-semibold text-sm flex items-center justify-center shrink-0"
+                  >
+                    {t.name.replace(/[^A-Za-z& ]/g, "").split(/\s+/).filter((w) => w && w !== "&").map((w) => w[0]).slice(0, 2).join("")}
+                  </span>
                   <div>
                     <p className="font-semibold text-sm">{t.name}</p>
                     <p className="text-xs text-foreground/50">{t.project}</p>
