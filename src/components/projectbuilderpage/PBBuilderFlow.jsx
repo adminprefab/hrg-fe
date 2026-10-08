@@ -178,6 +178,7 @@ export default function PBBuilderFlow() {
             {showValuePrompt && !submitted && (
               <ValuePrompt
                 sf={sf}
+                answers={data}
                 onApply={(size) => setField("sf", String(size))}
               />
             )}

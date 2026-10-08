@@ -96,12 +96,14 @@ export function buildProject({ sf, plumbing = "Yes", landDevAnswers = {}, materi
 }
 
 // Under-250 SF value comparison: current size vs. 250 / 350 / 500 SF complete projects.
-export function valueComparison(sf) {
-  const current = buildProject({ sf }).total;
+// `answers` (plumbing, drawings, permits, lot) price every size the way the visitor answered.
+export function valueComparison(sf, answers = {}) {
+  const opts = { plumbing: answers.plumbing || "Yes", landDevAnswers: answers };
+  const current = buildProject({ sf, ...opts }).total;
   return PRICING.comparisonSizes
     .filter((size) => size > sf)
     .map((size) => {
-      const budget = buildProject({ sf: size }).total;
+      const budget = buildProject({ sf: size, ...opts }).total;
       const addSF = size - sf;
       const addInvestment = budget - current;
       return {

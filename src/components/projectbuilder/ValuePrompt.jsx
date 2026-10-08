@@ -12,13 +12,13 @@ function DataRow({ label, value }) {
 
 // Shown whenever the customer enters less than 250 SF.
 // All numbers are the customer's actual calculated figures, never generic claims.
-export default function ValuePrompt({ sf, onApply }) {
-  const options = valueComparison(sf);
+export default function ValuePrompt({ sf, answers = {}, onApply }) {
+  const options = valueComparison(sf, answers);
   const [selected, setSelected] = useState(options.length ? options[0].size : null);
   if (!options.length) return null;
 
   const opt = options.find((o) => o.size === selected) || options[0];
-  const currentBudget = buildProject({ sf }).total;
+  const currentBudget = buildProject({ sf, plumbing: answers.plumbing || "Yes", landDevAnswers: answers }).total;
 
   return (
     <div className="rounded-xl bg-card border border-border/70 shadow-[0_10px_40px_rgba(0,0,0,0.06)] p-6 md:p-10">

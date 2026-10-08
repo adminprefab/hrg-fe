@@ -99,7 +99,7 @@ export default function SizeStep({ form, setField }) {
       )}
 
       {sf >= PRICING.sfMin && sf < PRICING.smallProjectTriggerSF && (
-        <ValuePrompt sf={sf} onApply={(size) => setField("sf", String(size))} />
+        <ValuePrompt sf={sf} answers={form} onApply={(size) => setField("sf", String(size))} />
       )}
     </div>
   );
