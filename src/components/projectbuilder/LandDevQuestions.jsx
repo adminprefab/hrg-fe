@@ -1,5 +1,5 @@
 import React from "react";
-import { PRICING, money } from "@/lib/projectPricing";
+import { money } from "@/lib/projectPricing";
 
 // The questions that price Land Development and the Site Work slope allowance. Shared by
 // both builders so the wording and the amounts can never drift apart.
@@ -71,7 +71,7 @@ export default function LandDevQuestions({ answers, setField, estimate }) {
 
 // The lot question, asked on the Site Work card: a slope changes the site work, and
 // approved plans do not make it go away.
-export function SiteSlopeQuestion({ answers, setField }) {
+export function SiteSlopeQuestion({ answers, setField, estimate }) {
   return (
     <Question
       text="Is your lot flat or sloped?"
@@ -82,7 +82,7 @@ export function SiteSlopeQuestion({ answers, setField }) {
       note={
         answers.lot_slope === "Flat"
           ? "$0 · no slope allowance"
-          : `Site + slope allowance: ${money(PRICING.siteSlopeAllowance)}`
+          : `Site + slope allowance: ${money(estimate.siteWork.slopeAtSize)}`
       }
     />
   );

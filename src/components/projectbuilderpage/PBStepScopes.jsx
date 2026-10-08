@@ -155,7 +155,7 @@ export default function PBStepScopes({ data, setField, sf, estimate }) {
             ))}
           </div>
           <div className="mt-6">
-            <SiteSlopeQuestion answers={data} setField={setField} />
+            <SiteSlopeQuestion answers={data} setField={setField} estimate={estimate} />
           </div>
           <div className="mt-5 pt-5 border-t border-border flex flex-wrap items-center justify-between gap-4">
             <div>

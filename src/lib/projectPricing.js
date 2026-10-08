@@ -5,14 +5,14 @@
 export const PRICING = {
   materialsRate: 100, // $/SF for prefabricated materials
   deliveryPct: 0.22, // delivery as a share of materials cost
-  // Land Development, per item (drawings, permits), by building size: [up to SF, amount].
-  landDevTiers: [
+  // Amount by building size, [up to SF, amount]: each Land Development item (drawings,
+  // permits) and the Site Work slope allowance.
+  sizeTiers: [
     [1000, 15000],
     [2000, 20000],
     [3000, 25000],
     [Infinity, 30000],
   ],
-  siteSlopeAllowance: 15000, // added to Site Work + Assembly unless the lot is confirmed flat
   siteWorkMin: 35000, // minimum site work + assembly cost
   siteWorkLowRate: 110, // $/SF low end of site work rate
   siteWorkHighRate: 160, // $/SF high end of site work rate
@@ -37,7 +37,7 @@ export const deliveryCost = (sf) => materialsCost(sf) * PRICING.deliveryPct;
 export const siteWorkCost = (sf) => Math.max(sf * SITE_WORK_RATE, PRICING.siteWorkMin);
 
 // One Land Development item at this size. Before a size is entered, the smallest tier.
-export const landDevItemAmount = (sf) => PRICING.landDevTiers.find(([upTo]) => (sf || 0) <= upTo)[1];
+export const sizeTierAmount = (sf) => PRICING.sizeTiers.find(([upTo]) => (sf || 0) <= upTo)[1];
 
 // Land Development is two items, each settled by a question about the property.
 // An unanswered question counts as "not yet", so the budget starts conservative and
@@ -53,7 +53,7 @@ export const landDevLines = (answers = {}, sf = 0) =>
   LAND_DEV_ITEMS.map((item) => ({
     key: item.key,
     label: item.label,
-    amount: answers[item.answer] === "Yes" ? 0 : landDevItemAmount(sf),
+    amount: answers[item.answer] === "Yes" ? 0 : sizeTierAmount(sf),
   }));
 
 // Site Work + Assembly, itemised: the base scope, the slope allowance (the lot question
@@ -62,9 +62,11 @@ export const landDevLines = (answers = {}, sf = 0) =>
 // answering the plumbing question always visibly changes the Site Work price.
 export function siteWorkParts(sf, answers = {}, plumbing = "Yes") {
   const base = siteWorkCost(sf);
-  const slope = answers.lot_slope === "Flat" ? 0 : PRICING.siteSlopeAllowance;
+  // Slope allowance by size tier, unless the lot is confirmed flat.
+  const slopeAtSize = sizeTierAmount(sf);
+  const slope = answers.lot_slope === "Flat" ? 0 : slopeAtSize;
   const credit = plumbing === "No" ? -Math.min(PRICING.noPlumbingAdjustment, base + slope) : 0;
-  return { base, slope, credit, total: base + slope + credit };
+  return { base, slope, slopeAtSize, credit, total: base + slope + credit };
 }
 
 // What the square-footage box accepts: digits only, never more than the maximum.

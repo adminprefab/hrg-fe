@@ -37,7 +37,7 @@ const SCOPES = [
     note: `Working rate ${money(PRICING.siteWorkLowRate)}-${money(PRICING.siteWorkHighRate)}/SF`,
     // Includes the slope allowance and the no-plumbing credit, so both answers move it.
     cost: (sf, estimate) => money(estimate.p3),
-    extra: (form, setField) => <SiteSlopeQuestion answers={form} setField={setField} />,
+    extra: (form, setField, estimate) => <SiteSlopeQuestion answers={form} setField={setField} estimate={estimate} />,
     addLabel: "+ Add Site Work + Assembly",
     removeLabel: "Remove Site Work + Assembly",
   },
@@ -104,7 +104,7 @@ export default function ScopeCards({ form, setField, sf, estimate }) {
                   </li>
                 ))}
               </ul>
-              {s.extra && <div className="mt-6">{s.extra(form, setField)}</div>}
+              {s.extra && <div className="mt-6">{s.extra(form, setField, estimate)}</div>}
               <button
                 type="button"
                 onClick={() => setField(s.key, !added)}
