@@ -1,6 +1,6 @@
 import React from "react";
-import { PRICING, materialsCost, deliveryCost, siteWorkCost, money } from "@/lib/projectPricing";
-import LandDevQuestions from "./LandDevQuestions";
+import { PRICING, materialsCost, deliveryCost, money } from "@/lib/projectPricing";
+import LandDevQuestions, { SiteSlopeQuestion } from "./LandDevQuestions";
 
 const SCOPES = [
   {
@@ -15,6 +15,7 @@ const SCOPES = [
     ],
     note: null,
     cost: (sf) => money(materialsCost(sf) + deliveryCost(sf)),
+    extra: null,
     addLabel: "+ Add Materials + Delivery",
     removeLabel: "Remove Materials + Delivery",
   },
@@ -34,7 +35,9 @@ const SCOPES = [
       "Applicable inspections",
     ],
     note: `Working rate ${money(PRICING.siteWorkLowRate)}-${money(PRICING.siteWorkHighRate)}/SF`,
-    cost: (sf) => money(siteWorkCost(sf)),
+    // Includes the slope allowance and the no-plumbing credit, so both answers move it.
+    cost: (sf, estimate) => money(estimate.p3),
+    extra: (form, setField) => <SiteSlopeQuestion answers={form} setField={setField} />,
     addLabel: "+ Add Site Work + Assembly",
     removeLabel: "Remove Site Work + Assembly",
   },
@@ -88,7 +91,7 @@ export default function ScopeCards({ form, setField, sf, estimate }) {
                     Expected cost
                   </span>
                   <span className="block mt-1 font-heading text-2xl font-bold text-primary">
-                    {s.cost(sf)}
+                    {s.cost(sf, estimate)}
                   </span>
                   {s.note && <span className="block mt-1 text-xs text-foreground/40">{s.note}</span>}
                 </div>
@@ -101,6 +104,7 @@ export default function ScopeCards({ form, setField, sf, estimate }) {
                   </li>
                 ))}
               </ul>
+              {s.extra && <div className="mt-6">{s.extra(form, setField)}</div>}
               <button
                 type="button"
                 onClick={() => setField(s.key, !added)}

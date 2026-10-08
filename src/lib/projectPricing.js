@@ -5,9 +5,14 @@
 export const PRICING = {
   materialsRate: 100, // $/SF for prefabricated materials
   deliveryPct: 0.22, // delivery as a share of materials cost
-  landDevDrawings: 15000, // drawings + engineering, unless the client already has plans
-  landDevPermits: 15000, // permits + approvals, unless the client already has permits
-  landDevSite: 15000, // site + slope allowance, unless the lot is confirmed flat
+  // Land Development, per item (drawings, permits), by building size: [up to SF, amount].
+  landDevTiers: [
+    [1000, 15000],
+    [2000, 20000],
+    [3000, 25000],
+    [Infinity, 30000],
+  ],
+  siteSlopeAllowance: 15000, // added to Site Work + Assembly unless the lot is confirmed flat
   siteWorkMin: 35000, // minimum site work + assembly cost
   siteWorkLowRate: 110, // $/SF low end of site work rate
   siteWorkHighRate: 160, // $/SF high end of site work rate
@@ -30,28 +35,37 @@ export const money = (n) =>
 export const materialsCost = (sf) => sf * PRICING.materialsRate;
 export const deliveryCost = (sf) => materialsCost(sf) * PRICING.deliveryPct;
 export const siteWorkCost = (sf) => Math.max(sf * SITE_WORK_RATE, PRICING.siteWorkMin);
-// The no-plumbing credit comes off Site Work + Assembly, so it never exceeds that scope.
-export const adjustmentFor = (sf, plumbing, siteWorkAmount = Infinity) =>
-  sf >= PRICING.sfMin && plumbing === "No" ? -Math.min(PRICING.noPlumbingAdjustment, siteWorkAmount) : 0;
 
-// Land Development is three items, each settled by a question about the property.
+// One Land Development item at this size. Before a size is entered, the smallest tier.
+export const landDevItemAmount = (sf) => PRICING.landDevTiers.find(([upTo]) => (sf || 0) <= upTo)[1];
+
+// Land Development is two items, each settled by a question about the property.
 // An unanswered question counts as "not yet", so the budget starts conservative and
 // only drops when the client confirms they already have something.
 export const LAND_DEV_ITEMS = [
-  { key: "drawings", answer: "has_drawings", label: "Drawings + engineering", amount: PRICING.landDevDrawings, waivedBy: "Yes" },
-  { key: "permits", answer: "has_permits", label: "Permits + approvals", amount: PRICING.landDevPermits, waivedBy: "Yes" },
-  { key: "site", answer: "lot_slope", label: "Site + slope allowance", amount: PRICING.landDevSite, waivedBy: "Flat" },
+  { key: "drawings", answer: "has_drawings", label: "Drawings + engineering" },
+  { key: "permits", answer: "has_permits", label: "Permits + approvals" },
 ];
 
-// Each item with what it adds for these answers: its amount, or 0 when the client has it.
-export const landDevLines = (answers = {}) =>
+// Each item with what it adds for these answers at this size: its tier amount, or 0 when
+// the client already has it.
+export const landDevLines = (answers = {}, sf = 0) =>
   LAND_DEV_ITEMS.map((item) => ({
     key: item.key,
     label: item.label,
-    amount: answers[item.answer] === item.waivedBy ? 0 : item.amount,
+    amount: answers[item.answer] === "Yes" ? 0 : landDevItemAmount(sf),
   }));
 
-export const landDevelopmentCost = (answers) => landDevLines(answers).reduce((sum, l) => sum + l.amount, 0);
+// Site Work + Assembly, itemised: the base scope, the slope allowance (the lot question
+// lives here, not in Land Development: approved plans do not flatten a lot), and the
+// no-plumbing credit. The credit shows whether or not Site Work is in the budget, so
+// answering the plumbing question always visibly changes the Site Work price.
+export function siteWorkParts(sf, answers = {}, plumbing = "Yes") {
+  const base = siteWorkCost(sf);
+  const slope = answers.lot_slope === "Flat" ? 0 : PRICING.siteSlopeAllowance;
+  const credit = plumbing === "No" ? -Math.min(PRICING.noPlumbingAdjustment, base + slope) : 0;
+  return { base, slope, credit, total: base + slope + credit };
+}
 
 // What the square-footage box accepts: digits only, never more than the maximum.
 // `large` is the "3,000+" mode, where the visitor types a size above the slider's range.
@@ -66,18 +80,19 @@ export const clampSfInput = (raw, large = false) => {
 // Land Development is always part of the budget; the answers decide how much of it applies.
 // Until there is a size there is no building to budget, so p1 and the total stay at 0 rather
 // than showing a budget made of nothing but add-ons. landDev still carries each item's amount.
+// p3 is Site Work + Assembly net of its slope allowance and no-plumbing credit (see
+// siteWork for the parts); adjustment is the credit as applied to the budget.
 export function buildProject({ sf, plumbing = "Yes", landDevAnswers = {}, materials = true, siteWork = true }) {
   const billableSf = sf >= PRICING.sfMin ? Math.min(sf, PRICING.sfLargeMax) : 0;
-  const landDev = landDevLines(landDevAnswers);
+  const landDev = landDevLines(landDevAnswers, billableSf);
   const p1 = billableSf ? landDev.reduce((sum, l) => sum + l.amount, 0) : 0;
   const mats = materialsCost(billableSf);
   const del = deliveryCost(billableSf);
-  const p3 = siteWorkCost(billableSf);
-  const adjustment = siteWork ? adjustmentFor(billableSf, plumbing, p3) : 0;
-  const total = billableSf
-    ? Math.max(0, p1 + (materials ? mats + del : 0) + (siteWork ? p3 : 0) + adjustment)
-    : 0;
-  return { p1, landDev, mats, del, p3, adjustment, total };
+  const parts = siteWorkParts(billableSf, landDevAnswers, plumbing);
+  const p3 = parts.total;
+  const adjustment = siteWork && billableSf ? parts.credit : 0;
+  const total = billableSf ? Math.max(0, p1 + (materials ? mats + del : 0) + (siteWork ? p3 : 0)) : 0;
+  return { p1, landDev, mats, del, p3, siteWork: parts, adjustment, total };
 }
 
 // Under-250 SF value comparison: current size vs. 250 / 350 / 500 SF complete projects.

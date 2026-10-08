@@ -25,7 +25,8 @@ export function leadDetails({ flow, jurisdiction, cityContact, sewerType, utilit
 }
 
 // Land Development answers and amounts: Lead fields that already existed (entity), Lead
-// fields added with the three questions (entityNew), and the email (email).
+// fields added with the questions (entityNew), and the email (email). The lot question
+// prices the Site Work slope allowance, so it travels with them.
 // has_plans comes from the drawings question, which replaced the old plans question.
 export function landDevFields(answers, estimate) {
   const amount = (key) => estimate.landDev.find((l) => l.key === key).amount;
@@ -41,7 +42,7 @@ export function landDevFields(answers, estimate) {
       lot_slope: answers.lot_slope || undefined,
       land_dev_drawings: amount("drawings"),
       land_dev_permits: amount("permits"),
-      land_dev_site: amount("site"),
+      site_slope_allowance: estimate.siteWork.slope,
     },
     email: {
       scope_land_dev: estimate.p1 > 0 ? "Yes" : "No",
@@ -52,7 +53,9 @@ export function landDevFields(answers, estimate) {
       land_dev_total: money(estimate.p1),
       land_dev_drawings: money(amount("drawings")),
       land_dev_permits: money(amount("permits")),
-      land_dev_site: money(amount("site")),
+      site_slope_allowance: money(estimate.siteWork.slope),
+      site_work_total: money(estimate.p3),
+      no_plumbing_credit: money(estimate.siteWork.credit),
     },
   };
 }

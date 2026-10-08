@@ -1,7 +1,7 @@
 import React from "react";
 import { money } from "@/lib/projectPricing";
 import { PLAN_FILE_TYPES } from "@/lib/leadEmail";
-import { BALLPARK_NOTE, LandDevSubLines } from "@/components/projectbuilder/LandDevQuestions";
+import { BALLPARK_NOTE, LandDevSubLines, SiteWorkSubLines } from "@/components/projectbuilder/LandDevQuestions";
 
 const TIMELINES = ["ASAP", "1-3 months", "3-6 months", "6+ months", "Just exploring"];
 const SEWER_OPTIONS = ["City sewer", "Septic system", "Neither / new connection needed", "Not sure"];
@@ -87,9 +87,11 @@ export default function ProceedStep({ form, setField, estimate, sf, onSubmit, lo
             value={`${money(estimate.mats)} + ${money(estimate.del)}`}
           />
         )}
-        {form.site_work && <SummaryRow label="Site Work + Assembly" value={money(estimate.p3)} />}
-        {estimate.adjustment !== 0 && (
-          <SummaryRow label="No-Plumbing Adjustment" value={money(estimate.adjustment)} />
+        {form.site_work && (
+          <>
+            <SummaryRow label="Site Work + Assembly" value={money(estimate.p3)} />
+            <SiteWorkSubLines estimate={estimate} />
+          </>
         )}
         <SummaryRow
           label="Expected Project Budget"

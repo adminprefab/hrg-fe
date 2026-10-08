@@ -1,6 +1,6 @@
 import React from "react";
 import { PRICING, money } from "@/lib/projectPricing";
-import { BALLPARK_NOTE, LandDevSubLines } from "@/components/projectbuilder/LandDevQuestions";
+import { BALLPARK_NOTE, LandDevSubLines, SiteWorkSubLines } from "@/components/projectbuilder/LandDevQuestions";
 
 function SummaryRow({ label, value, muted = false }) {
   return (
@@ -114,17 +114,12 @@ export default function PBProjectCard({ data, setField, estimate, sf }) {
           onToggle={() => setField("site_work", !data.site_work)}
           title="Site Work + Assembly"
           sub="Optional add-on"
-          value={hasSf ? money(estimate.p3) : money(PRICING.siteWorkMin)}
+          value={money(estimate.p3)}
         />
-      </div>
-
-      {/* No-plumbing credit */}
-      {estimate.adjustment !== 0 && (
-        <div className="mt-3 pt-3 flex items-center justify-between">
-          <span className="text-sm font-semibold text-foreground/60">No-plumbing credit</span>
-          <span className="text-sm font-bold">{money(estimate.adjustment)}</span>
+        <div className="-mt-1">
+          <SiteWorkSubLines estimate={estimate} />
         </div>
-      )}
+      </div>
 
       {/* Footer */}
       <div className="mt-4 pt-5 border-t-2 border-foreground">

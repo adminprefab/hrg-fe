@@ -3,12 +3,11 @@ import {
   PRICING,
   materialsCost,
   deliveryCost,
-  siteWorkCost,
   SITE_WORK_RATE,
   money,
 } from "@/lib/projectPricing";
 import StepHeading from "./StepHeading";
-import LandDevQuestions from "@/components/projectbuilder/LandDevQuestions";
+import LandDevQuestions, { SiteSlopeQuestion } from "@/components/projectbuilder/LandDevQuestions";
 
 const TAGS_SITE = [
   "Site preparation",
@@ -155,18 +154,21 @@ export default function PBStepScopes({ data, setField, sf, estimate }) {
               <Tag key={t}>{t}</Tag>
             ))}
           </div>
+          <div className="mt-6">
+            <SiteSlopeQuestion answers={data} setField={setField} />
+          </div>
           <div className="mt-5 pt-5 border-t border-border flex flex-wrap items-center justify-between gap-4">
             <div>
               <span className="block text-xs font-semibold uppercase tracking-[0.15em] text-foreground/60">
                 Projected budget
               </span>
-              <span className="block mt-1 font-heading text-3xl font-bold">
-                {hasSf ? money(siteWorkCost(sf)) : money(PRICING.siteWorkMin)}
-              </span>
+              <span className="block mt-1 font-heading text-3xl font-bold">{money(estimate.p3)}</span>
               <span className="block mt-0.5 text-xs text-foreground/50">
-                {hasSf && siteWorkCost(sf) > PRICING.siteWorkMin
+                {hasSf && estimate.siteWork.base > PRICING.siteWorkMin
                   ? `${money(SITE_WORK_RATE)}/SF × ${sf.toLocaleString("en-US")} SF`
                   : `Project minimum applies (${money(PRICING.siteWorkMin)})`}
+                {estimate.siteWork.slope > 0 && ` + ${money(estimate.siteWork.slope)} slope allowance`}
+                {estimate.siteWork.credit < 0 && ` − ${money(-estimate.siteWork.credit)} no-plumbing credit`}
               </span>
             </div>
             <AddOnButton

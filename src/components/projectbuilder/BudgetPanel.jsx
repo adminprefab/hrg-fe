@@ -1,6 +1,6 @@
 import React from "react";
 import { money } from "@/lib/projectPricing";
-import { BALLPARK_NOTE, LandDevSubLines } from "./LandDevQuestions";
+import { BALLPARK_NOTE, LandDevSubLines, SiteWorkSubLines } from "./LandDevQuestions";
 
 function Row({ label, value, action }) {
   return (
@@ -60,9 +60,7 @@ export default function BudgetPanel({ form, setField, estimate }) {
           value={form.site_work ? money(estimate.p3) : "Not included"}
           action={<ScopeToggle added={form.site_work} onToggle={() => setField("site_work", !form.site_work)} />}
         />
-        {estimate.adjustment !== 0 && (
-          <Row label="No-Plumbing Credit" value={money(estimate.adjustment)} />
-        )}
+        {form.site_work && <SiteWorkSubLines estimate={estimate} />}
       </div>
 
       <div className="mt-8 pt-6 border-t-2 border-foreground/20 flex items-baseline justify-between gap-4">

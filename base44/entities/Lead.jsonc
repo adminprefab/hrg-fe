@@ -367,7 +367,7 @@
     "land_dev_permits": {
       "type": "number"
     },
-    "land_dev_site": {
+    "site_slope_allowance": {
       "type": "number"
     },
     "scope_land_dev": {

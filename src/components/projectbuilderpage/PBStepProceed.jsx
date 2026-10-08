@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { PRICING, money } from "@/lib/projectPricing";
 import { PLAN_FILE_TYPES } from "@/lib/leadEmail";
-import { BALLPARK_NOTE, LandDevSubLines } from "@/components/projectbuilder/LandDevQuestions";
+import { BALLPARK_NOTE, LandDevSubLines, SiteWorkSubLines } from "@/components/projectbuilder/LandDevQuestions";
 import StepHeading from "./StepHeading";
 
 const TIMELINES = [
@@ -157,9 +157,11 @@ export default function PBStepProceed({ data, setField, sf, estimate, onSubmit, 
             <LandDevSubLines estimate={estimate} />
           </>
         )}
-        {data.site_work && <SummaryRow label="Site Work + Assembly" value={money(estimate.p3)} />}
-        {estimate.adjustment !== 0 && (
-          <SummaryRow label="No-Plumbing Adjustment" value={money(estimate.adjustment)} />
+        {data.site_work && (
+          <>
+            <SummaryRow label="Site Work + Assembly" value={money(estimate.p3)} />
+            <SiteWorkSubLines estimate={estimate} />
+          </>
         )}
         <SummaryRow
           label="Expected Project Budget"

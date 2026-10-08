@@ -258,11 +258,11 @@ export default function ProjectBuilder() {
                     </button>
                   ))}
                 </div>
-                {form.plumbing === "No" && sf >= PRICING.sfMin && (
+                {form.plumbing === "No" && (
                   <p className="mt-6 text-sm font-semibold text-primary">
-                    {form.site_work
-                      ? `Your Expected Project Budget includes a ${money(PRICING.noPlumbingAdjustment)} no-plumbing credit on Site Work + Assembly.`
-                      : `Add Site Work + Assembly to apply the ${money(PRICING.noPlumbingAdjustment)} no-plumbing credit.`}
+                    {`No plumbing takes ${money(-estimate.siteWork.credit)} off Site Work + Assembly${
+                      sf >= PRICING.sfMin ? `, now ${money(estimate.p3)}` : ""
+                    }.`}
                   </p>
                 )}
               </div>
