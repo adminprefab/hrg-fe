@@ -1,0 +1,1270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Remodel Cost Planner · The Home Remodel Group</title>
+<meta name="description" content="Estimate the cost of a kitchen, bathroom, roof, ADU or any remodel anywhere in the U.S., then send it to HRG for a firm quote.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap">
+<style>
+/* Layout: navy masthead; left column walks the client through job → size → details (3D house as a visual picker); right column keeps the running estimate and the request form. Stacks on phones with a fixed total bar. */
+:root{
+  --navy:#14213d; --navy-2:#1f3160; --gold:#b8893b; --gold-soft:#f1e4cb;
+  --bg:#f3f5f8; --surface:#ffffff; --surface-2:#eef1f6; --line:#d9dfe9;
+  --fg:#16203a; --muted:#5d6782; --on-navy:#f4f1e8; --ok:#2f7d5b; --warn:#a0621b; --bad:#b4442f;
+  --display:"Playfair Display",Georgia,"Times New Roman",serif;
+  --body:Inter,"Segoe UI",system-ui,-apple-system,sans-serif;
+  --r:10px; --sky-1:#d9e6f2; --sky-2:#f3f5f8;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --navy:#0b1328; --navy-2:#1a2848; --gold:#d6aa5c; --gold-soft:#3a3020;
+  --bg:#0e1528; --surface:#16203a; --surface-2:#1c2847; --line:#2b3a5e;
+  --fg:#e7ebf3; --muted:#9aa5c2; --on-navy:#f4f1e8; --ok:#5dbb8f; --warn:#e0a35a; --bad:#e58a77; --sky-1:#0c1630; --sky-2:#16203a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --navy:#0b1328; --navy-2:#1a2848; --gold:#d6aa5c; --gold-soft:#3a3020;
+  --bg:#0e1528; --surface:#16203a; --surface-2:#1c2847; --line:#2b3a5e;
+  --fg:#e7ebf3; --muted:#9aa5c2; --on-navy:#f4f1e8; --ok:#5dbb8f; --warn:#e0a35a; --bad:#e58a77; --sky-1:#0c1630; --sky-2:#16203a; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+
+.mast{background:var(--navy);color:var(--on-navy);padding-inline:16px}
+.mast-in{max-width:1240px;margin:0 auto;padding-block:22px 30px;display:grid;gap:14px}
+.brand{display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.brand b{font-family:var(--display);font-size:22px;letter-spacing:.02em;text-transform:none;color:var(--gold);font-weight:700}
+.brand span{opacity:.85}
+.mast h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,4.4vw,46px);line-height:1.1;margin:0;max-width:22ch;text-wrap:balance}
+.mast h1 em{color:var(--gold);font-style:italic}
+.mast p{margin:0;max-width:62ch;opacity:.86}
+
+.wrap{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:24px 110px;display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:24px;align-items:start}
+@media (max-width:980px){.wrap{grid-template-columns:minmax(0,1fr)}}
+.left{display:grid;gap:16px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.sec{padding:18px;display:grid;gap:14px}
+.eyebrow{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0}
+h2{font-family:var(--display);font-weight:600;font-size:22px;margin:0;text-wrap:balance}
+h3{font-size:15px;margin:0;font-weight:600}
+
+/* step 1: job picker */
+.jobs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+@media (max-width:520px){.jobs{grid-template-columns:1fr 1fr;gap:6px}.job{padding:9px 10px}.job small{display:none}.job strong{font-size:13.5px}}
+.job{border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:11px 12px;cursor:pointer;text-align:left;display:grid;gap:2px;min-width:0}
+.job strong{font-size:14.5px}
+.job small{color:var(--muted);font-size:12px;line-height:1.35}
+.job:hover{border-color:var(--gold)}
+.job[aria-pressed="true"]{border-color:var(--gold);background:var(--gold-soft);box-shadow:inset 0 0 0 1px var(--gold)}
+.job .in{font-size:11px;font-weight:700;color:var(--ok);letter-spacing:.04em;text-transform:uppercase}
+
+/* 3D picker */
+.v-head{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
+.models,.modes{display:flex;flex-wrap:wrap;gap:6px}
+.model,.mode{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;cursor:pointer;font-size:13px;font-weight:500;display:flex;align-items:center;gap:7px}
+.mode i{width:9px;height:9px;border-radius:50%;background:var(--dot)}
+.model[aria-pressed="true"],.mode[aria-pressed="true"]{background:var(--navy-2);color:var(--on-navy);border-color:var(--navy-2)}
+.stage{position:relative;height:380px;border-radius:8px;overflow:hidden;background:linear-gradient(var(--sky-1),var(--sky-2));min-width:0}
+@media (max-width:760px){.stage{height:300px}}
+.stage canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+.floors{position:absolute;top:10px;left:10px;display:flex;gap:6px}
+.floors button{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:5px 10px;font-size:12.5px;cursor:pointer}
+.floors button[aria-pressed="true"]{background:var(--gold);color:#1a1405;border-color:var(--gold)}
+.hint{position:absolute;bottom:8px;left:10px;right:10px;margin:0;font-size:12px;color:var(--muted);pointer-events:none}
+.nogl{padding:24px;color:var(--muted)}
+
+/* step 2: size + details */
+.jobpanel{scroll-margin-top:16px}
+.size{display:flex;flex-wrap:wrap;align-items:end;gap:12px}
+.size label{display:grid;gap:4px;font-size:13px;color:var(--muted);font-weight:500}
+.size input{width:150px;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:17px;font-weight:600;color:var(--fg)}
+.size .u{font-size:14px;color:var(--muted);padding-bottom:10px}
+.from3d{font-size:12.5px;color:var(--ok);padding-bottom:10px}
+.qs{display:grid;gap:14px}
+.q{display:grid;gap:6px}
+.q>span{font-size:13.5px;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;cursor:pointer;font-size:13.5px}
+.chip:hover{border-color:var(--gold)}
+.chip[aria-pressed="true"]{background:var(--gold-soft);border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold);font-weight:600}
+.tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media (max-width:560px){.tiers{grid-template-columns:repeat(2,1fr)}}
+.tier{border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:9px 10px;text-align:left;cursor:pointer;display:grid;gap:2px}
+.tier strong{font-size:14px}
+.tier small{color:var(--muted);font-size:12px;line-height:1.35}
+.tier[aria-pressed="true"]{border-color:var(--gold);background:var(--gold-soft);box-shadow:inset 0 0 0 1px var(--gold)}
+.tiernote{font-size:12.5px;color:var(--muted);margin:0}
+.hintx{font-weight:400;color:var(--muted);font-size:12px;margin-left:6px}
+.tier strong{display:flex;justify-content:space-between;gap:6px;flex-wrap:wrap}
+.tp{font-weight:600;color:var(--muted);font-size:12.5px}
+.tier[aria-pressed="true"] .tp{color:var(--fg)}
+.guide{display:grid;gap:8px;border-top:1px solid var(--line);padding-top:14px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.facts p{margin:2px 0 0;font-size:13.5px}
+.guide details{border:1px solid var(--line);border-radius:8px;padding:8px 12px;background:var(--surface-2)}
+.guide summary{cursor:pointer;font-weight:600;font-size:13.5px}
+.guide ul{margin:6px 0 2px;padding-left:18px;font-size:13.5px;display:grid;gap:3px}
+.preview{border-top:1px solid var(--line);padding-top:14px;display:grid;gap:10px}
+.pv-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px}
+.pv-price{font-family:var(--display);font-size:28px;font-weight:700}
+.incl{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;font-size:13.5px;margin:0}
+.incl dt{color:var(--muted)}
+.incl dd{margin:0;text-align:right}
+.btn{border:0;border-radius:8px;padding:11px 16px;font-weight:600;cursor:pointer;background:var(--gold);color:#1a1405}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--fg)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.row-btns{display:flex;flex-wrap:wrap;gap:8px}
+
+/* right: estimate */
+.est{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);overflow:hidden}
+@media (max-width:980px){.est{position:static}}
+.est-top{background:var(--navy);color:var(--on-navy);padding:18px}
+.est-top .eyebrow{color:var(--on-navy);opacity:.75}
+.big{font-family:var(--display);font-size:32px;font-weight:700;line-height:1.15;margin:4px 0 2px}
+.big small{font-family:var(--body);font-size:14px;font-weight:500;opacity:.8}
+.mid{font-size:13.5px;opacity:.85}
+.est-sec{padding:14px 18px;border-top:1px solid var(--line);display:grid;gap:8px}
+.basket{display:grid;gap:8px}
+.bk{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;font-size:13.5px;padding-bottom:8px;border-bottom:1px dashed var(--line)}
+.bk:last-child{border-bottom:0;padding-bottom:0}
+.bk b{font-weight:600}
+.bk small{color:var(--muted);grid-column:1/2}
+.bk .acts{grid-column:1/-1;display:flex;gap:10px}
+.linkbtn{background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;font-size:12.5px;padding:0}
+.soft{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;font-size:13.5px}
+.soft span:nth-child(odd){color:var(--muted)}
+.soft .tot{color:var(--fg)!important;font-weight:700;border-top:1px solid var(--line);padding-top:6px}
+.soft .tot+span{font-weight:700;border-top:1px solid var(--line);padding-top:6px}
+.prop{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.prop label,.form label{display:grid;gap:4px;font-size:12.5px;color:var(--muted);font-weight:500}
+.prop select,.prop input,.form input,.form textarea,.form select{background:var(--surface-2);border:1px solid var(--line);border-radius:7px;padding:7px 9px;width:100%;min-width:0;color:var(--fg)}
+.gantt{display:grid;gap:6px;font-size:12.5px}
+.g-row{display:grid;grid-template-columns:128px minmax(0,1fr);gap:8px;align-items:center}
+.g-track{position:relative;height:14px;background:var(--surface-2);border-radius:4px}
+.g-bar{position:absolute;top:0;bottom:0;border-radius:4px;background:var(--navy-2)}
+.g-bar.c{background:var(--gold)}
+.g-total{font-weight:600}
+.empty{color:var(--muted);font-size:13.5px;margin:0}
+.form{display:grid;gap:8px}
+.form .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.form textarea{min-height:64px;resize:vertical}
+.consent{display:flex!important;grid-template-columns:none;align-items:start;gap:8px!important;font-size:12.5px}
+.consent input{width:auto;margin-top:3px;accent-color:var(--gold)}
+.msg{font-size:13px;margin:0}
+.msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)}
+.mail{font-size:13px;color:var(--muted)}
+.mail b{color:var(--fg);user-select:all}
+.note{font-size:12px;color:var(--muted);line-height:1.45;margin:0}
+textarea.fallback{width:100%;min-height:120px;font-size:12px;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:8px;color:var(--fg)}
+
+.mbar{display:none}
+@media (max-width:980px){
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--navy);color:var(--on-navy);
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));align-items:center;justify-content:space-between;gap:12px;box-shadow:0 -4px 18px rgba(0,0,0,.18)}
+  .mbar b{font-family:var(--display);font-size:20px}
+  .mbar small{display:block;font-size:11.5px;opacity:.75}
+  .mbar .btn{padding:9px 12px}
+}
+.sitenav{border-top:1px solid rgba(255,255,255,.12)}
+.sitenav-in{max-width:1240px;margin:0 auto;display:flex;gap:4px 18px;flex-wrap:wrap;padding-block:10px}
+.sitenav a{color:var(--on-navy);opacity:.82;text-decoration:none;font-size:13.5px;font-weight:500;padding:2px 0}
+.sitenav a:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
+html{scroll-behavior:smooth}
+section[id],main[id]{scroll-margin-top:16px}
+.more{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 32px;display:grid;gap:16px}
+.lede{margin:0;color:var(--muted);max-width:70ch}
+.presets{display:flex;flex-wrap:wrap;gap:6px}
+.fin{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:760px){.fin{grid-template-columns:minmax(0,1fr)}}
+.fin-in{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:480px){.fin-in{grid-template-columns:1fr}}
+.fin-in label,.permit-tool label,.search{display:grid;gap:4px;font-size:12.5px;color:var(--muted);font-weight:500}
+.fin-in input,.fin-in select,.permit-tool select,.search input{background:var(--surface-2);border:1px solid var(--line);border-radius:7px;padding:8px 10px;width:100%;min-width:0;color:var(--fg);font-size:15px}
+.fin-out{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:8px}
+.fin-pay{font-family:var(--display);font-size:32px;font-weight:700}
+.cards3{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.rb{border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:6px;align-content:start;background:var(--surface)}
+.rb p{margin:0;font-size:13.5px}
+.rb-top{display:flex;justify-content:space-between;gap:8px;align-items:start}
+.rb-amt{font-weight:600;color:var(--fg)}
+.rb-who{color:var(--muted);font-size:12.5px!important}
+.rb-who a{color:inherit}
+.rb-jobs{display:flex;flex-wrap:wrap;gap:4px 10px}
+.st{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap;letter-spacing:.02em}
+.st-ok{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.st-warn{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn)}
+.st-bad{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.st-info{background:var(--surface-2);color:var(--muted)}
+.permit-tool{display:grid;grid-template-columns:minmax(0,280px) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:640px){.permit-tool{grid-template-columns:minmax(0,1fr)}}
+.perm-out{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:6px}
+.perm-out p{margin:0}
+.perm-ans{font-weight:600}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;counter-reset:s}
+.steps li{counter-increment:s;border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;gap:4px;font-size:13.5px}
+.steps li::before{content:counter(s);font-family:var(--display);font-size:22px;font-weight:700;color:var(--gold)}
+.steps span{color:var(--muted)}
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.checks label{display:flex;gap:10px;align-items:start;font-size:14px;cursor:pointer}
+.checks input{width:18px;height:18px;margin-top:2px;accent-color:var(--gold);flex:none}
+.checks input:checked+span{color:var(--muted);text-decoration:line-through}
+.faq{display:grid;gap:6px}
+.faq details,.glo>div{border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+.faq summary{cursor:pointer;font-weight:600}
+.faq p{margin:8px 0 0;color:var(--muted);max-width:75ch}
+.glo{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px;margin:0}
+.glo dt{font-weight:700}
+.glo dd{margin:2px 0 0;font-size:13.5px;color:var(--muted)}
+.contact p{margin:0}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.contact-grid p{margin:2px 0 0;font-size:16px}
+.contact .btn{justify-self:start;text-decoration:none}
+.chip.sm{font-size:12.5px;padding:4px 11px}
+.pops{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.pop{border:1px solid var(--line);background:var(--surface-2);border-radius:10px;padding:12px;text-align:left;cursor:pointer;display:grid;gap:3px;align-content:start}
+.pop:hover{border-color:var(--gold)}
+.pop-t{font-weight:600}
+.pop-d{font-size:12.5px;color:var(--muted)}
+.pop-r{font-family:var(--display);font-size:19px;font-weight:700;margin-top:4px}
+.pop-go{font-size:12.5px;color:var(--gold);font-weight:600}
+.payback{border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:8px;background:var(--surface-2)}
+.pb-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:480px){.pb-row{grid-template-columns:1fr}}
+.pb-row label{display:grid;gap:4px;font-size:12.5px;color:var(--muted);font-weight:500}
+.pb-row input,.pb-row select{background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:8px 10px;width:100%;min-width:0;color:var(--fg);font-size:15px}
+.pb-out{margin:0;font-size:14px}
+footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;color:var(--muted);font-size:12.5px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+.hp{position:absolute!important;left:-10000px!important;width:1px;height:1px;overflow:hidden}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="mast-in">
+    <div class="brand"><b>HRG</b><span>The Home Remodel Group · Los Angeles</span></div>
+    <h1>What would it cost to <em>change</em> your home?</h1>
+    <p>Pick the job, tell us how big it is and answer a few quick questions. You'll see a price range for your area in seconds, with permits and a start-to-finish timeline. Add as many jobs as you like, then send it to HRG for a firm quote.</p>
+  </div>
+  <nav class="sitenav" aria-label="Sections"><div class="sitenav-in">
+    <a href="#plan">Estimate</a><a href="#popular">Ideas</a><a href="#financing">Financing</a><a href="#rebates">Rebates</a><a href="#permits">Permits</a><a href="#how">How it works</a><a href="#faq">FAQ</a><a href="#glossary">Glossary</a><a href="#contact">Contact</a>
+  </div></nav>
+</header>
+
+<main class="wrap" id="plan">
+  <div class="left">
+    <section class="card sec" aria-labelledby="h-job">
+      <div><p class="eyebrow">Step 1</p><h2 id="h-job">What do you want to change?</h2></div>
+      <div class="jobs" id="jobs" role="group" aria-label="Type of job"></div>
+    </section>
+
+    <section class="card sec" aria-labelledby="h-3d">
+      <div class="v-head">
+        <div><p class="eyebrow">Or</p><h2 id="h-3d">Tap it on the house</h2></div>
+        <div class="models" id="models" role="group" aria-label="Example house"></div>
+      </div>
+      <div class="modes" id="modes" role="group" aria-label="What to show"></div>
+      <div class="stage" id="stage"><div class="floors" id="floors"></div><p class="hint">Drag to turn · pinch or scroll to zoom · tap a room, the roof, a wall, a pipe…</p></div>
+    </section>
+
+    <section class="card sec jobpanel" id="jobpanel" aria-labelledby="h-detail"></section>
+  </div>
+
+  <aside class="card est" id="estimate" aria-live="polite">
+    <div class="est-top">
+      <p class="eyebrow">Your estimate</p>
+      <div class="big num" id="e-range">$0</div>
+      <div class="mid" id="e-mid">Add a job to start.</div>
+    </div>
+    <div class="est-sec"><p class="eyebrow">Jobs</p><div class="basket" id="basket"></div></div>
+    <div class="est-sec">
+      <p class="eyebrow">About the property</p>
+      <div class="prop">
+        <label>Location<select id="p-region"></select></label>
+        <label>Year built<input id="p-year" type="number" min="1880" max="2026" inputmode="numeric"></label>
+      </div>
+    </div>
+    <div class="est-sec"><p class="eyebrow">Project costs</p><div class="soft num" id="e-soft"></div></div>
+    <div class="est-sec"><p class="eyebrow">Start to finish</p><div class="gantt" id="e-gantt"></div></div>
+    <div class="est-sec" id="lead"></div>
+  </aside>
+</main>
+<div class="more">
+  <section class="card sec" id="popular" aria-labelledby="h-pop">
+    <div><p class="eyebrow">Ideas</p><h2 id="h-pop">Popular projects at a glance</h2></div>
+    <p class="lede">Typical versions of the jobs homeowners ask for most, priced for your area. Pick one to adjust it.</p>
+    <div class="pops" id="pop-list"></div>
+  </section>
+  <section class="card sec" id="financing" aria-labelledby="h-fin">
+    <div><p class="eyebrow">Financing</p><h2 id="h-fin">What would it cost per month?</h2></div>
+    <p class="lede">Start from your estimate or type any amount. The rates below are examples to compare loan types, not offers.</p>
+    <div class="presets" role="group" aria-label="Loan type">
+      <button type="button" class="chip" data-apr="9.99" data-yrs="10" aria-pressed="true">Home-improvement loan · ~10% · 10 yrs</button>
+      <button type="button" class="chip" data-apr="8.25" data-yrs="15" aria-pressed="false">Home equity loan · ~8% · 15 yrs</button>
+      <button type="button" class="chip" data-apr="6.75" data-yrs="30" aria-pressed="false">Cash-out refinance · ~6.75% · 30 yrs</button>
+    </div>
+    <div class="fin">
+      <div class="fin-in">
+        <label for="fin-amt">Project cost<input id="fin-amt" class="num" type="number" min="0" step="500" inputmode="numeric"></label>
+        <label for="fin-down">Cash you put in<input id="fin-down" class="num" type="number" min="0" step="500" inputmode="numeric" value="0"></label>
+        <label for="fin-apr">Interest rate (APR %)<input id="fin-apr" class="num" type="number" min="0" max="36" step="0.01" value="9.99"></label>
+        <label for="fin-yrs">Term<select id="fin-yrs"><option value="5">5 years</option><option value="7">7 years</option><option value="10" selected>10 years</option><option value="15">15 years</option><option value="20">20 years</option><option value="30">30 years</option></select></label>
+      </div>
+      <div class="fin-out">
+        <span class="eyebrow">Monthly payment</span>
+        <div class="fin-pay num" id="fin-pay">$0</div>
+        <dl class="incl num" id="fin-dl"></dl>
+        <button type="button" class="linkbtn" id="fin-sync">Use my estimate total</button>
+      </div>
+    </div>
+    <p class="note">HRG works with independent lending partners, including Acorn Finance (soft credit check, up to $100,000) and Hearth (contractor financing, APR from 7.99%, 2–12 years, up to $250,000), plus home-equity and construction-loan specialists for larger projects. Ask HRG for a pre-qualification link. HRG does not make loans; rates and approval depend on the lender and your credit.</p>
+  </section>
+
+  <section class="card sec" id="rebates" aria-labelledby="h-reb">
+    <div><p class="eyebrow">Save money</p><h2 id="h-reb">Rebates, grants and tax rules in Los Angeles</h2></div>
+    <div id="rebate-list" class="cards3"></div>
+    <p class="note" id="rebate-note"></p>
+  </section>
+
+  <section class="card sec" id="permits" aria-labelledby="h-perm">
+    <div><p class="eyebrow">Permits</p><h2 id="h-perm">Does my project need a permit?</h2></div>
+    <div class="permit-tool">
+      <label for="perm-job">Pick a job<select id="perm-job"></select></label>
+      <div id="perm-out" class="perm-out"></div>
+    </div>
+    <div id="permit-paths" class="cards3"></div>
+  </section>
+
+  <section class="card sec" id="how" aria-labelledby="h-how">
+    <div><p class="eyebrow">How it works</p><h2 id="h-how">From estimate to finished home</h2></div>
+    <ol class="steps">
+      <li><b>Estimate online</b><span>Price your jobs here and send them to HRG.</span></li>
+      <li><b>Site visit</b><span>HRG measures, checks conditions and talks through your goals.</span></li>
+      <li><b>Design and firm price</b><span>Plans, selections and a written fixed scope with a payment schedule.</span></li>
+      <li><b>Permits</b><span>HRG prepares drawings and takes them through the city.</span></li>
+      <li><b>Build</b><span>One schedule, regular updates and inspections at each stage.</span></li>
+      <li><b>Walkthrough</b><span>Final inspection, punch list and your warranty paperwork.</span></li>
+    </ol>
+  </section>
+
+  <section class="card sec" id="checklist" aria-labelledby="h-check">
+    <div><p class="eyebrow">Plan ahead</p><h2 id="h-check">Before you start: a checklist</h2></div>
+    <p class="lede">Tick items off as you go. This list stays on your device.</p>
+    <ul class="checks" id="checks"></ul>
+  </section>
+
+  <section class="card sec" id="faq" aria-labelledby="h-faq">
+    <div><p class="eyebrow">Questions</p><h2 id="h-faq">Frequently asked</h2></div>
+    <div class="faq" id="faq-list"></div>
+  </section>
+
+  <section class="card sec" id="glossary" aria-labelledby="h-glo">
+    <div><p class="eyebrow">Reference</p><h2 id="h-glo">Remodeling terms, in plain English</h2></div>
+    <label class="search" for="glo-q">Search terms<input id="glo-q" type="search" placeholder="e.g. Title 24, JADU, rough-in"></label>
+    <dl class="glo" id="glo-list"></dl>
+  </section>
+
+  <section class="card sec contact" id="contact" aria-labelledby="h-contact">
+    <div><p class="eyebrow">Talk to HRG</p><h2 id="h-contact">The Home Remodel Group</h2></div>
+    <p>Kitchens, bathrooms, additions, ADUs and whole-home remodels across Los Angeles County.</p>
+    <div class="contact-grid">
+      <div><span class="eyebrow">Call</span><p><b>213.216.4416</b></p></div>
+      <div><span class="eyebrow">Email</span><p><b>sales@hrgprefab.com</b></p></div>
+      <div><span class="eyebrow">Serving</span><p>Los Angeles County</p></div>
+    </div>
+    <a class="btn" href="#plan">Start an estimate</a>
+  </section>
+</div>
+
+
+<div class="mbar"><div><small>Estimated total</small><b class="num" id="m-total">$0</b></div><button class="btn" type="button" id="m-go">View estimate</button></div>
+
+<footer>Planning ranges built from Los Angeles County prices, including materials, labor and sales tax from licensed, insured contractors, and adjusted for other areas with regional construction cost indexes. Real prices depend on site conditions, access, hidden damage and the exact products you choose. HRG confirms every number after a site visit. Homes built before 1978 get lead and asbestos testing before demolition.</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const REGIONS=[
+  // RSMeans puts LA-basin cities within ~3% of each other; the Westside figure is a market (access, parking, expectations) premium, not an index
+  ['westside','Westside & Beach Cities',1.12],['central','Central LA / Hollywood',1.03],['pasadena','Pasadena & Foothills',1.01],
+  ['southbay','South Bay / Long Beach',1.0],['valley','San Fernando Valley',1.0],['sgv','San Gabriel Valley',1.0],
+  ['gateway','Southeast LA / Gateway Cities',0.98],['av','Antelope / Santa Clarita Valleys',0.94]];
+// Everywhere outside the LA area: price = LA price × (local cost index ÷ LA cost index).
+// Index source: RSMeans (Gordian), 'Location Factors - Residential - V2', in the 2021 City Cost Index / Location Factors quarterly-update PDF (2021), https://www.rsmeans.com/media/wysiwyg/quarterly_updates/2021-CCI-LocationFactors-V2.pdf. LA = 115 on that scale.
+// [id, place, state, factor vs LA]
+const AREAS=[["AL-birmingham","Birmingham","AL",0.73],["AL-huntsville","Huntsville","AL",0.722],["AL-mobile","Mobile","AL",0.722],["AL-montgomery","Montgomery","AL",0.73],["AL-other","Elsewhere in Alabama","AL",0.714],["AK-anchorage","Anchorage","AK",1.017],["AK-fairbanks","Fairbanks","AK",1.052],["AK-juneau","Juneau","AK",1.052],["AK-other","Elsewhere in Alaska","AK",1.046],["AZ-phoenix","Phoenix","AZ",0.73],["AZ-mesa-tempe","Mesa / Tempe","AZ",0.722],["AZ-tucson","Tucson","AZ",0.73],["AZ-flagstaff","Flagstaff","AZ",0.765],["AZ-other","Elsewhere in Arizona","AZ",0.737],["AR-little-rock","Little Rock","AR",0.722],["AR-fayetteville-nw-arkansas","Fayetteville (NW Arkansas)","AR",0.67],["AR-fort-smith","Fort Smith","AR",0.722],["AR-other","Elsewhere in Arkansas","AR",0.69],["CA-san-diego","San Diego","CA",0.957],["CA-riverside-san-bernardino","Riverside / San Bernardino","CA",0.983],["CA-san-francisco","San Francisco","CA",1.148],["CA-san-jose","San Jose","CA",1.148],["CA-sacramento","Sacramento","CA",1.035],["CA-other","Elsewhere in California","CA",1.043],["CO-denver","Denver","CO",0.791],["CO-colorado-springs","Colorado Springs","CO",0.757],["CO-fort-collins","Fort Collins","CO",0.774],["CO-boulder","Boulder","CO",0.783],["CO-other","Elsewhere in Colorado","CO",0.763],["CT-hartford","Hartford","CT",0.948],["CT-new-haven","New Haven","CT",0.957],["CT-bridgeport","Bridgeport","CT",0.957],["CT-stamford","Stamford","CT",0.965],["CT-other","Elsewhere in Connecticut","CT",0.956],["DE-wilmington","Wilmington","DE",0.878],["DE-dover","Dover","DE",0.887],["DE-other","Elsewhere in Delaware","DE",0.881],["DC-washington","Washington","DC",0.8],["DC-other","Elsewhere in District of Columbia","DC",0.8],["FL-miami","Miami","FL",0.722],["FL-fort-lauderdale","Fort Lauderdale","FL",0.713],["FL-tampa","Tampa","FL",0.704],["FL-orlando","Orlando","FL",0.713],["FL-jacksonville","Jacksonville","FL",0.704],["FL-west-palm-beach","West Palm Beach","FL",0.722],["FL-other","Elsewhere in Florida","FL",0.708],["GA-atlanta","Atlanta","GA",0.783],["GA-augusta","Augusta","GA",0.757],["GA-savannah","Savannah","GA",0.748],["GA-columbus","Columbus","GA",0.73],["GA-other","Elsewhere in Georgia","GA",0.713],["HI-honolulu","Honolulu","HI",1.061],["HI-hilo","Hilo","HI",1.026],["HI-other","Elsewhere in Hawaii","HI",1.043],["ID-boise","Boise","ID",0.774],["ID-coeur-d-alene","Coeur d'Alene","ID",0.843],["ID-idaho-falls","Idaho Falls","ID",0.739],["ID-other","Elsewhere in Idaho","ID",0.79],["IL-chicago","Chicago","IL",1.087],["IL-rockford","Rockford","IL",0.957],["IL-peoria","Peoria","IL",0.913],["IL-springfield","Springfield","IL",0.913],["IL-other","Elsewhere in Illinois","IL",0.928],["IN-indianapolis","Indianapolis","IN",0.8],["IN-fort-wayne","Fort Wayne","IN",0.757],["IN-evansville","Evansville","IN",0.774],["IN-south-bend","South Bend","IN",0.783],["IN-other","Elsewhere in Indiana","IN",0.786],["IA-des-moines","Des Moines","IA",0.8],["IA-cedar-rapids","Cedar Rapids","IA",0.817],["IA-davenport-quad-cities","Davenport (Quad Cities)","IA",0.861],["IA-other","Elsewhere in Iowa","IA",0.752],["KS-wichita","Wichita","KS",0.704],["KS-kansas-city-ks","Kansas City, KS","KS",0.852],["KS-topeka","Topeka","KS",0.748],["KS-other","Elsewhere in Kansas","KS",0.726],["KY-louisville","Louisville","KY",0.774],["KY-lexington","Lexington","KY",0.765],["KY-bowling-green","Bowling Green","KY",0.757],["KY-other","Elsewhere in Kentucky","KY",0.742],["LA-new-orleans","New Orleans","LA",0.739],["LA-baton-rouge","Baton Rouge","LA",0.739],["LA-shreveport","Shreveport","LA",0.73],["LA-lafayette","Lafayette","LA",0.73],["LA-other","Elsewhere in Louisiana","LA",0.716],["ME-portland","Portland","ME",0.817],["ME-bangor","Bangor","ME",0.8],["ME-lewiston","Lewiston","ME",0.809],["ME-other","Elsewhere in Maine","ME",0.798],["MD-baltimore","Baltimore","MD",0.809],["MD-silver-spring-dc-suburbs","Silver Spring (DC suburbs)","MD",0.774],["MD-annapolis","Annapolis","MD",0.791],["MD-other","Elsewhere in Maryland","MD",0.776],["MA-boston","Boston","MA",1.026],["MA-worcester","Worcester","MA",0.965],["MA-springfield","Springfield","MA",0.939],["MA-lowell","Lowell","MA",0.983],["MA-other","Elsewhere in Massachusetts","MA",0.954],["MI-detroit","Detroit","MI",0.87],["MI-grand-rapids","Grand Rapids","MI",0.765],["MI-ann-arbor","Ann Arbor","MI",0.861],["MI-lansing","Lansing","MI",0.791],["MI-other","Elsewhere in Michigan","MI",0.78],["MN-minneapolis","Minneapolis","MN",0.948],["MN-saint-paul","Saint Paul","MN",0.948],["MN-rochester","Rochester","MN",0.896],["MN-duluth","Duluth","MN",0.87],["MN-other","Elsewhere in Minnesota","MN",0.843],["MS-jackson","Jackson","MS",0.73],["MS-biloxi-gulfport","Biloxi / Gulfport","MS",0.722],["MS-other","Elsewhere in Mississippi","MS",0.674],["MO-kansas-city-mo","Kansas City, MO","MO",0.861],["MO-st-louis","St. Louis","MO",0.87],["MO-springfield","Springfield","MO",0.748],["MO-columbia","Columbia","MO",0.783],["MO-other","Elsewhere in Missouri","MO",0.792],["MT-billings","Billings","MT",0.774],["MT-missoula","Missoula","MT",0.748],["MT-great-falls","Great Falls","MT",0.783],["MT-other","Elsewhere in Montana","MT",0.753],["NE-omaha","Omaha","NE",0.783],["NE-lincoln","Lincoln","NE",0.774],["NE-other","Elsewhere in Nebraska","NE",0.738],["NV-las-vegas","Las Vegas","NV",0.896],["NV-reno","Reno","NV",0.783],["NV-carson-city","Carson City","NV",0.791],["NV-other","Elsewhere in Nevada","NV",0.828],["NH-manchester","Manchester","NH",0.861],["NH-nashua","Nashua","NH",0.861],["NH-portsmouth","Portsmouth","NH",0.826],["NH-concord","Concord","NH",0.852],["NH-other","Elsewhere in New Hampshire","NH",0.826],["NJ-newark","Newark","NJ",1.043],["NJ-jersey-city","Jersey City","NJ",1.026],["NJ-new-brunswick","New Brunswick","NJ",1.052],["NJ-camden","Camden","NJ",1.035],["NJ-other","Elsewhere in New Jersey","NJ",1.025],["NM-albuquerque","Albuquerque","NM",0.748],["NM-santa-fe","Santa Fe","NM",0.757],["NM-las-cruces","Las Cruces","NM",0.713],["NM-other","Elsewhere in New Mexico","NM",0.737],["NY-new-york-city-manhattan","New York City (Manhattan)","NY",1.183],["NY-long-island-hicksville","Long Island (Hicksville)","NY",1.061],["NY-westchester-white-plains","Westchester (White Plains)","NY",1.043],["NY-buffalo","Buffalo","NY",0.939],["NY-rochester","Rochester","NY",0.878],["NY-albany","Albany","NY",0.887],["NY-other","Elsewhere in New York","NY",0.997],["NC-charlotte","Charlotte","NC",0.861],["NC-raleigh","Raleigh","NC",0.817],["NC-durham","Durham","NC",0.835],["NC-greensboro","Greensboro","NC",0.826],["NC-other","Elsewhere in North Carolina","NC",0.819],["ND-fargo","Fargo","ND",0.757],["ND-bismarck","Bismarck","ND",0.791],["ND-grand-forks","Grand Forks","ND",0.765],["ND-other","Elsewhere in North Dakota","ND",0.761],["OH-columbus","Columbus","OH",0.791],["OH-cleveland","Cleveland","OH",0.835],["OH-cincinnati","Cincinnati","OH",0.783],["OH-dayton","Dayton","OH",0.783],["OH-other","Elsewhere in Ohio","OH",0.789],["OK-oklahoma-city","Oklahoma City","OK",0.73],["OK-tulsa","Tulsa","OK",0.722],["OK-other","Elsewhere in Oklahoma","OK",0.691],["OR-portland","Portland","OR",0.887],["OR-salem","Salem","OR",0.87],["OR-eugene","Eugene","OR",0.887],["OR-bend","Bend","OR",0.887],["OR-other","Elsewhere in Oregon","OR",0.872],["PA-philadelphia","Philadelphia","PA",1.017],["PA-pittsburgh","Pittsburgh","PA",0.878],["PA-allentown-lehigh-valley","Allentown (Lehigh Valley)","PA",0.896],["PA-harrisburg","Harrisburg","PA",0.843],["PA-other","Elsewhere in Pennsylvania","PA",0.821],["RI-providence","Providence","RI",0.948],["RI-newport","Newport","RI",0.939],["RI-other","Elsewhere in Rhode Island","RI",0.943],["SC-charleston","Charleston","SC",0.852],["SC-columbia","Columbia","SC",0.852],["SC-greenville","Greenville","SC",0.843],["SC-other","Elsewhere in South Carolina","SC",0.83],["SD-sioux-falls","Sioux Falls","SD",0.8],["SD-rapid-city","Rapid City","SD",0.748],["SD-other","Elsewhere in South Dakota","SD",0.722],["TN-nashville","Nashville","TN",0.757],["TN-memphis","Memphis","TN",0.757],["TN-knoxville","Knoxville","TN",0.713],["TN-chattanooga","Chattanooga","TN",0.739],["TN-other","Elsewhere in Tennessee","TN",0.686],["TX-houston","Houston","TX",0.73],["TX-dallas","Dallas","TX",0.73],["TX-fort-worth","Fort Worth","TX",0.722],["TX-san-antonio","San Antonio","TX",0.722],["TX-austin","Austin","TX",0.696],["TX-el-paso","El Paso","TX",0.713],["TX-other","Elsewhere in Texas","TX",0.705],["UT-salt-lake-city","Salt Lake City","UT",0.739],["UT-provo","Provo","UT",0.739],["UT-ogden","Ogden","UT",0.73],["UT-other","Elsewhere in Utah","UT",0.732],["VT-burlington","Burlington","VT",0.826],["VT-montpelier","Montpelier","VT",0.87],["VT-rutland","Rutland","VT",0.817],["VT-other","Elsewhere in Vermont","VT",0.84],["VA-northern-virginia-fairfax","Northern Virginia (Fairfax)","VA",0.87],["VA-richmond","Richmond","VA",0.861],["VA-norfolk-virginia-beach","Norfolk / Virginia Beach","VA",0.843],["VA-roanoke","Roanoke","VA",0.852],["VA-other","Elsewhere in Virginia","VA",0.847],["WA-seattle","Seattle","WA",0.922],["WA-tacoma","Tacoma","WA",0.913],["WA-spokane","Spokane","WA",0.843],["WA-vancouver","Vancouver","WA",0.878],["WA-other","Elsewhere in Washington","WA",0.87],["WV-charleston","Charleston","WV",0.817],["WV-huntington","Huntington","WV",0.826],["WV-morgantown","Morgantown","WV",0.8],["WV-other","Elsewhere in West Virginia","WV",0.793],["WI-milwaukee","Milwaukee","WI",0.93],["WI-madison","Madison","WI",0.887],["WI-green-bay","Green Bay","WI",0.922],["WI-other","Elsewhere in Wisconsin","WI",0.857],["WY-cheyenne","Cheyenne","WY",0.748],["WY-casper","Casper","WY",0.739],["WY-other","Elsewhere in Wyoming","WY",0.737]];
+const STATES={"AL":"Alabama","AK":"Alaska","AZ":"Arizona","AR":"Arkansas","CA":"California","CO":"Colorado","CT":"Connecticut","DE":"Delaware","DC":"District of Columbia","FL":"Florida","GA":"Georgia","HI":"Hawaii","ID":"Idaho","IL":"Illinois","IN":"Indiana","IA":"Iowa","KS":"Kansas","KY":"Kentucky","LA":"Louisiana","ME":"Maine","MD":"Maryland","MA":"Massachusetts","MI":"Michigan","MN":"Minnesota","MS":"Mississippi","MO":"Missouri","MT":"Montana","NE":"Nebraska","NV":"Nevada","NH":"New Hampshire","NJ":"New Jersey","NM":"New Mexico","NY":"New York","NC":"North Carolina","ND":"North Dakota","OH":"Ohio","OK":"Oklahoma","OR":"Oregon","PA":"Pennsylvania","RI":"Rhode Island","SC":"South Carolina","SD":"South Dakota","TN":"Tennessee","TX":"Texas","UT":"Utah","VT":"Vermont","VA":"Virginia","WA":"Washington","WV":"West Virginia","WI":"Wisconsin","WY":"Wyoming"};
+const LA_IDS=REGIONS.map(r=>r[0]);
+function area(){const id=S.region;const r=REGIONS.find(x=>x[0]===id);if(r)return{id,name:r[1]+', Los Angeles',st:'CA',f:r[2],la:true};
+  const a=AREAS.find(x=>x[0]===id);if(a)return{id,name:a[1].startsWith('Elsewhere')?a[1]:a[1]+', '+a[2],st:a[2],f:a[3],la:false};
+  const c=REGIONS[1];return{id:c[0],name:c[1]+', Los Angeles',st:'CA',f:c[2],la:true}}
+// work that creates new living space carries architect-level design fees; remodels need a drafted plan set
+const NEW_SPACE=['addition','story2','garageconv','adu','newbath'];
+const UNITS={sf:'sq ft',lf:'lin ft',ea:'each',bath:'baths',kw:'kW',zone:'zones'};
+// [id, name, unit, default qty (number or fn of home), [Basic,Standard,Premium,Luxury] installed $/unit, flags, note]
+// flags: p = needs permit
+const ZONES=[
+ {id:'exterior',name:'Exterior & roof',blurb:'Roof, walls, windows and doors',items:[
+  ['roof','Roof replacement','sf',h=>h.foot*1.2,[8,10.5,16,21],'p','Shingle → designer shingle → concrete tile → clay or standing seam'],
+  ['gutters','Gutters & downspouts','lf',h=>h.perim,[7,11,19,30]],
+  ['extpaint','Exterior paint','sf',h=>h.wall,[3.5,5,7,10],'','Wall area, pressure wash, prep and two coats'],
+  ['stucco','Stucco repair & recoat','sf',h=>h.wall,[2,4,8,12]],
+  ['siding','Siding replacement','sf',h=>h.wall,[7,12,18,26],'p','Fiber-cement lap → board-and-batten → wood'],
+  ['windows','Window replacement','ea',h=>Math.round(h.sf/110),[800,1600,2200,3500],'p','Vinyl → fiberglass → wood-clad → steel. Title 24 compliant'],
+  ['entry','Front entry door','ea',1,[1000,2400,6500,12000]],
+  ['slider','Patio or sliding door','ea',1,[2000,2750,6250,14000],'p','Up to multi-panel folding glass walls'],
+  ['garagedoor','Garage door','ea',1,[1200,2000,3500,6000]],
+  ['extlight','Exterior lighting','ea',8,[250,550,950,1700]]]},
+ {id:'yard',name:'Yard & outdoor living',blurb:'Driveway, hardscape, landscape, pool',items:[
+  ['driveway','Concrete driveway','sf',400,[10,15,30,50],'','Plain → colored/stamped → pavers'],
+  ['patio','Patio & hardscape','sf',300,[16,22,30,60]],
+  ['deck','Deck','sf',250,[45,60,75,100],'p','Pressure-treated → composite → hardwood'],
+  ['fence','Fencing & gates','lf',150,[30,45,60,120],'','Chain-link → wood → horizontal cedar → block wall'],
+  ['landscape','Drought-tolerant landscaping','sf',h=>h.yard,[3.5,9,15.5,28],'','LADWP pays about $5 per sq ft of lawn removed (turf rebate)'],
+  ['irrigation','Drip irrigation','sf',h=>h.yard,[0.75,1.5,2.5,4]],
+  ['outkitchen','Outdoor kitchen / BBQ island','ea',1,[6000,17000,30000,55000]],
+  ['pool','In-ground pool & spa','ea',1,[65000,90000,120000,180000],'p']]},
+ {id:'structure',name:'Structure & additions',blurb:'Foundation, walls, more living space',items:[
+  ['seismic','Seismic retrofit (bolt & brace)','ea',1,[3000,5500,7000,12000],'p','Raised-foundation homes. The Earthquake Brace + Bolt grant pays up to $3,000'],
+  ['foundation','Foundation repair','lf',40,[180,300,430,650],'p'],
+  ['wallremove','Remove a non-bearing wall','ea',1,[1000,1500,3000,5000],'p'],
+  ['beamwall','Open a load-bearing wall (new beam)','ea',1,[6000,10000,25000,40000],'p','Engineering and permit are added under project costs'],
+  ['addition','Room addition','sf',300,[250,350,600,800],'p'],
+  ['story2','Second-story addition','sf',h=>Math.round(h.foot*0.6),[400,500,650,850],'p'],
+  ['garageconv','Garage conversion to ADU','sf',400,[200,300,500,650],'p'],
+  ['adu','Detached ADU','sf',600,[253,280,321,412],'p','Studio, 1-bed or 2-bed backyard homes. Under 750 sq ft pays no city impact fees']]},
+ {id:'systems',name:'Electrical, plumbing & HVAC',blurb:'The systems behind the walls',items:[
+  ['panel','Electrical panel upgrade (200 A)','ea',1,[3000,5070,6500,8500],'p'],
+  ['rewire','Whole-home rewire','sf',h=>h.sf,[4,7,10,14],'p','Replaces knob-and-tube or ungrounded wiring'],
+  ['outlets','New outlets & switches','ea',10,[150,340,510,700]],
+  ['recessed','Recessed lighting','ea',20,[180,250,375,550]],
+  ['ev','EV charger (Level 2)','ea',1,[1200,2000,2800,4500],'p'],
+  ['solar','Solar panels','kw',6,[2120,2490,2860,3500],'p','Priced per kW of system size'],
+  ['repipe','Whole-home repipe','sf',h=>h.sf,[4.5,5.75,9.5,13],'p','PEX → copper'],
+  ['sewer','Sewer line replacement','lf',60,[135,200,300,400],'p','Trenchless where possible'],
+  ['waterheater','Water heater','ea',1,[2200,3200,4500,6500],'p','Tank → heat-pump → tankless'],
+  ['hvac','Central heating & AC','ea',1,[8500,11500,14200,20000],'p'],
+  ['minisplit','Ductless mini-split','zone',2,[2300,3000,5500,9000],'p'],
+  ['ducts','Ductwork replacement','sf',h=>h.sf,[2,3.7,6.8,9],'p'],
+  ['insul','Attic insulation','sf',h=>h.foot,[1.5,2.5,4,6]],
+  ['lowvolt','Smart home & networking','ea',1,[1700,3000,6500,15000]]]},
+ {id:'interior',name:'Living areas & bedrooms',blurb:'Walls, floors, ceilings, trim, doors',items:[
+  ['intpaint','Interior paint, walls & ceilings','sf',h=>h.sf,[3.6,5.65,7.8,11],'','Priced per square foot of floor'],
+  ['drywall','Drywall repair or new drywall','sf',500,[3,4.2,6,9]],
+  ['popcorn','Popcorn ceiling removal','sf',h=>h.sf,[1.5,3,5,7],'','Needs an asbestos test first'],
+  ['lvp','Luxury vinyl plank flooring','sf',h=>Math.round(h.sf*0.6),[6,9.6,14.4,18]],
+  ['hardwood','Hardwood flooring','sf',h=>Math.round(h.sf*0.6),[8,14,25,40],'','Engineered → solid oak → wide-plank European oak'],
+  ['tilefloor','Tile flooring','sf',200,[12,21.5,36,50]],
+  ['carpet','Carpet','sf',h=>h.beds*150,[3,5.5,8,12]],
+  ['refinish','Refinish existing hardwood','sf',h=>Math.round(h.sf*0.6),[3,5,8,10]],
+  ['trim','Baseboards & trim','lf',h=>Math.round(h.sf*0.6),[6,10.8,18,26]],
+  ['intdoors','Interior doors','ea',h=>h.beds*2+4,[630,1040,1840,2800]],
+  ['closets','Closet systems','ea',h=>h.beds,[550,1050,3000,6000]],
+  ['stairs','Staircase upgrade','ea',1,[2500,5500,10000,20000]],
+  ['fireplace','Fireplace refacing','ea',1,[1500,3500,6500,12000]],
+  ['skylight','Skylights','ea',2,[1050,1850,2800,5000],'p']]},
+ {id:'kitchen',name:'Kitchen',blurb:'Cabinets, counters, appliances',items:[
+  ['kdemo','Kitchen demo & rough-in','ea',1,[5000,7500,11000,16000],'p','New plumbing, electrical circuits and venting'],
+  ['cabinets','Cabinets','lf',h=>Math.round(18+h.sf/150),[300,540,1080,1800],'','Stock → semi-custom → custom → bespoke'],
+  ['counters','Countertops','sf',h=>Math.round(40+h.sf/80),[66,102,156,250],'','Laminate → quartz → quartzite → marble'],
+  ['backsplash','Backsplash tile','sf',35,[30,48,72,120]],
+  ['island','Kitchen island','ea',1,[2500,4800,10000,20000]],
+  ['appliances','Appliance package','ea',1,[7200,14400,30000,45000],'','Range, hood, fridge, dishwasher, microwave'],
+  ['ksink','Sink & faucet','ea',1,[720,1320,2640,4500]],
+  ['klight','Kitchen lighting','ea',1,[1200,2500,5000,9000]],
+  ['pantry','Pantry build-out','ea',1,[1000,2000,5000,10000]]]},
+ {id:'bath',name:'Bathrooms',blurb:'Showers, tubs, vanities, tile',items:[
+  ['bdemo','Bathroom demo & rough-in','bath',h=>h.baths,[4000,5500,7500,10000],'p'],
+  ['vanity','Vanity & top','bath',h=>h.baths,[1080,2160,4800,8000]],
+  ['toilet','Toilet','bath',h=>h.baths,[540,900,1680,2800]],
+  ['showertile','Shower or tub tile surround','bath',h=>h.baths,[3000,4800,7800,13000]],
+  ['tubshower','Tub-to-shower conversion','ea',1,[4000,7000,10000,16000],'p'],
+  ['glass','Glass shower enclosure','bath',h=>h.baths,[1440,2400,4200,6500]],
+  ['bfloor','Bathroom floor tile','bath',h=>h.baths,[900,1500,2600,4500]],
+  ['bfixtures','Faucets, valves & fixtures','bath',h=>h.baths,[960,1740,3360,6000]],
+  ['bfan','Exhaust fan & lighting','bath',h=>h.baths,[300,450,950,1600]],
+  ['newbath','Add a new bathroom','ea',1,[25000,40000,65000,95000],'p','Inside existing space. A bump-out addition costs more']]},
+ {id:'utility',name:'Laundry & garage',blurb:'Work spaces and storage',items:[
+  ['laundry','Laundry room','ea',1,[2500,6000,11000,17000],'p','Hookups, venting, cabinets and counter'],
+  ['garagefloor','Garage epoxy floor','sf',400,[3.5,5.5,8.5,12]],
+  ['garagestor','Garage storage & cabinets','ea',1,[1000,3500,6500,12000]]]},
+ // added 2026-10-14: Fire Safe Marin / Ember Pro / Roofon (vents, under-deck), HomeAdvisor 2025 survey (gutter guards), EnergySage LA County (battery)
+ {id:'resilience',name:'Fire & energy',blurb:'Wildfire hardening, batteries',items:[
+  ['vents','Ember-resistant vents','ea',12,[150,250,400,600],'','1/8-inch metal mesh → intumescent vents that seal shut in heat'],
+  ['gutterguard','Metal gutter guards','lf',150,[6,12,16,30]],
+  ['zone0','Clear the 5-ft zone around the house','ea',1,[500,1200,2500,4500],'','Remove plants and mulch, gravel or pavers against the walls'],
+  ['underdeck','Enclose under the deck','ea',1,[1000,2000,3000,4500]],
+  ['battery','Home battery (13.5 kWh)','ea',1,[11900,14000,16100,20000],'p','Backup power for outages; pairs with solar']]},
+ // added 2026-10-15: Fixr CA termite (Jan 2025), HomeAdvisor 2025, HomeBlue LA, Homeyou Alhambra, LawnStarter 2025, ThePricer, Angi, This Old House, Fixr
+ {id:'repairs',name:'Repairs, pools & access',blurb:'Termite, walls, pools, accessibility',items:[
+  ['tenting','Termite tent fumigation','sf',1600,[1.3,2.8,4.35,5.5],'','Priced per sq ft of house'],
+  ['spottreat','Spot termite treatment','ea',1,[335,800,1380,2000]],
+  ['rotlf','Dry rot repair: eaves, fascia, trim','lf',30,[10,16,23,35]],
+  ['rotbig','Dry rot repair: larger areas','ea',1,[500,1500,4000,7000],'','Sills, posts or subfloor; priced once opened'],
+  ['retwall','Block retaining wall','sf',120,[15,33,55,80],'','Priced per sq ft of wall face'],
+  ['retwalleng','Engineered retaining wall','sf',240,[15,33,55,80],'p','Walls over 4 ft need engineering and a permit'],
+  ['frenchdrain','French drain','lf',40,[29,37,45,60]],
+  ['replaster','Pool resurfacing','ea',1,[6000,11000,15000,22000],'','Plaster → colored plaster → pebble → glass bead'],
+  ['poolpump','Variable-speed pool pump','ea',1,[800,1500,2500,3000],'p'],
+  ['poolfilter','Pool filter','ea',1,[250,550,1100,1500]],
+  ['poolheater','Pool heater','ea',1,[1000,2500,6000,8000],'p','Gas or heat pump'],
+  ['saltwater','Saltwater conversion','ea',1,[600,1500,2500,3000]],
+  ['grabbar','Grab bar','ea',2,[200,300,350,500]],
+  ['curbless','Curbless walk-in shower','ea',1,[6000,8000,12000,18000],'p'],
+  ['widendoor','Widen a doorway','ea',1,[600,1200,2000,3500],'p'],
+  ['ramp','Wheelchair ramp','ea',1,[1700,3000,5000,8000],'p'],
+  ['stairlift','Stair lift (straight stair)','ea',1,[2500,4000,5000,12000]],
+  ['walkintub','Walk-in tub','ea',1,[3500,6000,10000,15000],'p'],
+  ['comforttoilet','Comfort-height toilet','ea',1,[330,480,700,1000]]]}
+];
+
+/* ---------- 3D example houses ---------- */
+// rooms: [id, name, type, x, z, width, depth] in feet; x runs left→right, z runs front→back
+const MODELS={
+ ranch:{name:'Single-story ranch',sub:'1,600 sq ft · 3 bd · 2 ba',W:40,D:40,garage:true,lot:[100,110],
+  profile:{sf:1600,beds:3,baths:2,stories:1},
+  floors:[[['living','Living room','living',0,0,24,18],['kitchen','Kitchen','kitchen',24,0,16,18],['hall','Hallway','hall',0,18,40,4],
+    ['bed1','Primary bedroom','bed',0,22,16,18],['bath1','Primary bath','bath',16,22,8,10],['bath2','Hall bath','bath',16,32,8,8],
+    ['bed2','Bedroom 2','bed',24,22,16,9],['bed3','Bedroom 3','bed',24,31,16,9]]]},
+ two:{name:'Two-story home',sub:'2,400 sq ft · 4 bd · 2½ ba',W:40,D:30,garage:true,lot:[100,110],
+  profile:{sf:2400,beds:4,baths:3,stories:2},
+  floors:[[['living','Living room','living',0,0,22,16],['kitchen','Kitchen','kitchen',22,0,18,16],['dining','Dining room','living',22,16,18,14],
+    ['family','Family room','living',0,16,14,14],['powder','Powder room','powder',14,16,8,7],['laundry','Laundry room','laundry',14,23,8,7]],
+   [['bed1','Primary bedroom','bed',0,0,20,16],['bath1','Primary bath','bath',20,0,8,16],['bed2','Bedroom 2','bed',28,0,12,16],
+    ['hall','Upstairs hall','hall',0,16,40,4],['bed3','Bedroom 3','bed',0,20,16,10],['bath2','Hall bath','bath',16,20,8,10],['bed4','Bedroom 4','bed',24,20,16,10]]]},
+};
+const MODES=[['outside','Outside','#8a94a8'],['inside','Inside','#c8a77e'],['elec','Electrical','#f2c230'],['plumb','Plumbing','#3b82f6'],['hvac','Heating & AC','#9aa7b8']];
+const V={mode:'outside',floor:0,sel:null,meshes:[],pick:[]};
+const M=()=>MODELS[S.model]||MODELS.ranch;
+function roomsOf(m){const r=m.floors.flatMap((f,l)=>f.map(a=>({id:a[0],name:a[1],type:a[2],x:a[3],z:a[4],w:a[5],d:a[6],level:l,sf:a[5]*a[6]})));
+  if(m.garage)r.push({id:'garage',name:'Garage',type:'garage',x:-22,z:0,w:22,d:22,level:0,sf:484});return r}
+function measure(m){const R=roomsOf(m),st=m.floors.length,house=R.filter(r=>r.type!=='garage').reduce((a,r)=>a+r.sf,0),rise=m.D*0.28;
+  const roof=Math.round(2*Math.hypot(m.D/2+1,rise)*(m.W+2)+(m.garage?2*Math.hypot(12,6)*24:0));
+  const drive=m.garage?572:0,patio=(m.W-8)*12,[LW,LD]=m.lot,front=m.D/2+(m.garage?30:8);
+  return{R,st,house,foot:m.W*m.D,rise,roof,perim:2*(m.W+m.D)+(m.garage?44:0),wall:Math.round(2*(m.W+m.D)*10*st+(m.garage?660:0)),
+    drive,patio,front,yard:Math.max(200,LW*LD-m.W*m.D-(m.garage?484:0)-drive-patio),fence:2*LD+LW,windows:0,sewer:0}}
+
+let MAT={};
+function init3D(){
+  const stage=$('stage');V.mm=measure(M());
+  const fail=()=>{stage.insertAdjacentHTML('afterbegin','<p class="nogl">The 3D view needs WebGL, which this browser has turned off. Every item is still in the lists below.</p>');return false};
+  if(!window.THREE||!THREE.OrbitControls)return fail();
+  try{V.r=new THREE.WebGLRenderer({antialias:true,alpha:true})}catch(e){return fail()}
+  V.r.setPixelRatio(Math.min(2,window.devicePixelRatio||1));stage.prepend(V.r.domElement);
+  V.scene=new THREE.Scene();V.cam=new THREE.PerspectiveCamera(38,1,1,1200);
+  V.scene.add(new THREE.HemisphereLight(0xffffff,0x7d836f,0.8));
+  const sun=new THREE.DirectionalLight(0xffffff,0.65);sun.position.set(70,140,90);V.scene.add(sun);
+  MAT={ext:new THREE.MeshLambertMaterial({color:0xe9e3d6}),int:new THREE.MeshLambertMaterial({color:0xf6f4ef}),roof:new THREE.MeshLambertMaterial({color:0x4a4f5a})};
+  V.ctl=new THREE.OrbitControls(V.cam,V.r.domElement);V.ctl.enableDamping=true;V.ctl.maxPolarAngle=1.45;V.ctl.minDistance=18;V.ctl.maxDistance=280;
+  const size=()=>{const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;V.r.setSize(w,h,false);V.cam.aspect=w/h;V.cam.updateProjectionMatrix()};
+  new ResizeObserver(size).observe(stage);size();
+  let down=null;const cv=V.r.domElement;
+  cv.addEventListener('pointerdown',e=>{down=[e.clientX,e.clientY]});
+  cv.addEventListener('pointerup',e=>{if(!down)return;const dx=e.clientX-down[0],dy=e.clientY-down[1];down=null;if(dx*dx+dy*dy<=49)pickAt(e)});
+  (function loop(){requestAnimationFrame(loop);V.ctl.update();V.r.render(V.scene,V.cam)})();
+  buildHouse();return true}
+
+function box(w,h,d,x,y,z,color,ud,center){const g=new THREE.BoxGeometry(w,h,d);if(!center)g.translate(0,h/2,0);
+  const m=new THREE.Mesh(g,ud.mat||new THREE.MeshLambertMaterial({color}));m.position.set(x,y,z);
+  m.userData=Object.assign({},ud,{base:color});delete m.userData.mat;V.g.add(m);V.meshes.push(m);if(ud.key)V.pick.push(m);return m}
+function cyl(r,h,x,y,z,color,ud){const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,18),new THREE.MeshLambertMaterial({color}));
+  m.position.set(x,y+h/2,z);m.userData=Object.assign({},ud,{base:color});V.g.add(m);V.meshes.push(m);if(ud.key)V.pick.push(m);return m}
+function run(pts,t,color,ud){for(let i=1;i<pts.length;i++){const a=pts[i-1],b=pts[i];
+  box(Math.abs(b[0]-a[0])+t,Math.abs(b[1]-a[1])+t,Math.abs(b[2]-a[2])+t,(a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2,color,ud,true)}}
+
+function buildHouse(){
+  if(V.g){V.scene.remove(V.g);V.g.traverse(o=>{if(o.geometry)o.geometry.dispose()})}
+  V.g=new THREE.Group();V.scene.add(V.g);V.meshes=[];V.pick=[];V.sel=null;
+  const m=M(),mm=V.mm=measure(m),W=m.W,D=m.D,st=mm.st,X=x=>x-W/2,Z=z=>D/2-z,cx=r=>X(r.x)+r.w/2,cz=r=>Z(r.z)-r.d/2;
+  const [LW,LD]=m.lot,front=mm.front,lotX=m.garage?-11:0,gx=X(-11),gz=Z(11);
+  // site
+  box(LW,0.4,LD,lotX,-0.9,front-LD/2,0x93b07a,{key:'ground',role:'ground'});
+  if(m.garage)box(22,0.15,26,gx,-0.55,D/2+13,0xc4c2bb,{key:'driveway',role:'ground'});
+  box(W-8,0.2,12,0,-0.55,-D/2-6,0xcdbfa8,{key:'patio',role:'ground'});
+  box(W+1,0.8,D+1,0,-0.8,0,0x8f8f8a,{key:'foundation',role:'site'});
+  if(m.garage)box(23,0.8,23,gx,-0.8,gz,0x8f8f8a,{key:'foundation',role:'site'});
+  box(3,3,3,W/2+3.5,-0.5,0,0x9aa3ad,{key:'condenser',role:'site'});
+  // floors and partitions
+  const FC={living:0xc8a77e,hall:0xc8a77e,bed:0xbdb3a3,kitchen:0xd8dce1,bath:0xdfe6ea,powder:0xdfe6ea,laundry:0xd8dce1,garage:0xa9a9a4};
+  mm.R.forEach(r=>{const y=r.level*10,iw={role:'intwall',level:r.level,mat:MAT.int};
+    box(r.w-0.1,0.25,r.d-0.1,cx(r),y,cz(r),FC[r.type],{key:'room:'+r.id,role:'floor',level:r.level,room:r.id});
+    box(r.w,9.8,0.3,cx(r),y,Z(r.z),0,iw);box(r.w,9.8,0.3,cx(r),y,Z(r.z+r.d),0,iw);box(0.3,9.8,r.d,X(r.x),y,cz(r),0,iw);box(0.3,9.8,r.d,X(r.x+r.w),y,cz(r),0,iw)});
+  // exterior walls
+  const T=0.6;for(let l=0;l<st;l++){const y=l*10,ew={role:'extwall',key:'extwall',mat:MAT.ext,level:l};
+    box(W+T,10,T,0,y,D/2,0,ew);box(W+T,10,T,0,y,-D/2,0,ew);box(T,10,D,-W/2,y,0,0,ew);box(T,10,D,W/2,y,0,0,ew)}
+  if(m.garage){const ew={role:'extwall',key:'extwall',mat:MAT.ext,level:0};box(22,10,T,gx,0,Z(22),0,ew);box(T,10,22,X(-22),0,gz,0,ew);box(22,10,T,gx,0,D/2,0,ew)}
+  // doors and windows
+  const liv=mm.R.find(r=>r.id==='living'),doorX=cx(liv);
+  box(3.5,7,0.25,doorX,0,D/2+0.42,0x6b4a33,{key:'entry',role:'opening',level:0});
+  box(8,7,0.25,0,0,-D/2-0.42,0xa9cde3,{key:'slider',role:'opening',level:0});
+  if(m.garage)box(16,7.5,0.3,gx,0,D/2+0.45,0xf0efe9,{key:'garagedoor',role:'opening',level:0});
+  const win=(x,y,z,side,l)=>{mm.windows++;box(side?0.2:3,4,side?3:0.2,x,y,z,0x9cc7e0,{key:'window',role:'opening',level:l})};
+  for(let l=0;l<st;l++){const y=l*10+3;
+    for(let x=-W/2+5;x<=W/2-4;x+=8){if(!(l===0&&Math.abs(x-doorX)<4))win(x,y,D/2+0.42,0,l);if(!(l===0&&Math.abs(x)<6))win(x,y,-D/2-0.42,0,l)}
+    for(let z=-D/2+6;z<=D/2-5;z+=10){win(W/2+0.42,y,z,1,l);if(!m.garage||l>0)win(-W/2-0.42,y,z,1,l)}}
+  // roofs and solar
+  const gable=(x0,len,zc,depth,y,rise)=>{const s=new THREE.Shape();s.moveTo(-depth/2-1,0);s.lineTo(depth/2+1,0);s.lineTo(0,rise);s.closePath();
+    const g=new THREE.ExtrudeGeometry(s,{depth:len+2,bevelEnabled:false});g.rotateY(Math.PI/2);g.translate(x0-1,y,zc);
+    const me=new THREE.Mesh(g,MAT.roof);me.userData={key:'roof',role:'roof',level:9,base:0x4a4f5a};V.g.add(me);V.meshes.push(me);V.pick.push(me)};
+  gable(-W/2,W,0,D,st*10,mm.rise);if(m.garage)gable(X(-22),22,gz,22,10,6);
+  const th=Math.atan(mm.rise/(D/2+1)),sl=Math.hypot(D/2+1,mm.rise);
+  const sp=box(W*0.55,0.25,sl*0.55,W*0.1,st*10+mm.rise/2+0.3,(D/2+1)/2,0x1f3a66,{key:'solar',role:'roof',level:9},true);sp.rotation.x=th;
+  // electrical: a circuit loop and outlets in every room, panel and EV charger in the garage
+  mm.R.forEach(r=>{const b=r.level*10,y=b+2.6,i=0.9,ud={key:'room:'+r.id,role:'elec',level:r.level,room:r.id},x0=X(r.x)+i,x1=X(r.x+r.w)-i,z0=Z(r.z)-i,z1=Z(r.z+r.d)+i;
+    run([[x0,y,z0],[x1,y,z0],[x1,y,z1],[x0,y,z1],[x0,y,z0]],0.25,0xf2c230,ud);
+    box(0.6,0.9,0.6,(x0+x1)/2,b+1,z0,0xfff1b8,ud);box(0.6,0.9,0.6,x1,b+1,(z0+z1)/2,0xfff1b8,ud)});
+  if(m.garage){box(0.5,2.6,1.8,X(-0.7),3.5,Z(5),0x6b7280,{key:'panel',role:'elec',level:0});box(0.5,1.5,1,X(-21.3),3.5,Z(4),0x2f7d5b,{key:'ev',role:'elec',level:0})}
+  else box(0.5,2.6,1.8,W/2+0.6,3.5,-D/2+4,0x6b7280,{key:'panel',role:'elec',level:0});
+  // plumbing: water heater, hot/cold supply to each wet room, sewer to the street
+  const hp=m.garage?[X(-3),Z(19)]:[W/2+2,-D/2+3];cyl(1.1,5,hp[0],0,hp[1],0xd4d4d4,{key:'heater',role:'plumb',level:0});
+  const wet=mm.R.filter(r=>['kitchen','bath','powder','laundry'].includes(r.type));
+  wet.forEach(r=>{[[0xe0533d,0],[0x3b82f6,0.8]].forEach(([c,o])=>{const y=0.8,rx=cx(r)+o,rz=cz(r),ud={key:'pipes',role:'plumb',level:0};
+      const top=r.level*10+y;run([[hp[0]+o,y,hp[1]],[hp[0]+o,y,o],[rx,y,o]],0.45,c,ud);
+      if(r.level)run([[rx,y,o],[rx,top,o],[rx,top,rz]],0.45,c,Object.assign({},ud,{level:r.level}));else run([[rx,y,o],[rx,y,rz]],0.3,c,ud)});
+    cyl(0.55,2.4,cx(r),r.level*10,cz(r),0x8fb3d9,{key:'room:'+r.id,role:'plumb',level:r.level,room:r.id})});
+  const sw=wet.find(r=>r.level===0&&r.type!=='kitchen')||wet[0];
+  if(sw){mm.sewer=Math.round(front-cz(sw));run([[cx(sw)-1,0.2,cz(sw)],[cx(sw)-1,-1.4,cz(sw)],[cx(sw)-1,-1.4,front]],0.7,0x7a5a3a,{key:'sewer',role:'plumb',level:0})}
+  // heating & AC: furnace, trunk duct and a supply vent in every room
+  const fu=m.garage?[X(-6),Z(20)]:[W/2-2,-D/2+2];box(2.6,5,2.6,fu[0],0,fu[1],0xb7c0cc,{key:'ducts',role:'hvac',level:0});
+  for(let l=0;l<st;l++){const y=l*10+8.6,rs=mm.R.filter(r=>r.level===l&&r.type!=='garage'),ud={key:'ducts',role:'hvac',level:l};
+    const xs=rs.map(cx),x0=Math.min(...xs),x1=Math.max(...xs);run([[x0,y,0],[x1,y,0]],1.1,0xb7c0cc,ud);
+    if(l===0)run([[fu[0],5,fu[1]],[fu[0],y,fu[1]],[fu[0],y,0],[x0,y,0]],1.1,0xb7c0cc,ud);
+    rs.forEach(r=>{run([[cx(r),y,0],[cx(r),y,cz(r)]],0.8,0xb7c0cc,ud);box(1.6,0.2,1.6,cx(r),y-0.7,cz(r),0xe5e9ef,ud)})}
+  frame3D();applyMode()}
+
+function frame3D(){const m=M(),r=Math.max(m.W+(m.garage?22:0),m.D),tx=m.garage?-11:0;
+  V.ctl.target.set(tx,m.floors.length*4,0);V.cam.position.set(tx+r*0.7,r*0.72+10,r*1.1+10);V.ctl.update()}
+
+
+/* ---------- per-job guide: what each finish level means, what's in and out, permits, time, tips ---------- */
+// tiers: what Basic / Standard / Premium / Luxury look like for this job. time: construction once permits are in hand.
+const GUIDE={
+ kitchen:{roi:"A minor kitchen remodel recoups about 127% of its cost at resale in LA; a major midrange one about 57% (Pacific region).",tiers:['Stock cabinets, laminate or butcher-block counters, builder-grade appliances','Semi-custom cabinets, quartz counters, mid-range stainless appliances','Custom cabinets, quartzite, panel-ready or pro-style appliances','Bespoke millwork, marble or exotic stone, luxury appliance suite'],
+  incl:['Demolition and haul-away','Plumbing and electrical rough-in','Cabinets, counters, backsplash and sink','Lighting, appliances and flooring you pick'],excl:['Moving load-bearing walls (see Foundation & structure)','Structural or termite damage found behind walls','Furniture, décor and small appliances'],
+  permit:'Yes when plumbing or electrical changes (express trade permits); moving walls needs plan check. Like-for-like cabinets and counters don\'t need one.',time:'4–8 weeks of construction; 2½–4 months including design and permits',
+  tips:['Keeping the sink, stove and fridge where they are saves the most money.','Order cabinets and appliances early; lead times of 4–10 weeks are common.','Plan a temporary kitchen (microwave, fridge, sink) for the weeks without one.']},
+ bathroom:{roi:"A midrange bath remodel recoups about 91% at resale in the Pacific region; an upscale one about 42%.",tiers:['Fiberglass or simple tile, stock vanity, chrome fixtures','Porcelain tile shower, semi-custom vanity, quartz top','Floor-to-ceiling tile, frameless glass, custom vanity','Natural stone, curbless shower, heated floors, designer fixtures'],
+  incl:['Demolition and haul-away','Waterproofing and tile','Vanity, toilet, shower or tub and fixtures','Exhaust fan, lighting and paint'],excl:['Rot or termite damage under the floor','Moving the bathroom to another room','Heated floors and steam showers (ask for a quote)'],
+  permit:'Yes for most remodels that touch plumbing, electrical or the shower pan.',time:'3–5 weeks of construction; 1½–3 months including permits',
+  tips:['A curbless walk-in shower costs more now but makes the room usable for life.','Pick tile and fixtures before demolition so the crew never waits.','An exhaust fan vented outside prevents mold; California code calls for one with humidity control in bathrooms with a shower or tub.']},
+ flooring:{tiers:['Builder-grade vinyl plank or carpet','Thicker vinyl plank, engineered oak, porcelain tile','Wide-plank engineered wood, large-format tile','Solid European oak, natural stone, herringbone patterns'],
+  incl:['Material and installation','Basic floor prep','Baseboards if you choose them'],excl:['Removing old tile or glued-down floors (often $1–5 per sq ft)','Subfloor repair or leveling beyond minor patches','Moving furniture and appliances'],
+  permit:'No.',time:'2–5 days for most homes',tips:['Order 10% extra for cuts and future repairs.','Vinyl plank is waterproof and the most popular choice for LA rentals and family homes.','Let wood acclimate in the house for a few days before installing.']},
+ painting:{tiers:['One color, flat or eggshell, light prep','Two-coat premium paint, patching, accent walls','Trim and doors in a contrasting sheen, extensive prep','Specialty finishes, lime wash, Venetian plaster'],
+  incl:['Prep, patching and masking','Two coats of paint','Cleanup'],excl:['Drywall replacement beyond small patches','Lead abatement in pre-1978 homes (testing is in the project costs)','Moving furniture'],
+  permit:'No.',time:'3–7 days inside; 1–2 weeks outside',tips:['In pre-1978 homes, painters must follow lead-safe rules; testing is included in your estimate.','Exterior paint lasts longest when stucco cracks are repaired first.','Paint before new floors go in when you are doing both.']},
+ roofing:{roi:"A metal roof recoups about 51% at resale in the Pacific region.",tiers:['Architectural asphalt shingles','Designer shingles or concrete tile','Clay tile or standing-seam metal','Premium clay, slate look, integrated solar-ready'],
+  incl:['Tear-off and disposal','Underlayment, flashing and vents','New roofing and cleanup'],excl:['Replacing rotted roof deck (priced per sheet once exposed)','Solar removal and reinstall','Structural reinforcement for heavier tile'],
+  permit:'Yes. Re-roofs get an express permit online, then an inspection.',time:'3–7 days for most homes',tips:['Ask for a Class A fire rating; most LA roofs already need one.','Tile weighs much more than shingles; switching may need an engineer.','Re-roof before installing solar so the panels never come off.']},
+ windows:{roi:"A new garage door recoups about 270% at resale in LA, a steel entry door about 215%, wood windows about 82%.",tiers:['Vinyl dual-pane','Fiberglass dual-pane, Low-E glass','Wood-clad or tempered fire-rated glass','Steel or slim aluminum frames, multi-slide doors'],
+  incl:['Removal of old windows and doors','New units, trim and sealing','Haul-away'],excl:['Enlarging openings (needs framing and possibly an engineer)','Stucco patching beyond the window edge','Window coverings'],
+  permit:'Yes. Same-size replacements get an express permit; changing an opening needs plan check. New windows must meet Title 24 energy rules.',time:'1–3 days to install; 4–10 weeks to order',
+  tips:['Retrofit windows avoid tearing out stucco and cost less.','Tempered dual-pane glass is one of the best wildfire upgrades.','Order early: custom sizes take weeks.']},
+ electrical:{tiers:['Code-minimum devices and fixtures','Upgraded panel brand, LED cans, USB outlets','Smart switches, dimmers, whole-home surge protection','Full lighting design, scene control'],
+  incl:['Licensed electrician labor and materials','Permit and inspection where needed','Patching small wall openings'],excl:['Utility-side work by LADWP or SCE','Drywall and paint repair beyond small patches','Fixtures you supply'],
+  permit:'Yes. Panel upgrades and EV chargers get express permits online; rewiring needs inspections as walls are opened.',time:'1–2 days for a panel (3–8 weeks with permit and utility); 1–2 weeks to rewire',
+  tips:['A 200 A panel is often required before adding an EV charger, heat pump or ADU.','LADWP or SCE may need to schedule a service disconnect; allow 2–6 weeks.','Old knob-and-tube wiring can affect home insurance.']},
+ plumbing:{tiers:['PEX piping, standard tank water heater','PEX with manifold, heat-pump water heater','Copper repipe, tankless water heater','Recirculating hot water, whole-home filtration'],
+  incl:['New supply lines, fittings and shutoffs','Water heater or sewer line you pick','Permit and inspection'],excl:['Drywall and paint repair after a repipe (often $1–3k)','Sewer issues past the property line','Gas line upsizing for tankless heaters'],
+  permit:'Yes. Water heaters and repipes get express permits online; sewer lines need a permit and inspection.',time:'2–5 days for a repipe; 1 day for a water heater; 1–3 days for a sewer line',
+  tips:['A sewer camera inspection ($200–400) tells you if the line really needs replacing.','Water heaters must be strapped for earthquakes in California.','Heat-pump water heaters cut energy use by more than half.']},
+ hvac:{tiers:['Standard-efficiency furnace and AC','High-efficiency heat pump','Variable-speed heat pump, zoning','Ductless or ducted multi-zone, air purification'],
+  incl:['Equipment, installation and startup','Refrigerant lines and thermostat','Permit and Title 24 duct test'],excl:['Electrical panel upgrade if needed','Attic access or drywall repair','Removing asbestos duct wrap in older homes'],
+  permit:'Yes. Same-size change-outs get an express permit; Title 24 requires a duct leakage (HERS) test.',time:'1–3 days for a change-out; 3–5 days with new ducts',
+  tips:['Heat pumps heat and cool with one system and qualify for utility rebates.','Ductless mini-splits suit additions, ADUs and garage conversions.','Seal and insulate ducts; leaky ducts waste up to 30% of the energy.']},
+ addition:{tiers:['Simple box addition, standard finishes','Vaulted ceiling, mid-range finishes','Primary suite with custom bath','Second story with high-end finishes'],
+  incl:['Design and engineering (in project costs)','Foundation, framing, roof and exterior','Electrical, plumbing, HVAC and finishes'],excl:['Fire sprinklers if the city requires them','Utility service upgrades','Furniture'],
+  permit:'Yes: plans, structural engineering, Title 24 and plan check.',time:'4–8 months of construction; 2–4 months for design and permits first',
+  tips:['Check setbacks and height limits before designing.','Adding up is often cheaper per sq ft than adding out on small LA lots, but needs more engineering.','Additions are reassessed for property tax; the rest of the house is not.']},
+ garage:{tiers:['Studio with basic finishes','One-bedroom, standard finishes','Full kitchen, upgraded bath','High-end finishes, skylights'],
+  incl:['Garage door removed and wall framed in','Insulation, drywall, windows and entry door','Kitchen, bathroom, electrical and HVAC (for a rentable unit)'],excl:['Replacement parking (usually not required in LA for ADU conversions)','Utility separate meters','Sewer line upgrades if the existing line is undersized'],
+  permit:'Yes, as an ADU or habitable room.',time:'2–4 months of construction; 4–8 months in all',
+  tips:['Converting an existing garage is usually the cheapest way to add a rentable unit.','Slabs often need a new trench for bathroom drains.','Under 750 sq ft pays no city impact fees.']},
+ adu:{tiers:['Studio, efficient layout, standard finishes','One-bedroom, mid-range finishes','Two-bedroom, upgraded kitchen and bath','Architect-designed, premium finishes'],
+  incl:['Foundation, structure, roof and exterior','Kitchen, bathroom, flooring, paint','Electrical, plumbing and heat pump'],excl:['Long utility runs, steep lots or retaining walls','School fees and utility connection charges (city-specific)','Landscaping around the unit'],
+  permit:'Yes. California requires cities to decide on a complete ADU application within 60 days; LA offers pre-approved standard plans.',time:'3–8 months of construction; 6–12 months in all',
+  tips:['ADUs under 750 sq ft pay no impact fees.','A backyard ADU can bring in steady rental income; ask HRG for local rent comparisons.','Pre-approved plans in LA can shorten plan check.']},
+ outdoor:{roi:"A wood deck recoups about its full cost at resale in LA.",tiers:['Gravel, mulch, native plants, simple pavers','Drip irrigation, concrete patio, wood deck','Pavers, composite deck, outdoor lighting','Designer landscape, outdoor kitchen, pool and spa'],
+  incl:['Removal of old lawn and plants','New plants, hardscape and irrigation you pick','Haul-away'],excl:['Retaining walls on slopes (see Retaining walls & drainage)','Tree removal over 12 in. trunk (may need a city permit)','Pool fencing and alarms beyond code minimum'],
+  permit:'No for planting. Yes for pools, decks more than 30 in. off the ground, masonry walls over 3½ ft and outdoor gas lines.',time:'1–3 weeks; pools 2–4 months',
+  tips:['LADWP pays a rebate per sq ft of lawn replaced; apply before you remove the grass.','Keep the 5 ft next to the house free of plants and mulch for fire safety.','Drip irrigation uses about half the water of spray heads.']},
+ structural:{tiers:['Standard bolt and brace','Engineered retrofit','Steel beam with flush ceiling','Complex engineering, foundation replacement'],
+  incl:['Engineering where needed','Materials, labor and inspection'],excl:['Patching finishes after a wall is opened','Moving plumbing or wiring inside the wall','Soil reports for major foundation work'],
+  permit:'Yes, including inspection.',time:'1–3 days for bolt and brace; 1–3 weeks for walls and foundations',
+  tips:['Earthquake Brace + Bolt grants pay up to $3,000 toward a retrofit.','Retrofits of older raised-foundation homes are excluded from property tax reassessment.','Get an engineer before removing any wall you are unsure about.']},
+ interior:{tiers:['Hollow-core doors, MDF base, wire shelving','Solid-core doors, painted trim, closet systems','Shaker doors, taller base, custom built-ins','Custom millwork, stone fireplace, designer stair'],
+  incl:['Material, carpentry labor and finishing','Paint-ready surfaces'],excl:['Painting (see Painting)','Electrical changes for new lighting','Asbestos in old drywall or texture (tested in pre-1978 homes)'],
+  permit:'Usually no; yes for skylights, fireplaces and stair changes.',time:'1–2 weeks',tips:['Solid-core doors cut noise between rooms.','Built-ins add storage without adding square footage.','Gas fireplace inserts may qualify for local clean-air incentives.']},
+ laundry:{tiers:['Hookups and a shelf','Cabinets, counter and utility sink','Full cabinetry, tile, folding station','Custom laundry room, dog wash'],
+  incl:['Plumbing and electrical hookups','Cabinets and finishes you pick'],excl:['Washer and dryer','Gas line for a gas dryer','Moving the laundry to another floor (more plumbing)'],
+  permit:'Yes when hookups move or a new circuit is added.',time:'2–5 days',tips:['Heat-pump dryers need no outside vent.','A floor drain or leak pan protects the floor below.','Epoxy floors need a few days to cure before you park.']},
+ siding:{roi:"Fiber-cement siding recoups about 128% of its cost at resale in LA.",tiers:['Patch and recoat stucco','Elastomeric coating, new trim','Fiber-cement siding','Mixed materials, board-and-batten, cedar accents'],
+  incl:['Prep, repair and new finish','Trim and caulking','Cleanup'],excl:['Rot repair behind the stucco or siding (priced once opened)','Window replacement','Lead abatement on pre-1978 homes'],
+  permit:'Usually no for recoating; yes for new siding or replacing stucco.',time:'1–3 weeks',tips:['Fix stucco cracks before painting or the cracks come back.','Fiber-cement siding is noncombustible, a good fire-safety choice.','Recoating stucco can last 15–20 years.']},
+ fire:{tiers:['1/8-in. metal vent mesh, gutter guards','Fire-rated vents, clear 5-ft zone','Tempered glass, enclosed eaves','Full Chapter 7A upgrade, noncombustible siding'],
+  incl:['Materials and installation for what you pick','Debris removal'],excl:['Insurance inspections','Tree removal and work beyond 5 ft from the house','Major siding replacement (see Siding & stucco)'],
+  permit:'Usually no for vents and guards; yes for new roofs and windows.',time:'1–5 days for vents, guards and clearing',
+  tips:['Embers cause most homes to burn; vents and gutters are the first defense.','Some insurers give discounts for documented hardening.','Keep mulch, plants and wood off the first 5 ft around the house.']},
+ solar:{tiers:['Standard panels, string inverter','Premium panels, microinverters','Panels plus battery backup','Whole-home backup, multiple batteries'],
+  incl:['Panels, inverter, racking and wiring','Permit and utility interconnection','Battery and gateway if chosen'],excl:['Re-roofing under the panels','Main panel upgrade unless chosen','Tree trimming for sun exposure'],
+  permit:'Yes. Systems up to 10 kW get an express permit; the utility must also approve before you switch on.',time:'1–3 days to install; 2–5 months in all (LADWP approval to switch on is the longest wait)',
+  tips:['Federal solar and battery tax credits ended for homeowners after 2025.','A battery keeps lights and fridge on during outages and helps with time-of-use rates.','Re-roof first if your roof has less than 10 years left.']},
+ jadu:{tiers:['Bedroom with kitchenette, shared bath','Kitchenette with full counter, new door','Own bathroom, upgraded finishes','Premium finishes, separate HVAC'],
+  incl:['Efficiency kitchen','Exterior entrance','Finishes, outlets and lighting','Own bathroom if chosen'],excl:['Separate utility meter','Major structural changes','Furniture'],
+  permit:'Yes, as a junior ADU. Max 500 sq ft, inside the existing house, with its own exterior entrance.',time:'1–3 months of construction; 3–6 months in all',
+  tips:['A JADU needs no new foundation and no parking.','It can share a bathroom with the main house to save money.','Owner occupancy is required only when the JADU shares a bathroom with the main house.']},
+ whole:{tiers:['Paint, vinyl plank, basic trim','Engineered wood, semi-custom kitchen','Custom kitchen and baths, upgraded systems','Designer finishes throughout'],
+  incl:['Everything in the rooms and systems you pick','One crew and one schedule'],excl:['Structural changes unless added','Furniture and moving costs','Hidden damage found during demolition'],
+  permit:'Yes when kitchens, baths, electrical or plumbing change.',time:'3–6 months',tips:['Doing everything at once is usually cheaper than room by room.','Plan where you will live during the work.','Upgrade plumbing and electrical while walls are open.']},
+ termite:{tiers:['Spot treatment and small repairs','Whole-house tenting or heat treatment','Rot repair of eaves, fascia and sills','Subfloor and framing replacement'],
+  incl:['Inspection report','Treatment and repair you pick','Paint-ready finish on repaired wood'],excl:['Damage hidden inside walls until opened','Painting the repaired areas','Hotel stay during tenting (2–3 days)'],
+  permit:'No for treatment; yes for structural repairs.',time:'2–3 days for tenting; 1–2 weeks for repairs',tips:['A licensed inspection (Section 1 / Section 2 report) is standard when buying or selling in California.','Fix leaks first; dry rot comes from moisture.','Drywood termites are common in LA; tenting is the most thorough cure.']},
+ retaining:{tiers:['Short block wall, gravel drain','Engineered block wall, French drain','Concrete or reinforced hillside wall','Architectural stone or terraced walls'],
+  incl:['Excavation and haul-away','Wall, drainage and backfill'],excl:['Soils report and engineering for tall walls (in project costs)','Landscaping on top','Hillside access equipment beyond normal'],
+  permit:'Yes for walls over 4 ft measured from the bottom of the footing, or any wall holding up a slope, driveway or building.',time:'1–4 weeks',tips:['Most retaining walls fail from poor drainage, not weak blocks.','Walls near property lines may need a neighbor agreement.','Hillside lots in LA often need a geotechnical report.']},
+ pool:{tiers:['White plaster, new tile line','Colored plaster, new pump','Pebble finish, variable-speed equipment, new coping','Glass tile, automation, heater and new deck'],
+  incl:['Draining, prep and new surface','Equipment and tile you pick','Startup and water balance'],excl:['Water to refill (about $100–300)','Fencing and alarms','Structural crack repair'],
+  permit:'Usually no for resurfacing; yes for new equipment, heaters, gas or electrical.',time:'1–2 weeks',tips:['Plaster lasts 10–15 years; pebble lasts 15–20.','Since September 2025, federal rules require replacement pool pump motors to be variable-speed.','Plan resurfacing in fall or spring when demand is lower.']},
+ access:{tiers:['Grab bars, lever handles, comfort-height toilet','Curbless shower, wider door','Ramp, stair lift','Full accessible bath and entry'],
+  incl:['Materials and installation','Blocking in walls for grab bars'],excl:['Medical equipment','Elevators (ask for a quote)','Changes to rental units that need landlord approval'],
+  permit:'Usually no for grab bars; yes for showers, ramps and widened doors.',time:'1 day to 2 weeks',tips:['Accessibility work can be excluded from property tax reassessment in California.','Plan grab-bar blocking during any bathroom remodel, even if you install bars later.','Ask about programs for seniors and veterans.']}
+};
+
+/* ---------- rebates, grants and tax rules (status checked 2026-10-15) ---------- */
+// status: open | check | closed | rule.  jobs: which estimator jobs the program applies to.
+const REBATES=[
+ {n:'LADWP turf replacement',amt:'$5 per sq ft of lawn replaced',who:'LADWP + Metropolitan Water District',st:'open',jobs:['outdoor'],
+  d:'Get pre-approval before you remove any grass, or the rebate is lost.',url:'https://www.ladwp.com/rwr'},
+ {n:'LADWP heat pump HVAC',amt:'$1,000–1,250 per ton (ducted) · $1,500–2,500 per ton (ductless)',who:'LADWP Consumer Rebate Program',st:'open',jobs:['hvac','adu','garage','addition'],
+  d:'Equipment must meet minimum efficiency ratings. Apply within 12 months of purchase.',url:'https://www.ladwp.com/residential-services/assistance-programs/consumer-rebate-program'},
+ {n:'LADWP heat-pump water heater',amt:'$1,500–2,500',who:'LADWP Consumer Rebate Program',st:'open',jobs:['plumbing'],
+  d:'For existing homes; new construction, additions and ADUs are excluded.',url:'https://www.ladwp.com/residential-services/assistance-programs/consumer-rebate-program'},
+ {n:'LADWP EV charger',amt:'Up to $1,000 (+$500 for income-qualified customers)',who:'LADWP',st:'open',jobs:['electrical','solar'],
+  d:'Level 2 charger from the approved product list.',url:'https://www.ladwp.com/residential-services/programs-and-rebates-residential/electric-vehicles/residential-ev-charger-rebate-program'},
+ {n:'LADWP water-saving rebates',amt:'Toilets $250 · washers up to $500 · smart irrigation controllers up to $200 · rain barrels up to $50',who:'LADWP + MWD',st:'open',jobs:['bathroom','laundry','outdoor'],
+  d:'For LADWP water customers. Amounts can change without notice.',url:'https://www.ladwp.com/rwr'},
+ {n:'LADWP Home Energy Improvement Program',amt:'Free energy and water upgrades',who:'LADWP',st:'open',jobs:['whole','hvac','interior'],
+  d:'For houses and buildings up to 4 units. A technician assesses the home and a crew does the work.',url:'https://ladwp.com/HEIP'},
+ {n:'SCE Charge Ready Home',amt:'Up to $4,200 toward a panel upgrade for an EV charger',who:'Southern California Edison',st:'check',jobs:['electrical','solar'],
+  d:'For income-qualified single-family homes in SCE territory. Confirm current eligibility.',url:'https://evhome.sce.com/'},
+ {n:'Earthquake Brace + Bolt',amt:'Up to $3,000 (up to $10,000 for income-qualified homes)',who:'California Residential Mitigation Program',st:'closed',jobs:['structural'],
+  d:'Raised-foundation wood homes built before 1980 in eligible ZIP codes. Registration opens for a limited time each year.',url:'https://www.crmp.org/our-seismic-retrofit-programs/the-retrofits/ebb-retrofit'},
+ {n:'Wildfire insurance discounts',amt:'Required discounts for documented hardening',who:'California Department of Insurance (Safer from Wildfires)',st:'rule',jobs:['fire','roofing','windows'],
+  d:'Insurers must offer discounts for a Class A roof, enclosed eaves, ember-resistant vents, multi-pane windows and cleared space around the home.',url:'https://www.insurance.ca.gov/'},
+ {n:'Property tax: seismic retrofits',amt:'Not reassessed',who:'California Revenue & Taxation Code §74.5',st:'rule',jobs:['structural'],
+  d:'Qualifying earthquake retrofits don\'t raise your assessed value.',url:'https://www.boe.ca.gov/'},
+ {n:'Property tax: accessibility',amt:'Not reassessed',who:'California Revenue & Taxation Code §74.6',st:'rule',jobs:['access'],
+  d:'Accessibility work on an existing home is excluded. Notify the county assessor (form BOE-63) within 30 days of finishing.',url:'https://www.boe.ca.gov/proptaxes/pdf/94-47.pdf'},
+ {n:'Property tax: solar',amt:'Not reassessed if finished before Jan 1, 2027',who:'California Revenue & Taxation Code §73',st:'rule',jobs:['solar'],
+  d:'The exclusion ends for systems completed after 2026 unless the state extends it again.',url:'https://www.boe.ca.gov/'},
+ {n:'Property tax: additions and ADUs',amt:'New space is reassessed',who:'California Prop 13 new-construction rules',st:'rule',jobs:['addition','adu','garage','jadu'],
+  d:'Only the value of the new construction is added; the rest of your home keeps its current assessment.',url:'https://www.boe.ca.gov/'}];
+const ENDED='No longer available: federal energy and solar tax credits (25C and 25D ended Dec 31, 2025; the EV charger credit 30C ended June 30, 2026), and the state TECH Clean California and HEEHRA heat-pump funds, which are used up. Rebate rules change often; HRG checks them again when you sign.';
+const REB_SCOPE={'SCE Charge Ready Home':'ca','Earthquake Brace + Bolt':'ca','Wildfire insurance discounts':'ca','Property tax: seismic retrofits':'ca','Property tax: accessibility':'ca','Property tax: solar':'ca','Property tax: additions and ADUs':'ca'};
+function localRebates(){const a=area();return REBATES.filter(r=>{const s=REB_SCOPE[r.n]||'la';return s==='la'?a.la:a.st==='CA'})}
+const ST={open:['Open','ok'],check:['Check eligibility','warn'],closed:['Closed for now','bad'],rule:['Tax or insurance rule','info']};
+function renderRebates(){const a=area(),list=localRebates();
+  $('h-reb').textContent=a.la?'Rebates, grants and tax rules in Los Angeles':a.st==='CA'?'Rebates, grants and tax rules in California':'Rebates and incentives near you';
+  $('rebate-list').innerHTML=(a.la?'':`<article class="rb"><div class="rb-top"><b>Find programs for ${esc(a.name)}</b><span class="st st-info">Look up</span></div><p>Rebates come from your electric, gas and water utilities, your state and sometimes your city. Search by ZIP code before you buy equipment.</p><p class="rb-who"><a href="https://www.dsireusa.org/" target="_blank" rel="noopener">DSIRE incentive database</a> · <a href="https://www.energystar.gov/rebate-finder" target="_blank" rel="noopener">ENERGY STAR rebate finder</a></p></article>`)+list.map(r=>`<article class="rb"><div class="rb-top"><b>${esc(r.n)}</b><span class="st st-${ST[r.st][1]}">${ST[r.st][0]}</span></div>
+  <p class="rb-amt">${esc(r.amt)}</p><p>${esc(r.d)}</p><p class="rb-who">${esc(r.who)} · <a href="${r.url}" target="_blank" rel="noopener">Details</a></p>
+  <p class="rb-jobs">${r.jobs.map(j=>`<button type="button" class="linkbtn" data-start="${j}">${esc(JOB[j].name)}</button>`).join(' ')}</p></article>`).join('');
+  $('rebate-note').textContent=ENDED.replace('the state TECH Clean California and HEEHRA heat-pump funds, which are used up','California\'s TECH Clean California and HEEHRA heat-pump funds, which are used up')}
+
+/* ---------- permit paths in the City of LA ---------- */
+const PERMIT_PATHS=[
+ ['Express permit','Same day, online','Like-for-like work with no plans: water heaters, re-roofs, same-size windows, panels, repipes, HVAC change-outs, EV chargers, solar up to 10 kW.'],
+ ['Counter plan check','Same day, about 45 minutes','Small projects with simple drawings, reviewed in person.'],
+ ['Expanded counter plan check','Same day, about 2 hours','Mid-size projects such as many ADU and garage conversions.'],
+ ['Regular plan check','Several weeks','Additions, layout changes and structural work. First review often takes 4–8 weeks, plus 2–6 weeks per round of corrections.'],
+ ['ADU and JADU rules','State law','Cities must decide on a complete ADU application within 60 days. No impact fees for ADUs up to 750 sq ft or JADUs up to 500 sq ft. JADU owner occupancy applies only when it shares a bathroom with the house.'],
+ ['Fire rebuilds','Faster paths','Palisades and Eaton fire rebuilds have had expedited, like-for-like permit rules and fee relief. Ask HRG which rules apply to your lot today.']];
+function renderPermitPaths(){const a=area();
+  if(!a.la){$('permit-paths').innerHTML=(a.st==='CA'?PERMIT_PATHS.filter(p=>p[0]==='ADU and JADU rules').map(([t,s,d])=>`<article class="rb"><div class="rb-top"><b>${esc(t)}</b><span class="st st-info">${esc(s)}</span></div><p>${esc(d)}</p></article>`).join(''):'')+
+    `<p class="note">Permit rules, fees and review times are set by the city or county where the home is. The answers above are typical for most U.S. building departments; check yours before you start.</p>`;return}
+  $('permit-paths').innerHTML=PERMIT_PATHS.map(([t,s,d])=>`<article class="rb"><div class="rb-top"><b>${esc(t)}</b><span class="st st-info">${esc(s)}</span></div><p>${esc(d)}</p></article>`).join('')+
+  `<p class="note">These are City of Los Angeles (LADBS) paths. Other cities in the county and unincorporated areas have similar options. Exact fees come from the <a href="https://www.ladbs.org/services/core-services/plan-check-permit" target="_blank" rel="noopener">LADBS</a> fee calculator.</p>`}
+
+// one-tap sizes for people who don't know their square footage
+const HOME_SIZES=[[1000,'1,000 sq ft home'],[1600,'1,600 sq ft'],[2400,'2,400 sq ft'],[3500,'3,500 sq ft']];
+const SIZE_PRESETS={kitchen:[[100,'Small (100)'],[150,'Medium (150)'],[250,'Large (250)']],bathroom:[[40,'Small (40)'],[60,'Full (60)'],[100,'Primary (100)']],
+ flooring:[[250,'One room'],[800,'Main living area'],[1500,'Whole house']],addition:[[200,'Bedroom'],[400,'Primary suite'],[800,'Large']],
+ garage:[[240,'1-car'],[400,'2-car'],[600,'3-car']],adu:[[400,'Studio'],[600,'1-bedroom'],[850,'2-bedroom']],outdoor:[[600,'Small yard'],[2000,'Average yard'],[5000,'Large yard']],
+ jadu:[[200,'Small'],[300,'Medium'],[500,'Maximum']],windows:[[5,'5 windows'],[10,'10'],[20,'20']],laundry:[[0,'No garage'],[240,'1-car'],[400,'2-car']],
+ retaining:[[20,'20 ft'],[40,'40 ft'],[100,'100 ft']]};
+const sizePresets=job=>SIZE_PRESETS[job.id]||(job.size===HOME?HOME_SIZES:[]);
+/* ---------- jobs: what the client picks, how big, and a few details ---------- */
+const TIERS=[{n:'Basic',d:'Builder-grade, durable'},{n:'Standard',d:'Mid-range brands most pick'},{n:'Premium',d:'Semi-custom, upgraded'},{n:'Luxury',d:'Custom, designer'}];
+const ITEMS={};ZONES.forEach(z=>z.items.forEach(a=>{ITEMS[a[0]]={id:a[0],name:a[1],unit:a[2],p:a[4],permit:(a[5]||'').includes('p'),note:a[6]||'',zone:z.id}}));
+const L=(id,qty,mult,label)=>({id,qty:Math.max(0,Math.round(qty*100)/100),mult:mult||1,label:label||ITEMS[id].name});
+const NO_YES=t=>[['no','No'],['yes',t]],YES_NO=t=>[['yes',t],['no','No']];
+const HOME={label:'Home size (living area)',unit:'sq ft',def:1600,min:300,max:10000};
+const wallArea=(sf,st)=>Math.round(4*Math.sqrt(sf/st)*1.15*9*st);
+// q: [id, question, [[value,label],...], show?(answers)] — first option is the default
+const JOBS=[
+ {id:'kitchen',name:'Kitchen',blurb:'Cabinets, counters, appliances',main:'cabinets',size:{label:'Kitchen size',unit:'sq ft',def:150,min:40,max:1200},
+  q:[['layout','Layout',[['same','Keep the layout'],['move','Move the sink, stove or walls']]],
+     ['cabinets','Cabinets',[['new','New cabinets'],['keep','Keep my cabinets']]],
+     ['counters','Countertops',[['new','New countertops'],['keep','Keep them']]],
+     ['appliances','Appliances',[['new','New appliances'],['keep','Keep them']]],
+     ['island','Kitchen island',NO_YES('Add an island')],
+     ['floor','Floor',[['yes','New tile floor'],['no','Keep the floor']]]],
+  lines(s,a){const lf=Math.max(8,Math.round(s*0.17)),o=[L('kdemo',1,a.layout==='move'?1.6:1,a.layout==='move'?'Demo & new plumbing/electrical for the new layout':'Demo & plumbing/electrical rough-in')];
+    if(a.cabinets==='new')o.push(L('cabinets',lf));if(a.counters==='new')o.push(L('counters',Math.round(lf*2.2)));
+    if(a.cabinets==='new'||a.counters==='new')o.push(L('backsplash',Math.round(lf*1.4)));if(a.appliances==='new')o.push(L('appliances',1));
+    o.push(L('ksink',1),L('klight',1));if(a.island==='yes')o.push(L('island',1));if(a.floor==='yes')o.push(L('tilefloor',s));return o}},
+ {id:'bathroom',name:'Bathroom',blurb:'Shower, tub, vanity, tile',main:'vanity',size:{label:'Size of each bathroom',unit:'sq ft',def:50,min:20,max:400},
+  q:[['count','How many bathrooms',[['1','1 bathroom'],['2','2 bathrooms'],['3','3 bathrooms'],['4','4 bathrooms']]],
+     ['shower','Shower or tub',[['tile','New tiled shower or tub'],['convert','Turn the tub into a walk-in shower'],['keep','Keep the tub/shower']]],
+     ['layout','Layout',[['same','Keep the layout'],['move','Move the toilet, shower or sink']]],
+     ['vanity','Vanity',[['single','Single sink'],['double','Double sink']]]],
+  lines(s,a){const n=+a.count,f=s/50,o=[L('bdemo',n,a.layout==='move'?1.7:1),L('vanity',n,a.vanity==='double'?1.7:1),L('toilet',n)];
+    if(a.shower==='tile')o.push(L('showertile',n),L('glass',n));if(a.shower==='convert')o.push(L('tubshower',n),L('glass',n));
+    o.push(L('bfloor',n,f),L('bfixtures',n),L('bfan',n));return o}},
+ {id:'flooring',name:'Flooring',blurb:'Vinyl plank, wood, tile, carpet',main:'hardwood',size:{label:'Area to cover',unit:'sq ft',def:800,min:50,max:10000},
+  q:[['material','Material',[['lvp','Vinyl plank'],['hardwood','Hardwood'],['tile','Tile'],['carpet','Carpet'],['refinish','Refinish my hardwood']]],
+     ['base','Baseboards',[['yes','New baseboards'],['no','Keep them']],a=>a.material!=='refinish']],
+  lines(s,a){const id={lvp:'lvp',hardwood:'hardwood',tile:'tilefloor',carpet:'carpet',refinish:'refinish'}[a.material],o=[L(id,s)];
+    if(a.base==='yes'&&a.material!=='refinish')o.push(L('trim',s*0.35));return o}},
+ {id:'painting',name:'Painting',blurb:'Inside, outside or both',main:'intpaint',size:HOME,
+  q:[['where','What to paint',[['inside','Inside'],['outside','Outside'],['both','Both']]],
+     ['stories','Stories',[['1','1 story'],['2','2 stories']],a=>a.where!=='inside'],
+     ['popcorn','Popcorn ceilings',NO_YES('Remove them'),a=>a.where!=='outside'],
+     ['stucco','Stucco',NO_YES('Repair cracks first'),a=>a.where!=='inside']],
+  lines(s,a){const o=[];if(a.where!=='outside'){o.push(L('intpaint',s));if(a.popcorn==='yes')o.push(L('popcorn',s))}
+    if(a.where!=='inside'){const w=wallArea(s,+a.stories);o.push(L('extpaint',w));if(a.stucco==='yes')o.push(L('stucco',w))}return o}},
+ {id:'roofing',name:'Roofing',blurb:'New roof, gutters, skylights',main:'roof',size:HOME,
+  q:[['stories','Stories',[['1','1 story'],['2','2 stories']]],['gutters','Gutters',YES_NO('New gutters')],
+     ['insul','Attic insulation',NO_YES('Add insulation')],['sky','Skylights',[['0','None'],['1','1'],['2','2'],['3','3']]]],
+  lines(s,a){const foot=s/+a.stories,o=[L('roof',foot*1.25)];if(a.gutters==='yes')o.push(L('gutters',4*Math.sqrt(foot)*1.15));
+    if(a.insul==='yes')o.push(L('insul',foot));if(+a.sky)o.push(L('skylight',+a.sky));return o}},
+ {id:'windows',name:'Windows & doors',blurb:'Windows, entry, patio, garage door',main:'windows',size:{label:'Windows to replace',unit:'windows',def:10,min:0,max:80},
+  q:[['entry','Front door',NO_YES('New front door')],['patio','Patio door',NO_YES('New sliding or folding door')],['garage','Garage door',NO_YES('New garage door')]],
+  lines(s,a){const o=[];if(s)o.push(L('windows',s));if(a.entry==='yes')o.push(L('entry',1));if(a.patio==='yes')o.push(L('slider',1));if(a.garage==='yes')o.push(L('garagedoor',1));return o}},
+ {id:'electrical',name:'Electrical',blurb:'Panel, wiring, lights, EV, solar',main:'rewire',size:HOME,
+  q:[['panel','Electrical panel',YES_NO('Upgrade to 200 A')],['rewire','Wiring',NO_YES('Rewire the whole house')],
+     ['lights','Recessed lights',[['0','None'],['6','6'],['12','12'],['20','20']]],['outlets','New outlets',[['0','None'],['5','5'],['10','10']]],
+     ['ev','EV charger',NO_YES('Add one')],['solar','Solar panels',NO_YES('Add a 6 kW system')]],
+  lines(s,a){const o=[];if(a.panel==='yes')o.push(L('panel',1));if(a.rewire==='yes')o.push(L('rewire',s));if(+a.lights)o.push(L('recessed',+a.lights));
+    if(+a.outlets)o.push(L('outlets',+a.outlets));if(a.ev==='yes')o.push(L('ev',1));if(a.solar==='yes')o.push(L('solar',6));return o}},
+ {id:'plumbing',name:'Plumbing',blurb:'Pipes, water heater, sewer line',main:'waterheater',size:HOME,
+  q:[['repipe','Water pipes',YES_NO('Repipe the whole house')],['heater','Water heater',NO_YES('New water heater')],
+     ['sewer','Sewer line',NO_YES('Replace it')],['sewerlen','Length to the street',[['40','40 ft'],['60','60 ft'],['100','100 ft']],a=>a.sewer==='yes']],
+  lines(s,a){const o=[];if(a.repipe==='yes')o.push(L('repipe',s));if(a.heater==='yes')o.push(L('waterheater',1));if(a.sewer==='yes')o.push(L('sewer',+a.sewerlen));return o}},
+ {id:'hvac',name:'Heating & AC',blurb:'Central air, mini-splits, ducts',main:'hvac',size:HOME,
+  q:[['system','System',[['central','Central heat & AC'],['mini','Ductless mini-splits'],['keep','Keep my system']]],
+     ['zones','Rooms to cover',[['1','1'],['2','2'],['3','3'],['4','4']],a=>a.system==='mini'],
+     ['ducts','Ductwork',YES_NO('New ductwork'),a=>a.system==='central'],['insul','Attic insulation',NO_YES('Add insulation')]],
+  lines(s,a){const o=[];if(a.system==='central'){o.push(L('hvac',1));if(a.ducts==='yes')o.push(L('ducts',s))}
+    if(a.system==='mini')o.push(L('minisplit',+a.zones));if(a.insul==='yes')o.push(L('insul',s));return o}},
+ {id:'addition',name:'Room addition',blurb:'More space, ground floor or up',main:'addition',size:{label:'Size of the new space',unit:'sq ft',def:300,min:60,max:3000},
+  q:[['type','Where',[['ground','Ground-floor addition'],['second','Second story']]],['bath','Bathroom',NO_YES('Include a bathroom')]],
+  lines(s,a){const o=[L(a.type==='second'?'story2':'addition',s)];if(a.bath==='yes')o.push(L('newbath',1));return o}},
+ {id:'garage',name:'Garage conversion',blurb:'Living space or a rentable unit',main:'garageconv',size:{label:'Garage size',unit:'sq ft',def:400,min:150,max:1200},
+  q:[['use','Turn it into',[['unit','A rentable unit with kitchen & bath'],['room','A bedroom, office or gym']]]],
+  lines(s,a){return[a.use==='room'?L('garageconv',s,0.7,'Garage conversion to a finished room'):L('garageconv',s)]}},
+ {id:'adu',name:'ADU / backyard home',blurb:'A second home on your lot',main:'adu',size:{label:'ADU size',unit:'sq ft',def:600,min:150,max:1200},q:[],
+  lines(s){return[L('adu',s,1,'Backyard ADU, built and finished')]}},
+ {id:'outdoor',name:'Outdoor & yard',blurb:'Landscape, patio, deck, pool',main:'landscape',size:{label:'Yard size',unit:'sq ft',def:2000,min:100,max:40000},
+  q:[['landscape','Landscaping',YES_NO('Drought-tolerant landscaping')],['irrigation','Irrigation',YES_NO('Drip irrigation')],
+     ['patio','Patio',[['0','None'],['200','200 sq ft'],['400','400 sq ft']]],['deck','Deck',[['0','None'],['200','200 sq ft'],['400','400 sq ft']]],
+     ['fence','Fence',[['0','None'],['100','100 ft'],['200','200 ft']]],['driveway','Driveway',NO_YES('New driveway')],
+     ['outkitchen','Outdoor kitchen',NO_YES('Add one')],['pool','Pool',NO_YES('Add a pool & spa')]],
+  lines(s,a){const o=[];if(a.landscape==='yes')o.push(L('landscape',s));if(a.irrigation==='yes')o.push(L('irrigation',s));
+    if(+a.patio)o.push(L('patio',+a.patio));if(+a.deck)o.push(L('deck',+a.deck));if(+a.fence)o.push(L('fence',+a.fence));
+    if(a.driveway==='yes')o.push(L('driveway',400));if(a.outkitchen==='yes')o.push(L('outkitchen',1));if(a.pool==='yes')o.push(L('pool',1));return o}},
+ {id:'structural',name:'Foundation & structure',blurb:'Seismic, foundation, open walls',main:'seismic',size:null,
+  q:[['seismic','Seismic retrofit',YES_NO('Bolt & brace')],['foundation','Foundation repair',[['0','None'],['20','20 ft'],['40','40 ft'],['80','80 ft']]],
+     ['wall','Open up a wall',[['none','No'],['non','Remove a non-bearing wall'],['bearing','Open a load-bearing wall']]]],
+  lines(s,a){const o=[];if(a.seismic==='yes')o.push(L('seismic',1));if(+a.foundation)o.push(L('foundation',+a.foundation));
+    if(a.wall==='non')o.push(L('wallremove',1));if(a.wall==='bearing')o.push(L('beamwall',1));return o}},
+ {id:'interior',name:'Interior carpentry',blurb:'Drywall, doors, trim, closets, stairs',main:'intdoors',size:HOME,
+  q:[['drywall','Drywall repair or new walls',[['0','None'],['100','100 sq ft'],['300','300 sq ft'],['600','600 sq ft']]],
+     ['doors','Interior doors',[['0','None'],['4','4'],['8','8'],['12','12']]],['trim','Baseboards',YES_NO('New baseboards throughout')],
+     ['closets','Closet systems',[['0','None'],['1','1'],['2','2'],['3','3']]],['stairs','Staircase',NO_YES('New treads & railing')],
+     ['fireplace','Fireplace',NO_YES('Reface it')],['sky','Skylights',[['0','None'],['1','1'],['2','2']]]],
+  lines(s,a){const o=[];if(+a.drywall)o.push(L('drywall',+a.drywall));if(+a.doors)o.push(L('intdoors',+a.doors));if(a.trim==='yes')o.push(L('trim',s*0.35));
+    if(+a.closets)o.push(L('closets',+a.closets));if(a.stairs==='yes')o.push(L('stairs',1));if(a.fireplace==='yes')o.push(L('fireplace',1));if(+a.sky)o.push(L('skylight',+a.sky));return o}},
+ {id:'laundry',name:'Laundry & garage',blurb:'Laundry room, epoxy floor, storage',main:'laundry',size:{label:'Garage size',unit:'sq ft',def:400,min:0,max:1500},
+  q:[['laundry','Laundry room',NO_YES('Build out a laundry room')],['epoxy','Garage floor',YES_NO('Epoxy coating')],['storage','Storage',NO_YES('Cabinets & wall storage')]],
+  lines(s,a){const o=[];if(a.laundry==='yes')o.push(L('laundry',1));if(a.epoxy==='yes'&&s)o.push(L('garagefloor',s));if(a.storage==='yes')o.push(L('garagestor',1));return o}},
+ {id:'siding',name:'Siding & stucco',blurb:'Repair, recoat or reside the outside',main:'siding',size:HOME,
+  q:[['stories','Stories',[['1','1 story'],['2','2 stories']]],
+     ['wall','Exterior walls',[['stucco','Repair & recoat stucco'],['siding','New fiber-cement siding']]],
+     ['paint','Paint',YES_NO('Paint the outside')],['gutters','Gutters',NO_YES('New gutters')]],
+  lines(s,a){const w=wallArea(s,+a.stories),o=[L(a.wall==='siding'?'siding':'stucco',w)];if(a.paint==='yes')o.push(L('extpaint',w));
+    if(a.gutters==='yes')o.push(L('gutters',4*Math.sqrt(s/+a.stories)*1.15));return o}},
+ {id:'fire',name:'Fire hardening',blurb:'Ember-proof vents, glass, roof',main:'vents',size:HOME,
+  q:[['stories','Stories',[['1','1 story'],['2','2 stories']]],['vents','Vents',YES_NO('Ember-resistant vents')],
+     ['guards','Gutters',YES_NO('Metal gutter guards')],['zone0','Next to the house',YES_NO('Clear the 5-ft zone')],
+     ['windows','Windows',NO_YES('Tempered dual-pane windows')],['roof','Roof',NO_YES('New Class A roof')],['deck','Deck',NO_YES('Enclose under the deck')]],
+  lines(s,a){const foot=s/+a.stories,o=[];if(a.vents==='yes')o.push(L('vents',Math.max(8,Math.round(s/130))));
+    if(a.guards==='yes')o.push(L('gutterguard',4*Math.sqrt(foot)*1.15));if(a.zone0==='yes')o.push(L('zone0',1));
+    if(a.windows==='yes')o.push(L('windows',Math.round(s/110),1,'Tempered dual-pane windows'));if(a.roof==='yes')o.push(L('roof',foot*1.25,1,'Class A roof replacement'));
+    if(a.deck==='yes')o.push(L('underdeck',1));return o}},
+ {id:'solar',name:'Solar + battery',blurb:'Panels, backup battery, EV',main:'battery',size:null,
+  q:[['kw','Solar system',[['6','6 kW'],['8','8 kW'],['10','10 kW'],['0','No solar']]],['batt','Battery backup',[['1','1 battery'],['2','2 batteries'],['0','No battery']]],
+     ['panel','Electrical panel',NO_YES('Upgrade to 200 A')],['ev','EV charger',NO_YES('Add one')]],
+  lines(s,a){const o=[];if(+a.kw)o.push(L('solar',+a.kw));if(+a.batt)o.push(L('battery',+a.batt));if(a.panel==='yes')o.push(L('panel',1));if(a.ev==='yes')o.push(L('ev',1));return o}},
+ {id:'jadu',name:'JADU (unit inside the house)',blurb:'Rentable suite, no new building',main:'cabinets',size:{label:'Space to convert (max 500)',unit:'sq ft',def:300,min:150,max:500},
+  q:[['bath','Bathroom',[['share','Shares a bathroom in the house'],['own','Gets its own new bathroom']]],
+     ['entry','Outside entrance',[['new','Cut a new door in'],['existing','Use an existing door']]]],
+  // compact appliances and half a kitchen rough-in are estimates; LA permits for JADUs run about $42k–50k (2026)
+  lines(s,a){const o=[L('kdemo',1,0.5,'Plumbing & electrical for the kitchenette'),L('cabinets',8),L('counters',18),L('ksink',1),L('appliances',1,0.35,'Compact appliances'),
+      L('intpaint',s),L('lvp',s),L('outlets',6),L('recessed',6)];
+    if(a.entry==='new')o.push(L('wallremove',1,1,'Frame a new exterior opening'),L('entry',1,1,'Exterior entrance door'));if(a.bath==='own')o.push(L('newbath',1));return o}},
+ {id:'termite',name:'Termite & dry rot',blurb:'Tenting, spot treatment, rot repair',main:'tenting',size:HOME,
+  q:[['treat','Termites',[['tent','Tent the whole house'],['spot','Spot treatment'],['none','No treatment']]],
+     ['rot','Rotted eaves, fascia or trim',[['0','None'],['20','20 ft'],['50','50 ft'],['100','100 ft']]],
+     ['big','Larger rot (sills, posts, subfloor)',NO_YES('Repair it')]],
+  lines(s,a){const o=[];if(a.treat==='tent')o.push(L('tenting',s));if(a.treat==='spot')o.push(L('spottreat',1));if(+a.rot)o.push(L('rotlf',+a.rot));if(a.big==='yes')o.push(L('rotbig',1));return o}},
+ {id:'retaining',name:'Retaining walls & drainage',blurb:'Hillside walls, French drains',main:'retwall',size:{label:'Wall length',unit:'ft',def:40,min:0,max:400},
+  q:[['height','Wall height',[['3','Up to 3 ft'],['4','4 ft'],['6','6 ft (engineered)']]],['drain','Drain behind the wall',YES_NO('Add a French drain')],
+     ['yard','Yard drainage',[['0','None'],['50','50 ft of French drain'],['100','100 ft of French drain']]]],
+  lines(s,a){const o=[];if(s){const ht=+a.height;o.push(ht>4?L('retwalleng',s*ht):L('retwall',s*ht));if(a.drain==='yes')o.push(L('frenchdrain',s,1,'French drain behind the wall'))}
+    if(+a.yard)o.push(L('frenchdrain',+a.yard,1,'Yard French drain'));return o}},
+ {id:'pool',name:'Pool remodel',blurb:'Resurface, equipment, saltwater',main:'replaster',size:null,
+  q:[['surface','Pool surface',[['yes','Resurface the pool'],['no','Keep the surface']]],['pump','Pump',YES_NO('Variable-speed pump')],
+     ['filter','Filter',NO_YES('New filter')],['heater','Heater',NO_YES('New pool heater')],['salt','Saltwater',NO_YES('Convert to saltwater')]],
+  lines(s,a){const o=[];if(a.surface==='yes')o.push(L('replaster',1));if(a.pump==='yes')o.push(L('poolpump',1));if(a.filter==='yes')o.push(L('poolfilter',1));
+    if(a.heater==='yes')o.push(L('poolheater',1));if(a.salt==='yes')o.push(L('saltwater',1));return o}},
+ {id:'access',name:'Aging in place',blurb:'Grab bars, walk-in shower, ramps',main:'curbless',size:null,
+  q:[['grab','Grab bars',[['2','2 grab bars'],['4','4 grab bars'],['6','6 grab bars'],['0','None']]],['shower','Shower',NO_YES('Curbless walk-in shower')],['tub','Tub',NO_YES('Walk-in tub')],
+     ['toilet','Toilet',NO_YES('Comfort-height toilet')],['doors','Widen doorways',[['0','None'],['1','1'],['2','2'],['3','3']]],
+     ['ramp','Entry',NO_YES('Wheelchair ramp')],['lift','Stairs',NO_YES('Stair lift')]],
+  lines(s,a){const o=[];if(+a.grab)o.push(L('grabbar',+a.grab));if(a.shower==='yes')o.push(L('curbless',1));if(a.tub==='yes')o.push(L('walkintub',1));
+    if(a.toilet==='yes')o.push(L('comforttoilet',1));if(+a.doors)o.push(L('widendoor',+a.doors));if(a.ramp==='yes')o.push(L('ramp',1));if(a.lift==='yes')o.push(L('stairlift',1));return o}},
+ {id:'whole',name:'Whole-home remodel',blurb:'Many rooms at once',main:'intpaint',size:HOME,
+  q:[['scope','How much',[['refresh','Refresh: paint, floors, trim, doors'],['full','Full: also kitchen, baths, lighting, panel']]],
+     ['baths','Bathrooms',[['1','1'],['2','2'],['3','3']],a=>a.scope==='full']],
+  lines(s,a){const o=[L('intpaint',s),L('lvp',s*0.6),L('trim',s*0.6),L('intdoors',Math.max(6,Math.round(s/200)))];
+    if(a.scope==='full'){const n=+a.baths;o.push(...JOBS[0].lines(150,{layout:'same',cabinets:'new',counters:'new',appliances:'new',island:'no',floor:'no'}),
+      ...JOBS[1].lines(50,{count:String(n),shower:'tile',layout:'same',vanity:'single'}),L('recessed',20),L('panel',1))}return o}}
+];
+const JOB=Object.fromEntries(JOBS.map(j=>[j.id,j]));
+const answers=(job,a)=>Object.fromEntries(job.q.map(([id,,opts])=>[id,a&&a[id]!=null&&opts.some(o=>o[0]===a[id])?a[id]:opts[0][0]]));
+
+/* ---------- state ---------- */
+let S;try{S=JSON.parse(localStorage.getItem('hrg-est-v4'))}catch(e){}
+if(!S||!S.cur||!JOB[S.cur.job])S={model:'ranch',region:'central',year:1965,cur:{job:'kitchen',size:150,a:{},tier:1,from3d:null,edit:null},basket:[],next:1};
+const save=()=>{try{localStorage.setItem('hrg-est-v4',JSON.stringify(S))}catch(e){}};
+const $=id=>document.getElementById(id);
+const usd=n=>'$'+Math.round(n).toLocaleString('en-US');
+const k=n=>n>=1e6?'$'+(n/1e6).toFixed(2)+'M':n>=1e4?'$'+Math.round(n/1e3)+'k':usd(n);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const regionMult=()=>area().f;
+
+/* ---------- pricing ---------- */
+function priceEntry(e){const job=JOB[e.job],a=answers(job,e.a),m=regionMult();
+  return job.lines(job.size?+e.size||0:0,a).filter(l=>l.qty>0).map(l=>{const it=ITEMS[l.id];return Object.assign({},l,{cost:l.qty*it.p[e.tier]*l.mult*m,permit:it.permit,zone:it.zone})})}
+// work that needs drawn plans (plan check); everything else permitted rides on an over-the-counter or express permit
+const PLAN_JOBS=['addition','garage','adu','jadu'],PLAN_ITEMS=['beamwall','wallremove','retwalleng','foundation','newbath','curbless','widendoor','ramp','story2'];
+const DEMO_SAFE=['seismic','foundation','retwall','retwalleng','frenchdrain','tenting','spottreat'];
+function totals(entries){let build=0,permitted=0,planned=0,newSpace=0,interior=false;const per=[];
+  entries.forEach(e=>{const ls=priceEntry(e),c=ls.reduce((s,l)=>s+l.cost,0);per.push({e,ls,cost:c});build+=c;
+    ls.forEach(l=>{if(l.permit){permitted+=l.cost;if(PLAN_JOBS.includes(e.job)||PLAN_ITEMS.includes(l.id)||(['kdemo','bdemo'].includes(l.id)&&l.mult>1))planned+=l.cost}
+      if(NEW_SPACE.includes(l.id))newSpace+=l.cost;if(['interior','kitchen','bath','structure'].includes(l.zone)&&!DEMO_SAFE.includes(l.id))interior=true})});
+  const soft=[];
+  if(planned>0)soft.push(['Design, drafting & engineering',Math.max(2500,newSpace*0.07+(planned-newSpace)*0.05)]);
+  if(permitted>0)soft.push([planned>0?'Permits & plan check':'Permits (over the counter)',Math.max(planned>0?600:300,permitted*0.02)]);
+  if(build>0)soft.push(['Site protection, haul-away & cleanup',Math.max(750,build*0.03)]);
+  if(build>0&&+S.year<1978&&interior)soft.push(['Lead & asbestos testing (pre-1978 home)',1050]);
+  const sub=build+soft.reduce((s,x)=>s+x[1],0),cont=sub*0.10;return{per,build,permitted,planned,soft,cont,total:sub+cont}}
+function weeks(r){if(!r.build)return[];const ph=[];
+  if(r.planned>0){ph.push(['Design & engineering',r.planned>150000?6:r.planned>40000?4:2]);ph.push(['City plan check & permits',r.planned>150000?10:r.planned>40000?6:2])}
+  else ph.push([r.permitted>0?'Selections & online permit':'Selections & ordering',1]);
+  ph.push(['Demo & prep',r.build>150000?2:1]);
+  // LA benchmarks: full kitchen 8–16 wk, gut bath 3–5 wk; cosmetic work (paint, floors) moves faster
+  ph.push(['Construction',Math.max(1,Math.min(40,Math.round(r.planned>0?3+r.build/10000:r.build/12000)))]);
+  ph.push(['Inspections & punch list',r.planned>0?2:1]);return ph}
+const range=t=>`${k(t*0.9)} – ${k(t*1.15)}`;
+function describe(e){const job=JOB[e.job],a=answers(job,e.a),bits=[];
+  if(job.size)bits.push(`${(+e.size||0).toLocaleString('en-US')} ${job.size.unit}`);
+  job.q.forEach(([id,,opts,show])=>{if(show&&!show(a))return;const o=opts.find(x=>x[0]===a[id]);if(o&&o[0]!=='no'&&o[0]!=='0'&&o[0]!=='none'&&o[0]!=='keep')bits.push(o[1])});
+  bits.push(TIERS[e.tier].n+' finish');return bits.join(' · ')}
+
+/* ---------- step 1: job grid ---------- */
+function renderJobs(){const inB=new Set(S.basket.map(b=>b.job));
+  $('jobs').innerHTML=JOBS.map(j=>`<button type="button" class="job" data-j="${j.id}" aria-pressed="${j.id===S.cur.job}"><strong>${j.name}</strong><small>${j.blurb}</small>${inB.has(j.id)?'<span class="in">In your estimate</span>':''}</button>`).join('')}
+function startJob(id,size,preset,from3d){const j=JOB[id];S.cur={job:id,size:size!=null?Math.round(size):(j.size?j.size.def:0),a:preset||{},tier:S.cur.tier,from3d:from3d||null,edit:null};render();
+  const p=$('jobpanel');if(p.getBoundingClientRect().top>innerHeight*0.6||p.getBoundingClientRect().top<0)p.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})}
+
+/* ---------- step 2: size + details + this job's price ---------- */
+function renderPanel(){const c=S.cur,job=JOB[c.job],a=answers(job,c.a);
+  const sz=job.size?`<div class="size"><label for="sz">${job.size.label}<input id="sz" class="num" type="number" inputmode="numeric" min="${job.size.min}" max="${job.size.max}" value="${+c.size||''}"></label><span class="u">${job.size.unit}</span>${c.from3d?`<span class="from3d">${esc(c.from3d)}</span>`:''}</div>${sizePresets(job).length?`<div class="chips" role="group" aria-label="Common sizes">${sizePresets(job).map(([v,l])=>`<button type="button" class="chip sm" data-size="${v}" aria-pressed="${+c.size===v}">${l}</button>`).join('')}</div>`:''}`:'';
+  const qs=job.q.filter(q=>!q[3]||q[3](a)).map(([id,label,opts])=>`<div class="q"><span id="q-${id}">${label}</span><div class="chips" role="group" aria-labelledby="q-${id}">${opts.map(([v,l])=>`<button type="button" class="chip" data-q="${id}" data-v="${v}" aria-pressed="${a[id]===v}">${l}</button>`).join('')}</div></div>`).join('');
+  const g=GUIDE[job.id]||{},note=g.tiers?'':ITEMS[job.main].note;
+  const list=xs=>`<ul>${xs.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`;
+  $('jobpanel').innerHTML=`<div><p class="eyebrow">Step 2 · ${job.name}</p><h2 id="h-detail">${job.size?'How big is it, and what are you changing?':'What are you changing?'}</h2></div>
+    ${sz}${qs?`<div class="qs">${qs}</div>`:''}
+    <div class="q"><span>Finish level <small class="hintx">price for this job at each level</small></span><div class="tiers">${TIERS.map((t,i)=>`<button type="button" class="tier" data-t="${i}" aria-pressed="${c.tier===i}"><strong>${t.n} <span class="tp num" id="tp-${i}"></span></strong><small>${esc(g.tiers?g.tiers[i]:t.d)}</small></button>`).join('')}</div>${note?`<p class="tiernote">${esc(note)}</p>`:''}</div>
+    <div class="preview" id="preview"></div>
+    ${["adu","jadu","garage"].includes(job.id)?`<div class="payback"><span class="eyebrow">Rental payback</span><div class="pb-row"><label for="pb-rent">Expected monthly rent<input id="pb-rent" class="num" type="number" min="0" step="50" inputmode="numeric" placeholder="e.g. 2500" value="${S.rent&&S.rent[job.id]||""}"></label><label for="pb-exp">Costs (tax, insurance, upkeep)<select id="pb-exp"><option value="0.2">20% of rent</option><option value="0.3" selected>30% of rent</option><option value="0.4">40% of rent</option></select></label></div><p class="pb-out" id="pb-out">Enter the rent you expect to see how long the unit takes to pay for itself.</p><p class="note">Check rents for similar units nearby. Payback ignores loan interest and rising rents.</p></div>`:""}
+    ${g.incl?`<div class="guide">
+      <div class="facts"><div><span class="eyebrow">Permit</span><p>${esc(g.permit)}</p></div><div><span class="eyebrow">Typical time</span><p>${esc(g.time)}</p></div>${g.roi?`<div><span class="eyebrow">Resale value</span><p>${esc(g.roi)}</p></div>`:""}${(()=>{const rb=(typeof REBATES!=='undefined'?localRebates():[]).filter(r=>r.jobs.includes(job.id)&&r.st!=='closed');return rb.length?`<div><span class="eyebrow">Rebates & rules</span><p>${rb.map(r=>esc(r.n+': '+r.amt)).join(' · ')} <a href="#rebates">See all</a></p></div>`:''})()}</div>
+      <details open><summary>What's included</summary>${list(g.incl)}</details>
+      <details><summary>Not included</summary>${list(g.excl)}</details>
+      <details><summary>Good to know</summary>${list(g.tips)}</details></div>`:''}`;
+  const inp=$('sz');if(inp)inp.addEventListener('input',e=>{S.cur.size=e.target.value===''?0:Math.max(0,+e.target.value);S.cur.from3d=null;save();renderPreview()});
+  const pr=$("pb-rent");if(pr){const go=()=>{S.rent=S.rent||{};S.rent[job.id]=+pr.value||0;save();renderPayback()};pr.addEventListener("input",go);$("pb-exp").addEventListener("change",renderPayback)}
+  renderPreview()}
+function renderPayback(){const pr=$("pb-rent"),out=$("pb-out");if(!pr||!out)return;const rent=+pr.value||0,exp=+$("pb-exp").value,t=totals([S.cur]).total;
+  if(!rent||!t){out.textContent="Enter the rent you expect to see how long the unit takes to pay for itself.";return}
+  const net=rent*12*(1-exp),yrs=t/net;out.innerHTML=`About <b>${usd(net)}</b> a year after costs. The most likely cost of ${usd(t)} pays back in about <b>${yrs<1?"under a year":yrs.toFixed(1)+" years"}</b>.`}
+function renderPreview(){const c=S.cur,job=JOB[c.job],r=totals([c]),ls=r.per[0].ls,el=$('preview');if(!el)return;
+  const tooSmall=job.size&&(+c.size||0)<job.size.min;
+  renderPayback();TIERS.forEach((t,i)=>{const s=$('tp-'+i);if(s)s.textContent=ls.length&&!tooSmall?k(totals([Object.assign({},c,{tier:i})]).total):''});
+  if(!ls.length||tooSmall){el.innerHTML=`<p class="empty">${tooSmall?`Enter a size of at least ${job.size.min} ${job.size.unit}.`:'Pick at least one thing to change.'}</p>`;return}
+  const extra=r.soft.reduce((s,x)=>s+x[1],0)+r.cont;
+  el.innerHTML=`<div class="pv-top"><span class="eyebrow">This job</span><span class="pv-price num">${range(r.total)}</span></div>
+    <dl class="incl num">${ls.map(l=>`<dt>${esc(l.label)}</dt><dd>${usd(l.cost)}</dd>`).join('')}<dt>Permits, design, cleanup & 10% contingency</dt><dd>${usd(extra)}</dd></dl>
+    <div class="row-btns"><button type="button" class="btn" id="addjob">${c.edit?'Update this job':'Add to my estimate'}</button>${c.edit?'<button type="button" class="btn ghost" id="canceledit">Cancel</button>':''}</div>`;
+  $('addjob').addEventListener('click',addJob);if($('canceledit'))$('canceledit').addEventListener('click',()=>{S.cur.edit=null;render()})}
+function addJob(){const c=S.cur,entry={id:c.edit||S.next++,job:c.job,size:+c.size||0,a:answers(JOB[c.job],c.a),tier:c.tier};
+  const i=S.basket.findIndex(b=>b.id===entry.id);if(i>=0)S.basket[i]=entry;else S.basket.push(entry);S.cur.edit=null;render();
+  if(matchMedia('(max-width:980px)').matches)$('estimate').scrollIntoView({behavior:'smooth',block:'start'})}
+
+/* ---------- right: the running estimate ---------- */
+function renderEstimate(){const r=totals(S.basket);
+  $('basket').innerHTML=r.per.length?r.per.map(({e,cost})=>`<div class="bk"><b>${JOB[e.job].name}</b><span class="num">${k(cost)}</span><small>${esc(describe(e))}</small>
+    <div class="acts"><button type="button" class="linkbtn" data-edit="${e.id}">Change</button><button type="button" class="linkbtn" data-del="${e.id}">Remove</button></div></div>`).join(''):'<p class="empty">No jobs yet. Pick one on the left and choose "Add to my estimate".</p>';
+  if(!r.build){$('e-range').textContent='$0';$('e-mid').textContent='Add a job to start.';$('m-total').textContent='$0'}
+  else{$('e-range').innerHTML=`${k(r.total*0.9)} <small>to</small> ${k(r.total*1.15)}`;$('e-mid').textContent=`Most likely ${usd(r.total)} · ${r.per.length} job${r.per.length>1?'s':''}`;$('m-total').textContent=range(r.total)}
+  $('e-soft').innerHTML=r.build?[['Construction',r.build],...r.soft,['Contingency (10%)',r.cont]].map(([a,b])=>`<span>${a}</span><span>${usd(b)}</span>`).join('')+`<span class="tot">Estimated total</span><span>${usd(r.total)}</span>`:'<span>Construction</span><span>$0</span>';
+  const ph=weeks(r),tw=ph.reduce((s,p)=>s+p[1],0);let at=0;
+  $('e-gantt').innerHTML=ph.length?ph.map(([n,w])=>{const s=`<div class="g-row"><span>${n} · ${w} wk</span><div class="g-track"><div class="g-bar${n==='Construction'?' c':''}" style="left:${at/tw*100}%;width:${Math.max(2,w/tw*100)}%"></div></div></div>`;at+=w;return s}).join('')+
+    `<div class="g-total">About ${tw} weeks from signing to final inspection${tw>8?' (≈ '+Math.round(tw/4.33)+' months)':''}</div>`:'<p class="empty">Your timeline appears here.</p>';
+  renderLead(r);if(window.__finReady){syncFinance();renderPopular()}}
+$('basket').addEventListener('click',e=>{const ed=e.target.closest('[data-edit]'),del=e.target.closest('[data-del]');
+  if(ed){const b=S.basket.find(x=>x.id===+ed.dataset.edit);if(!b)return;S.cur={job:b.job,size:b.size,a:Object.assign({},b.a),tier:b.tier,from3d:null,edit:b.id};render();$('jobpanel').scrollIntoView({behavior:'smooth',block:'start'})}
+  if(del){S.basket=S.basket.filter(x=>x.id!==+del.dataset.del);if(S.cur.edit===+del.dataset.del)S.cur.edit=null;render()}});
+
+/* ---------- send to HRG ---------- */
+let LEAD={state:'form',msg:''};
+function summaryText(r){const reg=area().name;
+  const t=[`HRG remodel estimate — ${reg}, built ${S.year}`,''];r.per.forEach(({e,cost})=>t.push(`${JOB[e.job].name}: ${describe(e)} — about ${usd(cost)}`));
+  t.push('',`Construction: ${usd(r.build)}`);r.soft.forEach(s=>t.push(`${s[0]}: ${usd(s[1])}`));
+  t.push(`Contingency (10%): ${usd(r.cont)}`,`ESTIMATED TOTAL: ${usd(r.total)} (range ${usd(r.total*0.9)} – ${usd(r.total*1.15)})`);
+  const w=weeks(r).reduce((s,p)=>s+p[1],0);if(w)t.push(`Timeline: about ${w} weeks`);return t.join('\n')}
+function renderLead(r){const el=$('lead');
+  if(LEAD.state==='sent'){el.innerHTML=`<p class="eyebrow">Sent</p><p class="msg ok">${esc(LEAD.msg)}</p><button type="button" class="linkbtn" id="lead-again">Send another request</button>`;
+    $('lead-again').addEventListener('click',()=>{LEAD={state:'form',msg:''};renderLead(totals(S.basket))});return}
+  if(LEAD.state==='fallback'){el.innerHTML=`<p class="eyebrow">Send it to HRG</p><p class="msg">${esc(LEAD.msg)}</p>
+    <button type="button" class="btn" id="copy">Copy my estimate</button><p class="msg" id="copied"></p>
+    <div class="mail">Email it to <b>sales@hrgprefab.com</b> or call <b>213.216.4416</b></div>`;
+    $('copy').addEventListener('click',()=>copyText(summaryText(totals(S.basket))));return}
+  const d=LEAD.draft||{};
+  el.innerHTML=`<p class="eyebrow">Get a firm quote</p><form class="form" id="leadform" novalidate>
+    <label for="l-name">Name<input id="l-name" autocomplete="name" required value="${esc(d.name||'')}"></label>
+    <div class="two"><label for="l-phone">Phone<input id="l-phone" type="tel" autocomplete="tel" required value="${esc(d.phone||'')}"></label>
+    <label for="l-email">Email<input id="l-email" type="email" autocomplete="email" required value="${esc(d.email||'')}"></label></div>
+    <label for="l-addr">Property address<input id="l-addr" autocomplete="street-address" value="${esc(d.addr||'')}"></label>
+    <div class="two"><label for="l-time">Best time to reach you<select id="l-time">${['Any time','Morning','Afternoon','Evening'].map(t=>`<option${d.time===t?' selected':''}>${t}</option>`).join('')}</select></label>
+    <label for="l-lang">Language<select id="l-lang">${['English','Español'].map(t=>`<option${d.lang===t?' selected':''}>${t}</option>`).join('')}</select></label></div>
+    <div class="two"><label for="l-when">When do you want to start?<select id="l-when">${['As soon as possible','In 1–3 months','In 3–6 months','6+ months','Just researching'].map(t=>`<option${d.when===t?' selected':''}>${t}</option>`).join('')}</select></label>
+    <label for="l-src">How did you hear about us?<select id="l-src">${['','Google','Referral from a friend','Social media','Yard sign or truck','Repeat client','Other'].map(t=>`<option value="${t}"${d.src===t?' selected':''}>${t||'Choose one'}</option>`).join('')}</select></label></div>
+    <label class="hp" aria-hidden="true">Website<input id="l-hp" name="website" tabindex="-1" autocomplete="off" value=""></label>
+    <label for="l-notes">Anything else we should know?<textarea id="l-notes">${esc(d.notes||'')}</textarea></label>
+    <label class="consent" for="l-ok"><input type="checkbox" id="l-ok"${d.ok?' checked':''}> HRG may call, text or email me about this project.</label>
+    <button class="btn" type="submit"${r.build?'':' disabled'}>Send my estimate to HRG</button>
+    ${r.build?'':'<p class="note">Add at least one job first.</p>'}<p class="msg bad" id="l-err">${esc(LEAD.msg)}</p></form>`;
+  const keep=()=>{LEAD.draft={name:$('l-name').value,phone:$('l-phone').value,email:$('l-email').value,addr:$('l-addr').value,time:$('l-time').value,lang:$('l-lang').value,when:$('l-when').value,src:$('l-src').value,notes:$('l-notes').value,ok:$('l-ok').checked,hp:$('l-hp').value}};
+  $('leadform').addEventListener('input',keep);$('leadform').addEventListener('change',keep);
+  $('leadform').addEventListener('submit',async ev=>{ev.preventDefault();keep();const f=LEAD.draft,err=$('l-err');
+    const phoneOk=(f.phone.match(/\d/g)||[]).length>=10,emailOk=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email);
+    if(!f.name.trim()||!phoneOk||!emailOk){err.textContent='Add your name, a 10-digit phone number and a valid email so HRG can reach you.';return}
+    if(!f.ok){err.textContent='Tick the box so HRG can contact you about this project.';return}
+    const btn=ev.target.querySelector('button[type=submit]');btn.disabled=true;btn.textContent='Sending…';err.textContent='';
+    const t=totals(S.basket);
+    const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),20000);
+    try{const res=await fetch('/api/estimate-lead',{method:'POST',headers:{'content-type':'application/json'},signal:ctl.signal,body:JSON.stringify({
+        name:f.name.trim(),phone:f.phone.trim(),email:f.email.trim(),address:f.addr.trim(),bestTime:f.time,language:f.lang,startWhen:f.when,source:f.src,notes:f.notes.trim(),consent:f.ok,website:f.hp||'',
+        region:area().name,yearBuilt:+S.year||null,total:Math.round(t.total),low:Math.round(t.total*0.9),high:Math.round(t.total*1.15),
+        jobs:t.per.map(({e,cost})=>({id:e.job,job:JOB[e.job].name,size:JOB[e.job].size?+e.size||0:null,unit:JOB[e.job].size?JOB[e.job].size.unit:null,details:describe(e),cost:Math.round(cost)})),
+        summary:summaryText(t)})});
+      const out=await res.json().catch(()=>null);
+      if(!res.ok||!out||out.ok!==true)throw new Error('not sent');
+      LEAD={state:'sent',msg:`Thanks, ${f.name.trim().split(' ')[0]}. HRG has your estimate and will contact you to set up a site visit.`}}
+    catch(e){LEAD={state:'fallback',msg:"We couldn't send your request just now. Copy your estimate and email it to HRG, or give us a call, and we'll take it from there."}}
+    finally{clearTimeout(timer)}
+    renderLead(totals(S.basket))})}
+function copyText(t){const done=()=>{$('copied').textContent='Copied. Paste it into an email to sales@hrgprefab.com.'};
+  const fb=()=>{let ta=document.querySelector('textarea.fallback');if(!ta){ta=document.createElement('textarea');ta.className='fallback';ta.readOnly=true;$('copied').after(ta)}
+    ta.value=t;ta.focus();ta.select();$('copied').textContent='Select all of the text below and copy it.'};
+  try{navigator.clipboard.writeText(t).then(done,fb)}catch(e){fb()}}
+
+/* ---------- 3D: tapping a part opens the matching job ---------- */
+function jobFor(key){const mm=V.mm,house=mm.house,st=String(mm.st);
+  if(key.startsWith('room:')){const r=mm.R.find(x=>x.id===key.slice(5));if(!r)return null;const tag=`${r.name} · ${r.sf} sq ft, measured on the house`;
+    if(V.mode==='elec')return['electrical',house,{panel:'no',lights:r.sf>300?'12':'6'},`${r.name} wiring`];
+    if(V.mode==='plumb')return['plumbing',house,{},`${r.name} plumbing`];
+    if(V.mode==='hvac')return['hvac',house,{system:'mini',zones:'1'},`${r.name} heating & cooling`];
+    if(r.type==='kitchen')return['kitchen',r.sf,{},tag];
+    if(r.type==='bath'||r.type==='powder')return['bathroom',r.sf,{count:'1'},tag];
+    if(r.type==='laundry')return['plumbing',house,{repipe:'no',heater:'yes'},'Laundry room'];
+    if(r.type==='garage')return['garage',r.sf,{},tag];
+    return['flooring',r.sf,{material:r.type==='bed'?'carpet':'hardwood'},tag]}
+  const sl=mm.sewer>80?'100':mm.sewer>50?'60':'40';
+  return({roof:['roofing',house,{stories:st},'Roof'],solar:['solar',null,{},'Solar panels'],
+    extwall:['painting',house,{where:'outside',stories:st},'Exterior walls'],window:['windows',mm.windows,{},`${mm.windows} windows on this house`],
+    entry:['windows',0,{entry:'yes'},'Front door'],slider:['windows',0,{patio:'yes'},'Patio door'],garagedoor:['windows',0,{garage:'yes'},'Garage door'],
+    foundation:['structural',null,{},'Foundation'],ground:['outdoor',mm.yard,{},`Yard · ${mm.yard.toLocaleString('en-US')} sq ft`],
+    driveway:['outdoor',mm.yard,{landscape:'no',irrigation:'no',driveway:'yes'},'Driveway'],patio:['outdoor',mm.yard,{landscape:'no',irrigation:'no',patio:'400'},'Back patio'],
+    condenser:['hvac',house,{},'AC unit'],ducts:['hvac',house,{},'Furnace & ducts'],panel:['electrical',house,{},'Electrical panel'],ev:['electrical',house,{panel:'no',ev:'yes'},'EV charger'],
+    heater:['plumbing',house,{repipe:'no',heater:'yes'},'Water heater'],pipes:['plumbing',house,{},'Water lines'],sewer:['plumbing',house,{repipe:'no',sewer:'yes',sewerlen:sl},'Sewer line']})[key]||null}
+function applyMode(){if(!V.g)return;const cut=V.mode!=='outside',sys=['elec','plumb','hvac'].includes(V.mode),fl=V.floor;
+  [MAT.ext,MAT.int].forEach(mt=>{mt.transparent=sys;mt.opacity=sys?0.22:1;mt.depthWrite=!sys});
+  V.meshes.forEach(o=>{const u=o.userData,show=!cut||(u.level||0)<=fl;let v=true;
+    if(u.role==='roof'||u.role==='opening')v=!cut;
+    else if(u.role==='extwall'||u.role==='intwall'){v=show;o.scale.y=cut?0.33:1}
+    else if(u.role==='floor')v=show;
+    else if(u.role==='elec'||u.role==='plumb'||u.role==='hvac')v=u.role===V.mode&&show;
+    else if(u.role==='ground'){const t=V.mode==='plumb';o.material.transparent=t;o.material.opacity=t?0.35:1;o.material.depthWrite=!t}
+    o.visible=v});
+  render3DControls();paint3D()}
+function render3DControls(){const two=M().floors.length>1&&V.mode!=='outside';
+  $('floors').innerHTML=two?['Ground floor','Upstairs'].map((n,i)=>`<button type="button" data-f="${i}" aria-pressed="${V.floor===i}">${n}</button>`).join(''):'';
+  document.querySelectorAll('.mode').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===V.mode));
+  document.querySelectorAll('.model').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===S.model))}
+function pickAt(e){const rc=e.target.getBoundingClientRect(),p=new THREE.Vector2((e.clientX-rc.left)/rc.width*2-1,-(e.clientY-rc.top)/rc.height*2+1);
+  const ray=new THREE.Raycaster();ray.setFromCamera(p,V.cam);
+  const sys=['elec','plumb','hvac'].includes(V.mode),cand=V.pick.filter(o=>o.visible&&!(sys&&o.userData.role==='extwall'));
+  const hit=ray.intersectObjects(cand,false)[0];V.sel=hit?hit.object.userData.key:null;paint3D();
+  const j=V.sel&&jobFor(V.sel);if(j)startJob(j[0],j[1],j[2],j[3])}
+function paint3D(){if(!V.g)return;V.meshes.forEach(o=>{const mt=o.material;if(mt.emissive)mt.emissive.setHex(o.userData.key&&o.userData.key===V.sel?0x6a4500:0)})}
+function build3DControls(){
+  $('models').innerHTML=Object.entries(MODELS).map(([key,m])=>`<button type="button" class="model" data-k="${key}" aria-pressed="${key===S.model}">${m.name}</button>`).join('');
+  $('modes').innerHTML=MODES.map(([key,n,c])=>`<button type="button" class="mode" data-m="${key}" aria-pressed="${key===V.mode}" style="--dot:${c}"><i></i>${n}</button>`).join('');
+  $('models').addEventListener('click',e=>{const b=e.target.closest('.model');if(!b||b.dataset.k===S.model)return;S.model=b.dataset.k;V.floor=0;V.sel=null;save();
+    if(V.g)buildHouse();else render3DControls()});
+  $('modes').addEventListener('click',e=>{const b=e.target.closest('.mode');if(!b)return;V.mode=b.dataset.m;V.sel=null;if(V.g)applyMode();else render3DControls()});
+  $('floors').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(!b)return;V.floor=+b.dataset.f;V.sel=null;applyMode()})}
+
+/* ---------- wiring ---------- */
+function render(){save();renderJobs();renderPanel();renderEstimate()}
+$('jobs').addEventListener('click',e=>{const b=e.target.closest('.job');if(b)startJob(b.dataset.j)});
+$('jobpanel').addEventListener('click',e=>{const ch=e.target.closest('.chip'),t=e.target.closest('.tier');
+  if(ch){S.cur.a=Object.assign(answers(JOB[S.cur.job],S.cur.a),{[ch.dataset.q]:ch.dataset.v});render()}
+  if(t){S.cur.tier=+t.dataset.t;render()}
+  const sz=e.target.closest('[data-size]');if(sz){S.cur.size=+sz.dataset.size;S.cur.from3d=null;render()}});
+$('p-region').innerHTML=`<optgroup label="Los Angeles area, CA">${REGIONS.map(r=>`<option value="${r[0]}">${r[1]}</option>`).join('')}</optgroup>`+
+  Object.entries(STATES).sort((a,b)=>a[1].localeCompare(b[1])).map(([st,n])=>`<optgroup label="${n}">${AREAS.filter(a=>a[2]===st).map(a=>`<option value="${a[0]}">${a[1]}</option>`).join('')}</optgroup>`).join('');
+if(!LA_IDS.includes(S.region)&&!AREAS.some(a=>a[0]===S.region))S.region='central';$('p-region').value=S.region;$('p-year').value=S.year;
+$('p-region').addEventListener('change',e=>{S.region=e.target.value;save();renderPreview();renderEstimate();renderRebates();renderPermitPaths();renderPopular()});
+$('p-year').addEventListener('input',e=>{S.year=e.target.value;save();renderPreview();renderEstimate()});
+$('m-go').addEventListener('click',()=>$('estimate').scrollIntoView({behavior:'smooth'}));
+S.model=MODELS[S.model]?S.model:'ranch';
+build3DControls();init3D();render();
+$('rebate-list').addEventListener('click',e=>{const b=e.target.closest('[data-start]');if(b){startJob(b.dataset.start);$('plan').scrollIntoView({behavior:'smooth'})}});
+renderRebates();renderPermitPaths();
+
+/* ---------- popular LA projects at a glance ---------- */
+const POPULAR=[
+ ['Kitchen refresh','Same layout, new cabinets, quartz, appliances',{job:'kitchen',size:150,a:{},tier:1}],
+ ['Kitchen gut, new layout','Walls and plumbing move, island, premium finishes',{job:'kitchen',size:220,a:{layout:'move',island:'yes'},tier:2}],
+ ['Hall bathroom','New tile shower or tub, vanity, toilet',{job:'bathroom',size:50,a:{},tier:1}],
+ ['Primary bath','Walk-in shower, double vanity, upgraded tile',{job:'bathroom',size:100,a:{shower:'convert',vanity:'double'},tier:2}],
+ ['Whole-house vinyl plank','1,200 sq ft with new baseboards',{job:'flooring',size:1200,a:{},tier:1}],
+ ['Interior repaint','1,600 sq ft home, walls and ceilings',{job:'painting',size:1600,a:{},tier:1}],
+ ['New roof','1,600 sq ft one-story with gutters',{job:'roofing',size:1600,a:{},tier:1}],
+ ['Garage to rental unit','2-car garage with kitchen and bath',{job:'garage',size:400,a:{},tier:1}],
+ ['Backyard ADU','600 sq ft one-bedroom',{job:'adu',size:600,a:{},tier:1}],
+ ['JADU','300 sq ft suite, shares a bathroom',{job:'jadu',size:300,a:{},tier:1}],
+ ['Drought-tolerant yard','1,000 sq ft lawn replaced, drip irrigation',{job:'outdoor',size:1000,a:{},tier:1}],
+ ['Solar + battery','8 kW with one battery',{job:'solar',size:0,a:{kw:'8'},tier:1}],
+ ['Fire hardening basics','Vents, gutter guards, clear 5-ft zone',{job:'fire',size:1600,a:{},tier:1}],
+ ['Seismic bolt & brace','Raised-foundation retrofit',{job:'structural',size:0,a:{},tier:1}],
+ ['Heat pump upgrade','Central heat pump with new ducts',{job:'hvac',size:1600,a:{},tier:2}],
+ ['Whole-house repipe','1,600 sq ft, PEX',{job:'plumbing',size:1600,a:{},tier:1}]];
+function renderPopular(){$('pop-list').innerHTML=POPULAR.map(([t,d,e],i)=>{const r=totals([Object.assign({},e,{a:answers(JOB[e.job],e.a)})]);
+  return `<button type="button" class="pop" data-p="${i}"><span class="pop-t">${esc(t)}</span><span class="pop-d">${esc(d)}</span><span class="pop-r num">${range(r.total)}</span><span class="pop-go">Customize →</span></button>`}).join('')}
+$('pop-list').addEventListener('click',e=>{const b=e.target.closest('.pop');if(!b)return;const [,,p]=POPULAR[+b.dataset.p];
+  S.cur={job:p.job,size:p.size,a:Object.assign({},p.a),tier:p.tier,from3d:null,edit:null};render();$('jobpanel').scrollIntoView({behavior:'smooth',block:'start'})});
+renderPopular();
+/* ---------- financing calculator ---------- */
+const FIN={edited:false};
+function payment(p,apr,yrs){const n=yrs*12,r=apr/100/12;return p<=0?0:r===0?p/n:p*r/(1-Math.pow(1+r,-n))}
+function renderFinance(){const amt=Math.max(0,+$('fin-amt').value||0),down=Math.max(0,+$('fin-down').value||0),apr=Math.max(0,+$('fin-apr').value||0),yrs=+$('fin-yrs').value;
+  const p=Math.max(0,amt-down),m=payment(p,apr,yrs),tot=m*yrs*12;
+  $('fin-pay').textContent=usd(m)+'/mo';
+  $('fin-dl').innerHTML=`<dt>Amount borrowed</dt><dd>${usd(p)}</dd><dt>Interest over ${yrs} years</dt><dd>${usd(Math.max(0,tot-p))}</dd><dt>Total of payments</dt><dd>${usd(tot)}</dd>`}
+function syncFinance(force){if(FIN.edited&&!force)return;const t=totals(S.basket).total||totals([S.cur]).total;$('fin-amt').value=Math.round(t/500)*500;if(force)FIN.edited=false;renderFinance()}
+['fin-down','fin-apr','fin-yrs'].forEach(id=>$(id).addEventListener('input',renderFinance));
+$('fin-amt').addEventListener('input',()=>{FIN.edited=true;renderFinance()});
+$('fin-sync').addEventListener('click',()=>syncFinance(true));
+document.querySelector('.presets').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;
+  document.querySelectorAll('.presets .chip').forEach(x=>x.setAttribute('aria-pressed',x===b));$('fin-apr').value=b.dataset.apr;$('fin-yrs').value=b.dataset.yrs;renderFinance()});
+
+/* ---------- permits: per-job answer from the guide ---------- */
+$('perm-job').innerHTML=JOBS.map(j=>`<option value="${j.id}">${j.name}</option>`).join('');
+function renderPermit(){const id=$('perm-job').value,g=GUIDE[id]||{};
+  $('perm-out').innerHTML=`<p class="perm-ans">${esc(g.permit||'Ask HRG.')}</p><p class="note">Typical time: ${esc(g.time||'—')}</p><button type="button" class="linkbtn" data-start="${id}">Price this job</button>`}
+$('perm-job').addEventListener('change',renderPermit);
+$('perm-out').addEventListener('click',e=>{const b=e.target.closest('[data-start]');if(b){startJob(b.dataset.start);$('plan').scrollIntoView({behavior:'smooth'})}});
+
+/* ---------- planning checklist (kept on this device) ---------- */
+const CHECKS=['Write down what you want and why: must-haves vs. nice-to-haves.','Set a budget with 10–20% extra for surprises.','Take photos and rough measurements of every room involved.',
+ 'Check HOA rules, and whether your street is in a historic zone (HPOZ) with design review.','Find out if the work needs a permit (see the permit checker above).',
+ 'Built before 1978? Plan on lead and asbestos testing before demolition.','Verify the contractor\'s license with your state board (in California, cslb.ca.gov) and ask for proof of insurance.',
+ 'Get a written contract with scope, schedule and payment steps. In California a down payment for home improvement can\'t exceed 10% or $1,000, whichever is less.',
+ 'Order cabinets, windows and appliances early; lead times run 4–10 weeks.','Plan where you\'ll cook, shower or sleep during the work.','Let neighbors know about noise, parking and dumpster dates.',
+ 'Ask your utility (in Los Angeles: LADWP, SCE or SoCalGas) about rebates before you buy equipment.'];
+let CK={};try{CK=JSON.parse(localStorage.getItem('hrg-checks'))||{}}catch(e){}
+function renderChecks(){$('checks').innerHTML=CHECKS.map((c,i)=>`<li><label for="ck${i}"><input type="checkbox" id="ck${i}" data-i="${i}"${CK[i]?' checked':''}><span>${esc(c)}</span></label></li>`).join('')}
+$('checks').addEventListener('change',e=>{const i=e.target.dataset.i;if(i==null)return;CK[i]=e.target.checked;try{localStorage.setItem('hrg-checks',JSON.stringify(CK))}catch(x){}});
+
+/* ---------- FAQ ---------- */
+const FAQ=[
+ ['How accurate is this estimate?','It is a planning range based on 2025–2026 Los Angeles prices from licensed contractors, HRG\'s own project costs and published cost guides, adjusted to your location with regional construction cost indexes. Outside Southern California, treat it as a ballpark: local labor markets and codes can move prices more than an index shows. Most projects land inside the range. Hidden conditions (rot, old wiring, soil) and the exact products you choose move the final number, which HRG fixes after a site visit.'],
+ ['Why do you show a range instead of one price?','Two homes with the same square footage can differ a lot behind the walls. The range runs from 10% below to 15% above the most likely total, because surprises in remodeling tend to add cost rather than remove it.'],
+ ['What does the estimate include?','Materials, labor and sales tax for each line, plus design and engineering when a permit is needed, permit fees, site protection and cleanup, lead and asbestos testing for homes built before 1978, and a 10% contingency.'],
+ ['What isn\'t included?','Furniture, moving and temporary housing, utility company charges, and repairs to damage found once walls or floors are opened. Each job lists what it leaves out.'],
+ ['Do I need a permit?','Most work that changes plumbing, electrical, structure or the roof needs one, in Los Angeles and in most U.S. cities. Painting, flooring and like-for-like cabinet swaps usually do not. Use the permit checker above, and HRG handles the permit when one is needed.'],
+ ['How long will it take?','The timeline in your estimate covers design, city plan check, construction and inspections. Small cosmetic jobs take days; kitchens take about 2½–4 months from start to finish; ADUs take 6–12 months.'],
+ ['Can I stay in my home during the remodel?','Usually yes for single rooms, floors and exterior work. For a kitchen, plan a temporary kitchen. For whole-home remodels or termite tenting, plan to stay elsewhere for part of the time.'],
+ ['What is the difference between an ADU and a JADU?','An ADU is a separate home on your lot (backyard, garage conversion or attached), up to 1,200 sq ft. A JADU is up to 500 sq ft inside your existing house, with its own entrance and a small kitchen, and it can share a bathroom.'],
+ ['My house was built before 1978. What changes?','Paint and some materials may contain lead or asbestos. Before demolition, HRG tests and, if needed, uses certified lead-safe or abatement crews. Testing is already in your estimate.'],
+ ['Can I use this outside Los Angeles?','Yes. Pick your city or state under Location and every price is adjusted with a regional construction cost index. HRG itself builds across Los Angeles County.'],
+ ['How do I get a firm price?','Send your estimate with the form. HRG reviews it, schedules a site visit and gives you a written, fixed scope and price.']];
+$('faq-list').innerHTML=FAQ.map(([q,a])=>`<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('');
+
+/* ---------- glossary ---------- */
+const GLOSSARY=[
+ ['ADU','Accessory dwelling unit: a second home on a single-family lot. Detached, attached or a converted garage, up to 1,200 sq ft.'],
+ ['JADU','Junior ADU: up to 500 sq ft inside the existing house, with its own outside entrance and an efficiency kitchen.'],
+ ['LADBS','Los Angeles Department of Building and Safety, which issues permits and inspects work in the City of LA. Other cities and unincorporated county areas have their own departments.'],
+ ['Plan check','The city\'s review of your drawings before it issues a permit. Small jobs can be approved at the counter the same day; larger ones take weeks.'],
+ ['Express permit','A permit issued online without plan review, for simple work such as water heaters, re-roofs and some electrical jobs.'],
+ ['Title 24','California\'s energy code. It sets insulation, window, lighting and HVAC requirements for remodels and new space.'],
+ ['HERS test','A third-party test (for example, duct leakage) required by Title 24 when HVAC systems are replaced or added.'],
+ ['Rough-in','The plumbing, electrical and HVAC work done inside open walls before drywall goes up, inspected before walls are closed.'],
+ ['Contingency','Money set aside for surprises found during construction. Your estimate includes 10%.'],
+ ['Class A roof','The highest fire rating for roofing. Required in many LA fire zones.'],
+ ['Chapter 7A','The part of the California building code with wildfire-resistant construction rules for vents, roofs, windows and siding.'],
+ ['Zone 0','The first 5 ft around a house, where state rules aim to keep plants, mulch and other burnable material away.'],
+ ['Ember-resistant vent','A vent with fine metal mesh or a heat-activated seal that keeps wind-blown embers out of the attic and crawlspace.'],
+ ['Bolt and brace','A seismic retrofit for raised-foundation homes: bolting the house to its foundation and bracing the short cripple walls.'],
+ ['Soft-story','A building with a weak ground floor, such as apartments over open parking. LA requires retrofits for many of these buildings.'],
+ ['Heat pump','An electric system that heats and cools by moving heat. Used for HVAC and water heaters; often qualifies for rebates.'],
+ ['PEX','Flexible plastic water pipe, the most common choice for repiping. Faster and cheaper to install than copper.'],
+ ['Repipe','Replacing all the water supply pipes in a house, usually because of old galvanized or leaking copper lines.'],
+ ['Sewer lateral','The pipe from your house to the city sewer main. Usually the owner\'s responsibility up to the main.'],
+ ['Tenting','Covering the whole house and fumigating it to kill drywood termites. You stay out for about 2–3 days.'],
+ ['French drain','A gravel-filled trench with a perforated pipe that carries water away from walls and foundations.'],
+ ['Load-bearing wall','A wall that holds up the floor or roof above it. Removing one needs an engineer and a beam.'],
+ ['Change order','A written change to the scope and price after the contract is signed.'],
+ ['Punch list','The final list of small fixes before a project is complete.'],
+ ['HPOZ','Historic Preservation Overlay Zone: LA neighborhoods where exterior changes need design review.']];
+function renderGlossary(){const q=($('glo-q').value||'').trim().toLowerCase();
+  const hits=GLOSSARY.filter(([t,d])=>!q||t.toLowerCase().includes(q)||d.toLowerCase().includes(q));
+  $('glo-list').innerHTML=hits.length?hits.map(([t,d])=>`<div><dt>${esc(t)}</dt><dd>${esc(d)}</dd></div>`).join(''):`<p class="empty">No term matches "${esc(q)}".</p>`}
+$('glo-q').addEventListener('input',renderGlossary);
+
+renderPermit();renderChecks();renderGlossary();syncFinance();
+window.__finReady=true;
+
+</script>
+</body>
+</html>
