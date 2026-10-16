@@ -28,7 +28,7 @@
 :root{
   --navy:#14213d; --navy-2:#1f3160; --gold:#b8893b; --gold-soft:#f1e4cb;
   --bg:#f3f5f8; --surface:#ffffff; --surface-2:#eef1f6; --line:#d9dfe9;
-  --fg:#16203a; --muted:#5d6782; --on-navy:#f4f1e8; --ok:#2f7d5b; --warn:#a0621b; --bad:#b4442f;
+  --fg:#16203a; --muted:#535d77; --on-navy:#f4f1e8; --ok:#23674a; --warn:#87500f; --bad:#9c3826; --gold-ink:#7c5a1c;
   --display:"Playfair Display",Georgia,"Times New Roman",serif;
   --body:Inter,"Segoe UI",system-ui,-apple-system,sans-serif;
   --r:10px; --sky-1:#d9e6f2; --sky-2:#f3f5f8;
@@ -36,11 +36,11 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --navy:#0b1328; --navy-2:#1a2848; --gold:#d6aa5c; --gold-soft:#3a3020;
   --bg:#0e1528; --surface:#16203a; --surface-2:#1c2847; --line:#2b3a5e;
-  --fg:#e7ebf3; --muted:#9aa5c2; --on-navy:#f4f1e8; --ok:#5dbb8f; --warn:#e0a35a; --bad:#e58a77; --sky-1:#0c1630; --sky-2:#16203a; color-scheme:dark}}
+  --fg:#e7ebf3; --muted:#9aa5c2; --on-navy:#f4f1e8; --ok:#5dbb8f; --warn:#e0a35a; --bad:#e58a77; --sky-1:#0c1630; --sky-2:#16203a; --gold-ink:#d6aa5c; color-scheme:dark}}
 :root[data-theme="dark"]{
   --navy:#0b1328; --navy-2:#1a2848; --gold:#d6aa5c; --gold-soft:#3a3020;
   --bg:#0e1528; --surface:#16203a; --surface-2:#1c2847; --line:#2b3a5e;
-  --fg:#e7ebf3; --muted:#9aa5c2; --on-navy:#f4f1e8; --ok:#5dbb8f; --warn:#e0a35a; --bad:#e58a77; --sky-1:#0c1630; --sky-2:#16203a; color-scheme:dark}
+  --fg:#e7ebf3; --muted:#9aa5c2; --on-navy:#f4f1e8; --ok:#5dbb8f; --warn:#e0a35a; --bad:#e58a77; --sky-1:#0c1630; --sky-2:#16203a; --gold-ink:#d6aa5c; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5}
 button,input,select,textarea{font:inherit;color:inherit}
@@ -248,7 +248,7 @@ section[id],main[id]{scroll-margin-top:16px}
 .pop-t{font-weight:600}
 .pop-d{font-size:12.5px;color:var(--muted)}
 .pop-r{font-family:var(--display);font-size:19px;font-weight:700;margin-top:4px}
-.pop-go{font-size:12.5px;color:var(--gold);font-weight:600}
+.pop-go{font-size:12.5px;color:var(--gold-ink);font-weight:600}
 .payback{border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:8px;background:var(--surface-2)}
 .pb-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media (max-width:480px){.pb-row{grid-template-columns:1fr}}
@@ -397,7 +397,7 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
   <section class="card sec" id="materials" aria-labelledby="h-mat">
     <div><p class="eyebrow" data-i18n>Materials</p><h2 id="h-mat" data-i18n>Compare materials before you choose</h2></div>
     <p class="lede" data-i18n>Installed cost, how long it lasts, upkeep, and the trade-offs, for the choices homeowners ask about most. Costs are U.S. national averages; your estimate above is priced for your area.</p>
-    <div class="chips" id="mat-cats" role="tablist" aria-label="Material type" data-i18n-aria></div>
+    <div class="chips" id="mat-cats" role="group" aria-label="Material type" data-i18n-aria></div>
     <div class="mat-sort" role="group" aria-label="Sort materials" data-i18n-aria><span data-i18n>Sort by</span>
       <button type="button" class="chip sm" data-sort="cost" data-i18n>Lowest cost</button><button type="button" class="chip sm" data-sort="life" data-i18n>Longest lasting</button><button type="button" class="chip sm" data-sort="value" data-i18n>Lowest cost per year</button><button type="button" class="chip sm" data-sort="none" data-i18n>Default</button></div>
     <div class="mats" id="mat-list"></div>
@@ -2744,7 +2744,7 @@ function matRows(c){const rows=c.items.map(([nm,lo,hi,l1,l2,lab,up,pros,cons,bes
   if(s==='value')rows.sort((a,b)=>(a.perYr??big)-(b.perYr??big));
   return rows}
 function renderMaterials(){const c=MATERIALS.find(x=>x.id===MATG.cat)||MATERIALS[0];
-  $('mat-cats').innerHTML=MATERIALS.map(x=>`<button type="button" class="chip" role="tab" data-cat="${x.id}" aria-selected="${x.id===c.id}" aria-pressed="${x.id===c.id}">${esc(PL(x.n))}</button>`).join('');
+  $('mat-cats').innerHTML=MATERIALS.map(x=>`<button type="button" class="chip" data-cat="${x.id}" aria-pressed="${x.id===c.id}">${esc(PL(x.n))}</button>`).join('');
   document.querySelectorAll('.mat-sort .chip').forEach(b=>b.setAttribute('aria-pressed',b.dataset.sort===MATG.sort));
   const rows=matRows(c),maxLife=Math.max(...rows.map(r=>r.l2||0),1),maxMid=Math.max(...rows.map(r=>r.mid));
   const bestVal=rows.filter(r=>r.perYr).sort((a,b)=>a.perYr-b.perYr)[0];
