@@ -280,6 +280,12 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
   .ps-note{font-size:8.5pt;color:#555;margin-top:12pt}
   .ps-contact{font-weight:600;margin-top:6pt}
 }
+.bud-in{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:end}
+.bud-in label{display:grid;gap:4px;font-size:12.5px;color:var(--muted);font-weight:500}
+.bud-in input{width:180px;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:17px;font-weight:600;color:var(--fg)}
+.fitline{font-size:12.5px;color:var(--ok)}
+.pop.nofit{opacity:.72}
+.pop.nofit .fitline{color:var(--muted)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 .hp{position:absolute!important;left:-10000px!important;width:1px;height:1px;overflow:hidden}
 </style>
@@ -294,7 +300,7 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
     <p data-i18n>Pick the job, tell us how big it is and answer a few quick questions. You'll see a price range for your area in seconds, with permits and a start-to-finish timeline. Add as many jobs as you like, then send it to HRG for a firm quote.</p>
   </div>
   <nav class="sitenav" aria-label="Sections" data-i18n-aria><div class="sitenav-in">
-    <a href="#plan" data-i18n>Estimate</a><a href="#popular" data-i18n>Ideas</a><a href="#financing" data-i18n>Financing</a><a href="#rebates" data-i18n>Rebates</a><a href="#permits" data-i18n>Permits</a><a href="#how" data-i18n>How it works</a><a href="#faq" data-i18n>FAQ</a><a href="#glossary" data-i18n>Glossary</a><a href="#contact" data-i18n>Contact</a>
+    <a href="#plan" data-i18n>Estimate</a><a href="#popular" data-i18n>Ideas</a><a href="#budget" data-i18n>Budget</a><a href="#financing" data-i18n>Financing</a><a href="#rebates" data-i18n>Rebates</a><a href="#permits" data-i18n>Permits</a><a href="#how" data-i18n>How it works</a><a href="#faq" data-i18n>FAQ</a><a href="#glossary" data-i18n>Glossary</a><a href="#contact" data-i18n>Contact</a>
   </div></nav>
 </header>
 
@@ -342,6 +348,13 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
     <div><p class="eyebrow" data-i18n>Ideas</p><h2 id="h-pop" data-i18n>Popular projects at a glance</h2></div>
     <p class="lede" data-i18n>Typical versions of the jobs homeowners ask for most, priced for your area. Pick one to adjust it.</p>
     <div class="pops" id="pop-list"></div>
+  </section>
+  <section class="card sec" id="budget" aria-labelledby="h-bud">
+    <div><p class="eyebrow" data-i18n>Budget</p><h2 id="h-bud" data-i18n>What can I do with my budget?</h2></div>
+    <p class="lede" data-i18n>Type an amount to see which projects fit in your area, and at which finish level. Typical sizes are used; adjust any job to your home.</p>
+    <div class="bud-in"><label for="bud-amt"><span data-i18n>My budget</span><input id="bud-amt" class="num" type="number" min="0" step="1000" inputmode="numeric" placeholder="e.g. 50000" data-i18n-ph></label>
+      <div class="chips" role="group" aria-label="Quick amounts" data-i18n-aria id="bud-quick"><button type="button" class="chip sm" data-amt="10000">$10k</button><button type="button" class="chip sm" data-amt="25000">$25k</button><button type="button" class="chip sm" data-amt="50000">$50k</button><button type="button" class="chip sm" data-amt="100000">$100k</button><button type="button" class="chip sm" data-amt="250000">$250k</button></div></div>
+    <div class="pops" id="bud-list"></div>
   </section>
   <section class="card sec" id="financing" aria-labelledby="h-fin">
     <div><p class="eyebrow" data-i18n>Financing</p><h2 id="h-fin" data-i18n>What would it cost per month?</h2></div>
@@ -1605,6 +1618,12 @@ const ES={
 "Loading the 3D house…":"Cargando la casa en 3D…",
 "Save as PDF or print":"Guardar como PDF o imprimir",
 "Copy share link":"Copiar enlace para compartir",
+"Budget":"Presupuesto",
+"What can I do with my budget?":"¿Qué puedo hacer con mi presupuesto?",
+"Type an amount to see which projects fit in your area, and at which finish level. Typical sizes are used; adjust any job to your home.":"Escriba una cantidad para ver qué proyectos le alcanzan en su zona y con qué nivel de acabado. Se usan tamaños típicos; ajuste cualquier trabajo a su casa.",
+"My budget":"Mi presupuesto",
+"e.g. 50000":"p. ej. 50000",
+"Quick amounts":"Cantidades rápidas",
 };
 </script>
 <script>
@@ -2267,7 +2286,7 @@ function renderEstimate(){const r=totals(S.basket);
   $('e-gantt').innerHTML=ph.length?ph.map(([n,w])=>{const s=`<div class="g-row"><span>${esc(tr(n))} · ${w} ${T('wk','sem')}</span><div class="g-track"><div class="g-bar${n==='Construction'?' c':''}" style="left:${at/tw*100}%;width:${Math.max(2,w/tw*100)}%"></div></div></div>`;at+=w;return s}).join('')+
     `<div class="g-total">${T(`About ${tw} weeks from signing to final inspection`,`Unas ${tw} semanas desde la firma hasta la inspección final`)}${tw>8?` (≈ ${Math.round(tw/4.33)} ${T('months','meses')})`:''}</div>`:`<p class="empty">${T('Your timeline appears here.','Aquí aparecerá su calendario.')}</p>`;
   $('est-acts').hidden=!r.build;
-  renderLead(r);if(window.__finReady){syncFinance();renderPopular()}}
+  renderLead(r);if(window.__finReady){syncFinance();renderPopular();if(typeof renderBudget==='function')renderBudget()}}
 $('print-btn').addEventListener('click',printEstimate);$('share-btn').addEventListener('click',copyShare);
 $('basket').addEventListener('click',e=>{const ed=e.target.closest('[data-edit]'),del=e.target.closest('[data-del]');
   if(ed){const b=S.basket.find(x=>x.id===+ed.dataset.edit);if(!b)return;S.cur={job:b.job,size:b.size,a:Object.assign({},b.a),tier:b.tier,from3d:null,edit:b.id};render();$('jobpanel').scrollIntoView({behavior:'smooth',block:'start'})}
@@ -2477,6 +2496,30 @@ function renderPopular(){$('pop-list').innerHTML=POPULAR.map(([t,d,e],i)=>{const
 $('pop-list').addEventListener('click',e=>{const b=e.target.closest('.pop');if(!b)return;const [,,p]=POPULAR[+b.dataset.p];
   S.cur={job:p.job,size:p.size,a:Object.assign({},p.a),tier:p.tier,from3d:null,edit:null};render();$('jobpanel').scrollIntoView({behavior:'smooth',block:'start'})});
 renderPopular();
+/* ---------- budget explorer: which jobs fit, and at which finish level ---------- */
+// a job "fits" when the top of its range (most likely +15%) is within the budget
+function budgetRows(){return JOBS.map(j=>{const base={job:j.id,size:j.size?j.size.def:0,a:answers(j,{})};
+    const ts=[0,1,2,3].map(t=>totals([Object.assign({},base,{tier:t})]).total);let best=-1;ts.forEach((v,i)=>{if(v*1.15<=BUD.amt)best=i});return {j,base,ts,best}}).filter(x=>x.ts[0]>0)}
+const BUD={amt:0};try{BUD.amt=+localStorage.getItem('hrg-budget')||0}catch(e){}
+function renderBudget(){const el=$('bud-list');$('bud-amt').value=BUD.amt||'';
+  document.querySelectorAll('#bud-quick .chip').forEach(c=>c.setAttribute('aria-pressed',+c.dataset.amt===BUD.amt));
+  if(!BUD.amt){el.innerHTML=`<p class="empty">${T('Enter an amount to see what fits.','Escriba una cantidad para ver qué cabe.')}</p>`;return}
+  // fitting jobs first, biggest first (what the money can really do); then the ones still out of reach, cheapest first
+  const rows=budgetRows().sort((a,b)=>(b.best>=0)-(a.best>=0)||(a.best>=0?b.ts[b.best]-a.ts[a.best]:a.ts[0]-b.ts[0]));
+  const sz=(j,b)=>j.size?`${(+b.size).toLocaleString('en-US')} ${tr(j.size.unit)}`:T('Typical scope','Alcance típico');
+  el.innerHTML=rows.map(({j,base,ts,best})=>best>=0
+    ?`<button type="button" class="pop fit" data-bj="${j.id}" data-bt="${best}"><span class="pop-t">${esc(tr(j.name))}</span><span class="pop-d">${esc(sz(j,base))}</span>
+       <span class="fitline">${T('Fits at','Le alcanza en nivel')} <b>${esc(tr(TIERS[best].n))}</b></span><span class="pop-r num">${range(ts[best])}</span><span class="pop-go">${T('Customize →','Personalizar →')}</span></button>`
+    :`<button type="button" class="pop nofit" data-bj="${j.id}" data-bt="0"><span class="pop-t">${esc(tr(j.name))}</span><span class="pop-d">${esc(sz(j,base))}</span>
+       <span class="fitline">${T('Starts around','Empieza alrededor de')} <b class="num">${k(ts[0]*0.9)}</b></span><span class="pop-go">${T('See options →','Ver opciones →')}</span></button>`).join('')}
+$('bud-amt').addEventListener('input',e=>{BUD.amt=Math.max(0,+e.target.value||0);try{localStorage.setItem('hrg-budget',BUD.amt)}catch(x){}
+  const v=e.target.value;renderBudget();const i=$('bud-amt');i.value=v;i.focus()});
+$('bud-quick').addEventListener('click',e=>{const c=e.target.closest('[data-amt]');if(!c)return;BUD.amt=+c.dataset.amt;try{localStorage.setItem('hrg-budget',BUD.amt)}catch(x){}renderBudget()});
+$('bud-list').addEventListener('click',e=>{const b=e.target.closest('[data-bj]');if(!b)return;const j=JOB[b.dataset.bj];
+  S.cur={job:j.id,size:j.size?j.size.def:0,a:{},tier:+b.dataset.bt,from3d:null,edit:null};render();$('jobpanel').scrollIntoView({behavior:'smooth',block:'start'})});
+renderBudget();
+// a share link pasted into an already-open tab
+addEventListener('hashchange',()=>{if(loadShared()){render();$('plan').scrollIntoView({behavior:'smooth'})}});
 /* ---------- financing calculator ---------- */
 const FIN={edited:false};
 function payment(p,apr,yrs){const n=yrs*12,r=apr/100/12;return p<=0?0:r===0?p/n:p*r/(1-Math.pow(1+r,-n))}
@@ -2563,7 +2606,7 @@ window.__finReady=true;
 
 /* ---------- language switch: redraw everything that holds text ---------- */
 function setLang(lg){if(lg===LANG)return;LANG=lg;try{localStorage.setItem('hrg-lang',lg)}catch(e){}
-  applyStatic();renderRegions();label3DControls();render3DControls();render();renderRebates();renderPermitPaths();renderPopular();
+  applyStatic();renderRegions();label3DControls();render3DControls();render();renderRebates();renderPermitPaths();renderPopular();renderBudget();
   renderPermJobs();renderPermit();renderChecks();renderFaq();renderGlossary();renderFinance()}
 document.querySelector('.lang').addEventListener('click',e=>{const b=e.target.closest('[data-lang]');if(b)setLang(b.dataset.lang)});
 
