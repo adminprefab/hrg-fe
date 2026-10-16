@@ -6,6 +6,19 @@
 <title>Remodel Cost Planner · The Home Remodel Group</title>
 <meta name="description" content="Estimate the cost of a kitchen, bathroom, roof, ADU or any remodel anywhere in the U.S., then send it to HRG for a firm quote.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://www.hrgprefab.com/estimate">
+<meta name="theme-color" content="#14213d">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="The Home Remodel Group">
+<meta property="og:title" content="What would it cost to change your home? · HRG Remodel Cost Planner">
+<meta property="og:description" content="Price a kitchen, bathroom, roof, ADU or any of 25 remodel jobs for your area in seconds, with permits, rebates, financing and a timeline. In English and Spanish.">
+<meta property="og:url" content="https://www.hrgprefab.com/estimate">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="es_US">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HRG Remodel Cost Planner">
+<meta name="twitter:description" content="Price any remodel job for your area in seconds, then send it to HRG for a firm quote.">
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"HomeAndConstructionBusiness","name":"The Home Remodel Group (HRG)","url":"https://www.hrgprefab.com/estimate","telephone":"+1-213-216-4416","email":"sales@hrgprefab.com","areaServed":"Los Angeles County, CA","description":"Remodeling, ADUs and additions in Los Angeles. Free online cost planner for kitchens, bathrooms, roofs and more."},{"@context":"https://schema.org","@type":"WebApplication","name":"HRG Remodel Cost Planner","url":"https://www.hrgprefab.com/estimate","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"inLanguage":["en","es"]},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How accurate is this estimate?","acceptedAnswer":{"@type":"Answer","text":"It is a planning range based on 2025–2026 Los Angeles prices from licensed contractors, HRG's own project costs and published cost guides. Most projects land inside the range. Hidden conditions (rot, old wiring, soil) and the exact products you choose move the final number, which HRG fixes after a site visit."}},{"@type":"Question","name":"Why do you show a range instead of one price?","acceptedAnswer":{"@type":"Answer","text":"Two homes with the same square footage can differ a lot behind the walls. The range runs from 10% below to 15% above the most likely total, because surprises in remodeling tend to add cost rather than remove it."}},{"@type":"Question","name":"What does the estimate include?","acceptedAnswer":{"@type":"Answer","text":"Materials, labor and sales tax for each line, plus design and engineering when a permit is needed, permit fees, site protection and cleanup, lead and asbestos testing for homes built before 1978, and a 10% contingency."}},{"@type":"Question","name":"What isn't included?","acceptedAnswer":{"@type":"Answer","text":"Furniture, moving and temporary housing, utility company charges, and repairs to damage found once walls or floors are opened. Each job lists what it leaves out."}},{"@type":"Question","name":"Do I need a permit?","acceptedAnswer":{"@type":"Answer","text":"Most work that changes plumbing, electrical, structure or the roof needs one in Los Angeles. Painting, flooring and like-for-like cabinet swaps usually do not. Use the permit checker above, and HRG handles the permit when one is needed."}},{"@type":"Question","name":"How long will it take?","acceptedAnswer":{"@type":"Answer","text":"The timeline in your estimate covers design, city plan check, construction and inspections. Small cosmetic jobs take days; kitchens take about 2½–4 months from start to finish; ADUs take 6–12 months."}},{"@type":"Question","name":"Can I stay in my home during the remodel?","acceptedAnswer":{"@type":"Answer","text":"Usually yes for single rooms, floors and exterior work. For a kitchen, plan a temporary kitchen. For whole-home remodels or termite tenting, plan to stay elsewhere for part of the time."}},{"@type":"Question","name":"What is the difference between an ADU and a JADU?","acceptedAnswer":{"@type":"Answer","text":"An ADU is a separate home on your lot (backyard, garage conversion or attached), up to 1,200 sq ft. A JADU is up to 500 sq ft inside your existing house, with its own entrance and a small kitchen, and it can share a bathroom."}},{"@type":"Question","name":"My house was built before 1978. What changes?","acceptedAnswer":{"@type":"Answer","text":"Paint and some materials may contain lead or asbestos. Before demolition, HRG tests and, if needed, uses certified lead-safe or abatement crews. Testing is already in your estimate."}},{"@type":"Question","name":"Can I use this outside Los Angeles?","acceptedAnswer":{"@type":"Answer","text":"Yes. Pick your city or state under Location and every price is adjusted with a regional construction cost index. Outside Southern California, treat it as a ballpark: local labor markets and codes can move prices more than an index shows. HRG itself builds across Los Angeles County."}},{"@type":"Question","name":"How do I get a firm price?","acceptedAnswer":{"@type":"Answer","text":"Send your estimate with the form. HRG reviews it, schedules a site visit and gives you a written, fixed scope and price."}}]}]</script>
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -243,6 +256,30 @@ section[id],main[id]{scroll-margin-top:16px}
 .pb-row input,.pb-row select{background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:8px 10px;width:100%;min-width:0;color:var(--fg);font-size:15px}
 .pb-out{margin:0;font-size:14px}
 footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;color:var(--muted);font-size:12.5px}
+#print-sheet{display:none}
+.share-url{width:100%;margin-top:6px;background:var(--surface-2);border:1px solid var(--line);border-radius:7px;padding:7px 9px;color:var(--fg);font-size:12.5px}
+@media print{
+  @page{margin:14mm}
+  body{background:#fff!important;color:#111!important}
+  body>*:not(#print-sheet){display:none!important}
+  #print-sheet{display:block;font-family:var(--body);color:#111;font-size:11pt}
+  #print-sheet h1{font-family:var(--display);font-size:22pt;margin:8pt 0 2pt}
+  .ps-top{display:flex;justify-content:space-between;border-bottom:2px solid #14213d;padding-bottom:6pt;font-size:10pt}
+  .ps-brand{font-family:var(--display);color:#b8893b;font-size:14pt}
+  .ps-meta{color:#444;margin:2pt 0 8pt}
+  .ps-total{display:flex;gap:14pt;align-items:baseline;border:1px solid #ccc;padding:8pt 10pt;margin:8pt 0 12pt}
+  .ps-total b{font-family:var(--display);font-size:16pt}
+  .ps-job{break-inside:avoid;margin:0 0 10pt}
+  .ps-row{display:flex;justify-content:space-between}
+  .ps-h{border-bottom:1px solid #999;padding-bottom:2pt;font-size:12pt}
+  .ps-d{color:#444;margin:3pt 0;font-size:10pt}
+  #print-sheet table{width:100%;border-collapse:collapse;font-size:10pt}
+  #print-sheet td{padding:2pt 0;border-bottom:1px dotted #ddd}
+  #print-sheet td.num{text-align:right;white-space:nowrap}
+  .ps-sum td{font-weight:700;border-top:1px solid #333}
+  .ps-note{font-size:8.5pt;color:#555;margin-top:12pt}
+  .ps-contact{font-weight:600;margin-top:6pt}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 .hp{position:absolute!important;left:-10000px!important;width:1px;height:1px;overflow:hidden}
 </style>
@@ -296,6 +333,7 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
     </div>
     <div class="est-sec"><p class="eyebrow" data-i18n>Project costs</p><div class="soft num" id="e-soft"></div></div>
     <div class="est-sec"><p class="eyebrow" data-i18n>Start to finish</p><div class="gantt" id="e-gantt"></div></div>
+    <div class="est-sec acts-sec" id="est-acts" hidden><div class="row-btns"><button type="button" class="btn ghost" id="print-btn" data-i18n>Save as PDF or print</button><button type="button" class="btn ghost" id="share-btn" data-i18n>Copy share link</button></div><p class="msg" id="act-msg" aria-live="polite"></p></div>
     <div class="est-sec" id="lead"></div>
   </aside>
 </main>
@@ -389,9 +427,8 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
 
 <div class="mbar"><div><small data-i18n>Estimated total</small><b class="num" id="m-total">$0</b></div><button class="btn" type="button" id="m-go" data-i18n>View estimate</button></div>
 
+<div id="print-sheet" aria-hidden="true"></div>
 <footer data-i18n>Planning ranges built from Los Angeles County prices, including materials, labor and sales tax from licensed, insured contractors, and adjusted for other areas with regional construction cost indexes. Real prices depend on site conditions, access, hidden damage and the exact products you choose. HRG confirms every number after a site visit. Homes built before 1978 get lead and asbestos testing before demolition.</footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script>
 /* ---------- language: English / Español ----------
    The data and markup below are written in English. ES pairs each English string with its Spanish version,
@@ -1564,7 +1601,10 @@ const ES={
 "Punch list":"Lista de detalles finales (punch list)",
 "The final list of small fixes before a project is complete.":"La lista final de arreglos pequeños antes de terminar un proyecto.",
 "HPOZ":"HPOZ",
-"Historic Preservation Overlay Zone: LA neighborhoods where exterior changes need design review.":"Zona de Preservación Histórica (Historic Preservation Overlay Zone): vecindarios de LA donde los cambios exteriores necesitan revisión de diseño."
+"Historic Preservation Overlay Zone: LA neighborhoods where exterior changes need design review.":"Zona de Preservación Histórica (Historic Preservation Overlay Zone): vecindarios de LA donde los cambios exteriores necesitan revisión de diseño.",
+"Loading the 3D house…":"Cargando la casa en 3D…",
+"Save as PDF or print":"Guardar como PDF o imprimir",
+"Copy share link":"Copiar enlace para compartir",
 };
 </script>
 <script>
@@ -2226,7 +2266,9 @@ function renderEstimate(){const r=totals(S.basket);
   const ph=weeks(r),tw=ph.reduce((s,p)=>s+p[1],0);let at=0;
   $('e-gantt').innerHTML=ph.length?ph.map(([n,w])=>{const s=`<div class="g-row"><span>${esc(tr(n))} · ${w} ${T('wk','sem')}</span><div class="g-track"><div class="g-bar${n==='Construction'?' c':''}" style="left:${at/tw*100}%;width:${Math.max(2,w/tw*100)}%"></div></div></div>`;at+=w;return s}).join('')+
     `<div class="g-total">${T(`About ${tw} weeks from signing to final inspection`,`Unas ${tw} semanas desde la firma hasta la inspección final`)}${tw>8?` (≈ ${Math.round(tw/4.33)} ${T('months','meses')})`:''}</div>`:`<p class="empty">${T('Your timeline appears here.','Aquí aparecerá su calendario.')}</p>`;
+  $('est-acts').hidden=!r.build;
   renderLead(r);if(window.__finReady){syncFinance();renderPopular()}}
+$('print-btn').addEventListener('click',printEstimate);$('share-btn').addEventListener('click',copyShare);
 $('basket').addEventListener('click',e=>{const ed=e.target.closest('[data-edit]'),del=e.target.closest('[data-del]');
   if(ed){const b=S.basket.find(x=>x.id===+ed.dataset.edit);if(!b)return;S.cur={job:b.job,size:b.size,a:Object.assign({},b.a),tier:b.tier,from3d:null,edit:b.id};render();$('jobpanel').scrollIntoView({behavior:'smooth',block:'start'})}
   if(del){S.basket=S.basket.filter(x=>x.id!==+del.dataset.del);if(S.cur.edit===+del.dataset.del)S.cur.edit=null;render()}});
@@ -2249,7 +2291,8 @@ function renderLead(r){const el=$('lead');
     $('lead-again').addEventListener('click',()=>{LEAD={state:'form',msg:''};renderLead(totals(S.basket))});return}
   if(LEAD.state==='fallback'){el.innerHTML=`<p class="eyebrow">${T('Send it to HRG','Envíelo a HRG')}</p><p class="msg">${esc(pick(LEAD.msg))}</p>
     <button type="button" class="btn" id="copy">${T('Copy my estimate','Copiar mi estimado')}</button><p class="msg" id="copied"></p>
-    <div class="mail">${T('Email it to','Envíelo por correo a')} <b>sales@hrgprefab.com</b> ${T('or call','o llame al')} <b>213.216.4416</b></div>`;
+    <a class="btn ghost" id="mailto" href="mailto:sales@hrgprefab.com?subject=${encodeURIComponent(T('Remodel estimate request','Solicitud de estimado de remodelación'))}&body=${encodeURIComponent(summaryText(totals(S.basket)).slice(0,1800))}">${T('Email it to HRG','Enviarlo por correo a HRG')}</a>
+    <div class="mail">${T('Email it to','Envíelo por correo a')} <b>sales@hrgprefab.com</b> ${T('or call','o llame al')} <b><a href="tel:+12132164416">213.216.4416</a></b></div>`;
     $('copy').addEventListener('click',()=>copyText(summaryText(totals(S.basket))));return}
   const d=LEAD.draft||{},opt=(xs,cur)=>xs.map(t=>`<option value="${t}"${cur===t?' selected':''}>${esc(t?tr(t):T('Choose one','Elija una opción'))}</option>`).join('');
   el.innerHTML=`<p class="eyebrow">${T('Get a firm quote','Pida un precio firme')}</p><form class="form" id="leadform" novalidate>
@@ -2343,6 +2386,53 @@ function build3DControls(){label3DControls();
   $('modes').addEventListener('click',e=>{const b=e.target.closest('.mode');if(!b)return;V.mode=b.dataset.m;V.sel=null;if(V.g)applyMode();else render3DControls()});
   $('floors').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(!b)return;V.floor=+b.dataset.f;V.sel=null;applyMode()})}
 
+/* ---------- 3D loads on demand: ~600 KB of three.js only when the house is near the screen ---------- */
+function loadScript(src){return new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s)})}
+function lazy3D(){V.mm=measure(M());const stage=$('stage');let started=false;
+  stage.insertAdjacentHTML('afterbegin','<p class="nogl" id="loading3d" data-i18n>Loading the 3D house…</p>');applyStatic();
+  const go=()=>{if(started)return;started=true;
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js')
+      .then(()=>loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js'))
+      .catch(()=>{}).then(()=>{const p=$('loading3d');if(p)p.remove();init3D()})};
+  if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();go()}},{rootMargin:'400px'});io.observe(stage)}else go();
+  $('modes').addEventListener('click',go);$('models').addEventListener('click',go);
+  setTimeout(go,8000)} // safety net if the observer never fires
+
+/* ---------- share link: the estimate travels in the URL, nothing is stored on a server ---------- */
+const b64u={enc:s=>btoa(unescape(encodeURIComponent(s))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''),
+  dec:s=>decodeURIComponent(escape(atob(s.replace(/-/g,'+').replace(/_/g,'/'))))};
+function shareURL(){const d={v:1,r:S.region,y:+S.year||null,b:S.basket.map(e=>({j:e.job,s:e.size,a:e.a,t:e.tier}))};
+  return location.origin+location.pathname+'#e='+b64u.enc(JSON.stringify(d))}
+function loadShared(){const m=/^#e=([A-Za-z0-9_-]+)$/.exec(location.hash||'');if(!m)return false;
+  try{const d=JSON.parse(b64u.dec(m[1]));if(!d||!Array.isArray(d.b))return false;
+    const bk=d.b.filter(x=>x&&JOB[x.j]).slice(0,40).map((x,i)=>({id:i+1,job:x.j,size:Math.max(0,+x.s||0),a:answers(JOB[x.j],x.a||{}),tier:[0,1,2,3].includes(+x.t)?+x.t:1}));
+    if(!bk.length)return false;S.basket=bk;S.next=bk.length+1;if(d.r&&(REGIONS.some(r=>r[0]===d.r)||AREAS.some(a=>a[0]===d.r)))S.region=d.r;if(d.y)S.year=d.y;
+    S.cur=Object.assign({},S.cur,{edit:null});history.replaceState(null,'',location.pathname+location.search);return true}catch(e){return false}}
+function copyShare(){const u=shareURL(),msg=$('act-msg');
+  const show=t=>{msg.textContent=t};
+  const fb=()=>{let i=$('share-url');if(!i){i=document.createElement('input');i.id='share-url';i.readOnly=true;i.className='share-url';msg.after(i)}i.value=u;i.focus();i.select();
+    show(T('Copy this link to share or come back to your estimate.','Copie este enlace para compartir su estimado o volver a verlo.'))};
+  try{navigator.clipboard.writeText(u).then(()=>show(T('Link copied. Anyone with it sees this estimate.','Enlace copiado. Quien lo abra verá este estimado.')),fb)}catch(e){fb()}}
+
+/* ---------- printable sheet (Save as PDF from the print dialog) ---------- */
+function renderPrint(){const r=totals(S.basket),ar=area(),d=new Date();
+  const ph=weeks(r),tw=ph.reduce((s,p)=>s+p[1],0);
+  const jobs=r.per.map(({e,ls,cost})=>`<section class="ps-job"><div class="ps-row ps-h"><b>${esc(tr(JOB[e.job].name))}</b><b>${usd(cost)}</b></div><p class="ps-d">${esc(describe(e))}</p>
+    <table>${ls.map(l=>`<tr><td>${esc(tr(l.label))}</td><td class="num">${usd(l.cost)}</td></tr>`).join('')}</table></section>`).join('');
+  $('print-sheet').innerHTML=`<header class="ps-top"><div><b class="ps-brand">HRG</b> ${esc(tr('The Home Remodel Group · Los Angeles'))}</div><div>${d.toLocaleDateString(LANG==='es'?'es-US':'en-US',{year:'numeric',month:'long',day:'numeric'})}</div></header>
+    <h1>${T('Remodel cost estimate','Estimado de costo de remodelación')}</h1>
+    <p class="ps-meta">${esc(ar.name)} · ${T('Home built','Casa construida en')} ${esc(String(S.year||'—'))}</p>
+    <div class="ps-total"><span>${T('Estimated range','Rango estimado')}</span><b>${usd(r.total*0.9)} – ${usd(r.total*1.15)}</b><span>${T('Most likely','Lo más probable')} ${usd(r.total)}</span></div>
+    ${jobs||`<p>${T('No jobs added yet.','Todavía no hay trabajos.')}</p>`}
+    <section class="ps-job"><div class="ps-row ps-h"><b>${T('Project costs','Costos del proyecto')}</b></div><table>
+      ${[['Construction',r.build],...r.soft,['Contingency (10%)',r.cont]].map(([a,b])=>`<tr><td>${esc(tr(a))}</td><td class="num">${usd(b)}</td></tr>`).join('')}
+      <tr class="ps-sum"><td>${T('Estimated total','Total estimado')}</td><td class="num">${usd(r.total)}</td></tr></table></section>
+    ${tw?`<p class="ps-meta">${T(`About ${tw} weeks from signing to final inspection.`,`Unas ${tw} semanas desde la firma hasta la inspección final.`)}</p>`:''}
+    <p class="ps-note">${esc(tr(document.querySelector('footer').dataset.en||document.querySelector('footer').textContent))}</p>
+    <p class="ps-contact">${T('Get a firm quote','Pida un precio firme')}: 213.216.4416 · sales@hrgprefab.com · hrgprefab.com/estimate</p>`}
+addEventListener('beforeprint',renderPrint);
+function printEstimate(){renderPrint();window.print()}
+
 /* ---------- wiring ---------- */
 function render(){save();renderJobs();renderPanel();renderEstimate()}
 $('jobs').addEventListener('click',e=>{const b=e.target.closest('.job');if(b)startJob(b.dataset.j)});
@@ -2359,7 +2449,8 @@ $('p-region').addEventListener('change',e=>{S.region=e.target.value;save();rende
 $('p-year').addEventListener('input',e=>{S.year=e.target.value;save();renderPreview();renderEstimate()});
 $('m-go').addEventListener('click',()=>$('estimate').scrollIntoView({behavior:'smooth'}));
 S.model=MODELS[S.model]?S.model:'ranch';
-build3DControls();init3D();render();
+const SHARED=loadShared();
+build3DControls();render();lazy3D();
 $('rebate-list').addEventListener('click',e=>{const b=e.target.closest('[data-start]');if(b){startJob(b.dataset.start);$('plan').scrollIntoView({behavior:'smooth'})}});
 renderRebates();renderPermitPaths();
 
