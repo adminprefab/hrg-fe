@@ -9,7 +9,7 @@
  *   INTAKE_SECRET      required. The same value as INTAKE_SECRET on the CRM's
  *                      Vercel project. Set it in Vercel → hrg-fe → Settings →
  *                      Environment Variables; never commit it.
- *   CRM_INTAKE_URL     optional. Defaults to https://crm.hrgprefab.com/api/intake.
+ *   CRM_INTAKE_URL     optional. Defaults to https://hrg-crm-omega.vercel.app/api/intake (the CRM's Vercel address; crm.hrgprefab.com has no DNS record).
  *                      Point a preview deployment at a test CRM with this.
  *
  * Any failure (bad config, CRM down, non-2xx from intake) returns a non-2xx
@@ -19,7 +19,7 @@
  * Privacy: never log the visitor's details. Logs carry status codes only.
  */
 
-const DEFAULT_INTAKE_URL = "https://crm.hrgprefab.com/api/intake";
+const DEFAULT_INTAKE_URL = "https://hrg-crm-omega.vercel.app/api/intake";
 const MAX_BODY_BYTES = 32 * 1024;
 const UPSTREAM_TIMEOUT_MS = 15_000;
 
