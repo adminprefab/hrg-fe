@@ -334,6 +334,14 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
 .roi-100{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--fg);opacity:.5}
 .roi-v{font-weight:700;text-align:right}
 @media (max-width:560px){.roi-row{grid-template-columns:minmax(0,1fr) 48px}.roi-track{grid-column:1/-1;grid-row:2}}
+.whatis{font-size:13px}
+.whatis summary{cursor:pointer;color:var(--muted);font-weight:500}
+.whatis dl{margin:6px 0 0;display:grid;gap:6px}
+.whatis dt{font-weight:600}
+.whatis dd{margin:0;color:var(--muted)}
+.startdate{display:grid;gap:6px;margin-top:6px}
+.startdate label{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--muted);flex-wrap:wrap}
+.startdate input{background:var(--surface-2);border:1px solid var(--line);border-radius:7px;padding:6px 8px;color:var(--fg)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 .hp{position:absolute!important;left:-10000px!important;width:1px;height:1px;overflow:hidden}
 </style>
@@ -388,9 +396,11 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
         <label><span data-i18n>Year built</span><input id="p-year" type="number" min="1880" max="2026" inputmode="numeric"></label>
       </div>
     </div>
-    <div class="est-sec"><p class="eyebrow" data-i18n>Project costs</p><div class="soft num" id="e-soft"></div></div>
+    <div class="est-sec"><p class="eyebrow" data-i18n>Project costs</p><div class="soft num" id="e-soft"></div>
+      <details class="whatis" id="e-whatis" hidden><summary data-i18n>What these costs cover</summary><dl id="e-whatis-dl"></dl></details></div>
     <div class="est-sec" id="e-tiers-sec" hidden><p class="eyebrow" data-i18n>Your whole estimate at each finish level</p><div class="soft num" id="e-tiers"></div></div>
-    <div class="est-sec"><p class="eyebrow" data-i18n>Start to finish</p><div class="gantt" id="e-gantt"></div></div>
+    <div class="est-sec"><p class="eyebrow" data-i18n>Start to finish</p><div class="gantt" id="e-gantt"></div>
+      <div class="startdate" id="start-wrap" hidden><label for="start-date"><span data-i18n>Want to start on</span><input id="start-date" type="date"></label><p class="msg" id="finish-msg" aria-live="polite"></p></div></div>
     <div class="est-sec acts-sec" id="est-acts" hidden><div class="row-btns"><button type="button" class="btn ghost" id="print-btn" data-i18n>Save as PDF or print</button><button type="button" class="btn ghost" id="share-btn" data-i18n>Copy share link</button></div><p class="msg" id="act-msg" aria-live="polite"></p></div>
     <div class="est-sec" id="lead"></div>
   </aside>
@@ -1782,6 +1792,8 @@ const ES={
 "Which projects pay back when you sell?":"¿Qué proyectos se recuperan al vender?",
 "The share of a project's cost that buyers paid back in higher sale prices, from the 2025 Cost vs. Value report. Over 100% means the project added more value than it cost.":"La parte del costo de un proyecto que los compradores pagaron de vuelta con un precio de venta más alto, según el reporte Cost vs. Value 2025. Más de 100% significa que el proyecto agregó más valor de lo que costó.",
 "Source: Zonda/JLC Cost vs. Value 2025, Los Angeles and Pacific-region figures (read from published summaries). Resale value is an average and depends on your neighborhood and market.":"Fuente: Zonda/JLC Cost vs. Value 2025, cifras de Los Ángeles y de la región del Pacífico (tomadas de resúmenes publicados). El valor de reventa es un promedio y depende de su vecindario y del mercado.",
+"What these costs cover":"Qué cubren estos costos",
+"Want to start on":"Quiero empezar el",
 };
 </script>
 <script>
@@ -2524,13 +2536,31 @@ function renderEstimate(){const r=totals(S.basket);
   $('e-gantt').innerHTML=ph.length?ph.map(([n,w])=>{const s=`<div class="g-row"><span>${esc(tr(n))} · ${w} ${T('wk','sem')}</span><div class="g-track"><div class="g-bar${n==='Construction'?' c':''}" style="left:${at/tw*100}%;width:${Math.max(2,w/tw*100)}%"></div></div></div>`;at+=w;return s}).join('')+
     `<div class="g-total">${T(`About ${tw} weeks from signing to final inspection`,`Unas ${tw} semanas desde la firma hasta la inspección final`)}${tw>8?` (≈ ${Math.round(tw/4.33)} ${T('months','meses')})`:''}</div>`:`<p class="empty">${T('Your timeline appears here.','Aquí aparecerá su calendario.')}</p>`;
   $('est-acts').hidden=!r.build;
+  // one-line explanations for each project-cost line shown
+  const WHY={'Construction':['Materials, labor and sales tax for every line in your jobs.','Materiales, mano de obra e impuesto de venta de cada línea de sus trabajos.'],
+    'Design, drafting & engineering':['Drawings, and structural engineering where walls, beams or new space are involved. Only for work that needs plans.','Planos, e ingeniería estructural cuando hay muros, vigas o espacio nuevo. Solo para trabajos que necesitan planos.'],
+    'Permits & plan check':['City fees to review the plans and inspect the work.','Cuotas de la ciudad para revisar los planos e inspeccionar el trabajo.'],
+    'Permits (over the counter)':['City permit and inspection fees for work that needs no drawings.','Cuotas de permiso e inspección de la ciudad para trabajos que no necesitan planos.'],
+    'Site protection, haul-away & cleanup':['Floor and furniture protection, dumpsters, debris hauling and final cleaning.','Protección de pisos y muebles, contenedores, retiro de escombro y limpieza final.'],
+    'Lead & asbestos testing (pre-1978 home)':['Required testing before disturbing paint or materials in older homes.','Pruebas obligatorias antes de tocar pintura o materiales en casas antiguas.'],
+    'Contingency (10%)':['A reserve in your budget for surprises found once walls or floors are opened.','Una reserva en su presupuesto para sorpresas que aparecen al abrir paredes o pisos.']};
+  $('e-whatis').hidden=!r.build;
+  if(r.build)$('e-whatis-dl').innerHTML=[['Construction'],...r.soft,['Contingency (10%)']].filter(([n])=>WHY[n]).map(([n])=>`<dt>${esc(tr(n))}</dt><dd>${esc(T(...WHY[n]))}</dd>`).join('');
+  // finish date from the chosen start date
+  $('start-wrap').hidden=!r.build;
+  if(r.build){const tw=weeks(r).reduce((s,p)=>s+p[1],0),inp=$('start-date');
+    const def=new Date(Date.now()+14*864e5),iso=d=>d.toISOString().slice(0,10);
+    if(!inp.value)inp.value=S.start&&S.start>=iso(new Date())?S.start:iso(def);inp.min=iso(new Date());
+    const st=new Date(inp.value+'T12:00:00'),fin=new Date(st.getTime()+tw*7*864e5),f=d=>d.toLocaleDateString(LANG==='es'?'es-US':'en-US',{month:'long',day:'numeric',year:'numeric'});
+    $('finish-msg').innerHTML=isNaN(fin)?'':T(`Finished around <b>${f(fin)}</b>, if the start date holds and permits come through on time.`,`Terminado alrededor del <b>${f(fin)}</b>, si se mantiene la fecha de inicio y los permisos llegan a tiempo.`)}
   // the same jobs with every finish level set to Basic, Standard, Premium, Luxury
   $('e-tiers-sec').hidden=!r.build;
   if(r.build){const mixed=new Set(S.basket.map(e=>e.tier)).size>1;
     $('e-tiers').innerHTML=TIERS.map((t,i)=>{const x=totals(S.basket.map(e=>Object.assign({},e,{tier:i}))).total,cur=!mixed&&S.basket[0].tier===i;
       return `<span${cur?' class="tot"':''}>${esc(tr(t.n))}${cur?' · '+T('yours','el suyo'):''}</span><span${cur?' class="cur"':''}>${k(x*0.9)} – ${k(x*1.15)}</span>`}).join('')}
   renderLead(r);if(window.__finReady){syncFinance();renderPopular();if(typeof renderBudget==='function')renderBudget()}}
-$('print-btn').addEventListener('click',printEstimate);$('share-btn').addEventListener('click',copyShare);
+$('print-btn').addEventListener('click',printEstimate);
+$('start-date').addEventListener('change',e=>{S.start=e.target.value;save();renderEstimate()});$('share-btn').addEventListener('click',copyShare);
 $('basket').addEventListener('click',e=>{const ed=e.target.closest('[data-edit]'),del=e.target.closest('[data-del]');
   if(ed){const b=S.basket.find(x=>x.id===+ed.dataset.edit);if(!b)return;S.cur={job:b.job,size:b.size,a:Object.assign({},b.a),tier:b.tier,from3d:null,edit:b.id};render();$('jobpanel').scrollIntoView({behavior:'smooth',block:'start'})}
   if(del){S.basket=S.basket.filter(x=>x.id!==+del.dataset.del);if(S.cur.edit===+del.dataset.del)S.cur.edit=null;render()}});
