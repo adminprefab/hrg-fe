@@ -289,6 +289,26 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
 .jobsearch{display:grid;gap:8px}
 .jobsearch input{background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:15px;width:100%;color:var(--fg)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.mat-sort{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px;color:var(--muted)}
+.mats{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.mat-unit{grid-column:1/-1;margin:0;font-size:13px;color:var(--muted)}
+.mat{border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:6px;align-content:start;background:var(--surface)}
+.mat-best{border-color:var(--ok);box-shadow:inset 0 0 0 1px var(--ok)}
+.mat-top{display:flex;justify-content:space-between;gap:8px;align-items:start}
+.mat-cost{font-family:var(--display);font-size:20px;font-weight:700}
+.mat-bar,.life-bar{height:5px;border-radius:3px;background:var(--surface-2);overflow:hidden;margin:0}
+.mat-bar i{display:block;height:100%;background:var(--gold)}
+.life-bar i{display:block;height:100%;background:var(--ok)}
+.mat-dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:3px 10px;margin:0;font-size:13px}
+.mat-dl dt{color:var(--muted)}
+.mat-dl dd{margin:0}
+.mat-dl .life-bar{grid-column:1/-1}
+.pc{list-style:none;margin:0;padding:0;display:grid;gap:3px;font-size:13px}
+.pc li{padding-left:18px;position:relative}
+.pc .pro::before{content:'+';position:absolute;left:3px;color:var(--ok);font-weight:700}
+.pc .con::before{content:'–';position:absolute;left:3px;color:var(--bad);font-weight:700}
+.mat-best-for{margin:0;font-size:13px}
+.mat-best-for span{color:var(--muted)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 .hp{position:absolute!important;left:-10000px!important;width:1px;height:1px;overflow:hidden}
 </style>
@@ -303,7 +323,7 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
     <p data-i18n>Pick the job, tell us how big it is and answer a few quick questions. You'll see a price range for your area in seconds, with permits and a start-to-finish timeline. Add as many jobs as you like, then send it to HRG for a firm quote.</p>
   </div>
   <nav class="sitenav" aria-label="Sections" data-i18n-aria><div class="sitenav-in">
-    <a href="#plan" data-i18n>Estimate</a><a href="#popular" data-i18n>Ideas</a><a href="#budget" data-i18n>Budget</a><a href="#financing" data-i18n>Financing</a><a href="#rebates" data-i18n>Rebates</a><a href="#permits" data-i18n>Permits</a><a href="#how" data-i18n>How it works</a><a href="#faq" data-i18n>FAQ</a><a href="#glossary" data-i18n>Glossary</a><a href="#contact" data-i18n>Contact</a>
+    <a href="#plan" data-i18n>Estimate</a><a href="#popular" data-i18n>Ideas</a><a href="#budget" data-i18n>Budget</a><a href="#materials" data-i18n>Materials</a><a href="#financing" data-i18n>Financing</a><a href="#rebates" data-i18n>Rebates</a><a href="#permits" data-i18n>Permits</a><a href="#how" data-i18n>How it works</a><a href="#faq" data-i18n>FAQ</a><a href="#glossary" data-i18n>Glossary</a><a href="#contact" data-i18n>Contact</a>
   </div></nav>
 </header>
 
@@ -361,6 +381,15 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
     <div class="bud-in"><label for="bud-amt"><span data-i18n>My budget</span><input id="bud-amt" class="num" type="number" min="0" step="1000" inputmode="numeric" placeholder="e.g. 50000" data-i18n-ph></label>
       <div class="chips" role="group" aria-label="Quick amounts" data-i18n-aria id="bud-quick"><button type="button" class="chip sm" data-amt="10000">$10k</button><button type="button" class="chip sm" data-amt="25000">$25k</button><button type="button" class="chip sm" data-amt="50000">$50k</button><button type="button" class="chip sm" data-amt="100000">$100k</button><button type="button" class="chip sm" data-amt="250000">$250k</button></div></div>
     <div class="pops" id="bud-list"></div>
+  </section>
+  <section class="card sec" id="materials" aria-labelledby="h-mat">
+    <div><p class="eyebrow" data-i18n>Materials</p><h2 id="h-mat" data-i18n>Compare materials before you choose</h2></div>
+    <p class="lede" data-i18n>Installed cost, how long it lasts, upkeep, and the trade-offs, for the choices homeowners ask about most. Costs are U.S. national averages; your estimate above is priced for your area.</p>
+    <div class="chips" id="mat-cats" role="tablist" aria-label="Material type" data-i18n-aria></div>
+    <div class="mat-sort" role="group" aria-label="Sort materials" data-i18n-aria><span data-i18n>Sort by</span>
+      <button type="button" class="chip sm" data-sort="cost" data-i18n>Lowest cost</button><button type="button" class="chip sm" data-sort="life" data-i18n>Longest lasting</button><button type="button" class="chip sm" data-sort="value" data-i18n>Lowest cost per year</button><button type="button" class="chip sm" data-sort="none" data-i18n>Default</button></div>
+    <div class="mats" id="mat-list"></div>
+    <p class="note" data-i18n>Sources: HomeAdvisor, Angi, Fixr and HomeGuide cost guides (2025–2026); lifespans from the InterNACHI life-expectancy chart and the NAHB study of home components, using the more conservative figure where they differ. Value per year = middle of the cost range ÷ middle of the lifespan.</p>
   </section>
   <section class="card sec" id="financing" aria-labelledby="h-fin">
     <div><p class="eyebrow" data-i18n>Financing</p><h2 id="h-fin" data-i18n>What would it cost per month?</h2></div>
@@ -1632,6 +1661,28 @@ const ES={
 "Quick amounts":"Cantidades rápidas",
 "Search for a job":"Buscar un trabajo",
 "Search: water heater, fence, garage door…":"Buscar: calentador, cerca, puerta de garaje…",
+"Materials":"Materiales",
+"Compare materials before you choose":"Compare materiales antes de elegir",
+"Installed cost, how long it lasts, upkeep, and the trade-offs, for the choices homeowners ask about most. Costs are U.S. national averages; your estimate above is priced for your area.":"Costo instalado, cuánto dura, mantenimiento y ventajas y desventajas de las opciones que más preguntan los dueños de casa. Los costos son promedios nacionales de EE. UU.; su estimado de arriba tiene precios de su zona.",
+"Material type":"Tipo de material",
+"Sort materials":"Ordenar materiales",
+"Sort by":"Ordenar por",
+"Lowest cost":"Menor costo",
+"Longest lasting":"Más duradero",
+"Best value per year":"Mejor valor por año",
+"Default":"Predeterminado",
+"Sources: HomeAdvisor, Angi, Fixr and HomeGuide cost guides (2025–2026); lifespans from the InterNACHI life-expectancy chart and the NAHB study of home components, using the more conservative figure where they differ. Value per year = middle of the cost range ÷ middle of the lifespan.":"Fuentes: guías de costos de HomeAdvisor, Angi, Fixr y HomeGuide (2025–2026); la duración viene de la tabla de vida útil de InterNACHI y del estudio de NAHB sobre componentes de la casa, con la cifra más conservadora cuando difieren. Valor por año = punto medio del costo ÷ punto medio de la duración.",
+"Decades with care":"Décadas con cuidado",
+"Decades":"Décadas",
+"Furnace 15–25 · AC 7–15":"Calentador 15–25 · aire 7–15",
+"Up to 24 (ground loop 50+)":"Hasta 24 (circuito subterráneo 50+)",
+"8–25 (often a 25-yr warranty)":"8–25 (a menudo con garantía de 25 años)",
+"Up to 50":"Hasta 50",
+"100+":"100+",
+"50+":"50+",
+"30+":"30+",
+"40+":"40+",
+"Lowest cost per year":"Menor costo por año",
 };
 </script>
 <script>
@@ -2584,6 +2635,112 @@ function renderPopular(){$('pop-list').innerHTML=POPULAR.map(([t,d,e],i)=>{const
 $('pop-list').addEventListener('click',e=>{const b=e.target.closest('.pop');if(!b)return;const [,,p]=POPULAR[+b.dataset.p];
   S.cur={job:p.job,size:p.size,a:Object.assign({},p.a),tier:p.tier,from3d:null,edit:null};render();$('jobpanel').scrollIntoView({behavior:'smooth',block:'start'})});
 renderPopular();
+/* ---------- materials guide: cost, lifespan, upkeep, pros and cons (U.S. national, 2025–2026) ----------
+   Costs: HomeAdvisor/Angi/Fixr/HomeGuide cost guides (several read from search summaries).
+   Lifespans: InterNACHI life-expectancy chart and the NAHB "Study of Life Expectancy of Home Components";
+   where the two disagree the more conservative figure is shown. Upkeep, pros, cons and "best for" are trade knowledge.
+   Each item: [name, cost low, cost high, life low, life high, life label (optional), upkeep, pros, cons, best for];
+   text fields are [English, Spanish]. A null life means no reliable figure. */
+const MATERIALS=[
+ {id:'counters',n:['Countertops','Encimeras'],u:['per sq ft installed','por pie² instalado'],job:'kitchen',items:[
+  [['Laminate','Laminado'],20,60,20,30,null,['Wipe clean; keep hot pans off','Limpiar; no poner ollas calientes'],[['Lowest cost','Lo más económico'],['Many colors and looks','Muchos colores y estilos']],[['Burns and chips','Se quema y se astilla'],['Visible seams','Uniones visibles']],['Rentals, tight budgets','Rentas, presupuestos ajustados']],
+  [['Butcher block','Madera (butcher block)'],40,150,null,null,['Decades with care','Décadas con cuidado'],['Oil it about once a month','Aceitarla más o menos cada mes'],[['Warm, natural look','Aspecto cálido y natural'],['Scratches can be sanded out','Los rayones se lijan']],[['Water and knife marks','Marcas de agua y cuchillo'],['Needs regular oiling','Necesita aceite seguido']],['Islands, accents','Islas, detalles']],
+  [['Solid surface','Superficie sólida'],45,100,null,null,null,['Buff out light scratches','Pulir rayones leves'],[['Seamless, with built-in sinks','Sin uniones, con fregadero integrado'],['Repairable','Se puede reparar']],[['Damaged by heat','Le daña el calor'],['Scratches easily','Se raya con facilidad']],['Bathrooms, mid budgets','Baños, presupuestos medios']],
+  [['Quartz','Cuarzo'],50,150,null,null,['Decades','Décadas'],['No sealing needed','No necesita sellador'],[['Non-porous, resists stains','No es poroso, resiste manchas'],['Even, consistent color','Color uniforme']],[['Hot pans can discolor it','Las ollas calientes lo decoloran'],['Fades in direct sun','Se decolora al sol']],['Busy family kitchens','Cocinas familiares con mucho uso']],
+  [['Granite','Granito'],55,150,100,100,'100+',['Seal once a year','Sellar una vez al año'],[['Heat-proof','Resiste el calor'],['Every slab is unique','Cada losa es única']],[['Porous if not sealed','Es poroso si no se sella'],['Visible seams','Uniones visibles']],['Classic kitchens','Cocinas clásicas']],
+  [['Quartzite','Cuarcita'],60,210,100,100,'100+',['Seal now and then','Sellar de vez en cuando'],[['Harder than granite','Más dura que el granito'],['Marble look, more durable','Aspecto de mármol, más resistente']],[['Most expensive here','La más cara de la lista'],['Hard to cut and shape','Difícil de cortar']],['High-end kitchens','Cocinas de lujo']],
+  [['Marble','Mármol'],40,150,100,100,'100+',['Seal; wipe up acids fast','Sellar; limpiar ácidos rápido'],[['Timeless look','Aspecto clásico'],['Stays cool for baking','Fresco para hornear']],[['Etches with lemon or wine','Se marca con limón o vino'],['Stains','Se mancha']],['Baking stations, baths','Zonas de repostería, baños']],
+  [['Porcelain slab','Losa de porcelana'],50,120,null,null,null,['None','Ninguno'],[['Heat, stain and UV proof','Resiste calor, manchas y sol'],['Works outdoors','Sirve en exteriores']],[['Edges can chip','Las orillas se pueden despostillar'],['Few installers','Pocos instaladores']],['Modern kitchens, outdoor','Cocinas modernas, exteriores']]]},
+ {id:'floors',n:['Flooring','Pisos'],u:['per sq ft installed','por pie² instalado'],job:'flooring',items:[
+  [['Carpet','Alfombra'],3,11,8,10,null,['Vacuum; deep clean yearly','Aspirar; lavado profundo anual'],[['Soft and warm','Suave y cálida'],['Quiet','Silenciosa']],[['Stains','Se mancha'],['Holds dust and allergens','Acumula polvo y alérgenos']],['Bedrooms','Recámaras']],
+  [['Laminate','Laminado'],3,13,15,25,null,['Sweep; damp mop','Barrer; trapear con poca agua'],[['Low cost','Bajo costo'],['Resists scratches','Resiste rayones']],[['Swells if it gets wet','Se hincha si se moja'],['Hollow sound','Suena hueco']],['Living areas','Salas y estancias']],
+  [['Luxury vinyl plank','Vinil de lujo (LVP)'],3,11,25,25,null,['Sweep and mop','Barrer y trapear'],[['Waterproof','A prueba de agua'],['Easy to install','Fácil de instalar']],[['Dents under heavy furniture','Se marca con muebles pesados'],['Can\'t be refinished','No se puede restaurar']],['Kitchens, baths, rentals','Cocinas, baños, rentas']],
+  [['Engineered hardwood','Madera de ingeniería'],6,18,50,50,'50+',['Sweep; refinish once or twice','Barrer; restaurar una o dos veces'],[['Real wood surface','Superficie de madera real'],['Stable over slabs','Estable sobre losa de concreto']],[['Limited refinishing','Se puede restaurar pocas veces'],['Scratches','Se raya']],['Homes on concrete slabs','Casas sobre losa de concreto']],
+  [['Solid hardwood','Madera sólida'],9,23,100,100,'100+',['Refinish every 10–20 years','Restaurar cada 10–20 años'],[['Can be refinished many times','Se restaura muchas veces'],['Adds resale value','Aumenta el valor de reventa']],[['Sensitive to moisture','Sensible a la humedad'],['Higher cost','Costo más alto']],['Living and dining rooms','Salas y comedores']],
+  [['Porcelain or ceramic tile','Loseta de porcelana o cerámica'],7,20,75,100,null,['Seal the grout','Sellar las juntas'],[['Waterproof','A prueba de agua'],['Very durable','Muy resistente']],[['Hard and cold underfoot','Dura y fría al pisar'],['Grout lines to clean','Juntas que limpiar']],['Kitchens, baths, entries','Cocinas, baños, entradas']],
+  [['Natural stone tile','Loseta de piedra natural'],7,27,100,100,'100+',['Seal regularly','Sellar con regularidad'],[['Premium look','Aspecto de lujo'],['Lasts a lifetime','Dura toda la vida']],[['Costly','Costosa'],['Porous','Porosa']],['Entries, luxury baths','Entradas, baños de lujo']],
+  [['Polished concrete','Concreto pulido'],2,16,50,50,'50+',['Reseal and buff','Volver a sellar y pulir'],[['Nearly indestructible','Casi indestructible'],['Modern look','Aspecto moderno']],[['Hard and cold','Duro y frío'],['Can crack','Se puede agrietar']],['Modern homes on slabs','Casas modernas sobre losa']]]},
+ {id:'roofs',n:['Roofing','Techos'],u:['per sq ft installed','por pie² instalado'],job:'roofing',items:[
+  [['Architectural shingle','Teja asfáltica arquitectónica'],4,6,30,30,null,['Inspect; clear leaves','Revisar; quitar hojas'],[['Lowest cost','Lo más económico'],['Any roofer can install it','Cualquier techador la instala']],[['Heat shortens its life','El calor acorta su vida'],['Shortest lifespan here','La de menor duración aquí']],['Most homes','La mayoría de las casas']],
+  [['Concrete tile','Teja de concreto'],10,20,50,50,'50+',['Replace cracked tiles; underlayment every 20–30 yrs','Cambiar tejas rotas; membrana cada 20–30 años'],[['Fire-resistant','Resiste el fuego'],['Durable','Resistente']],[['Heavy; may need a structural check','Pesada; puede requerir revisión estructural'],['Breaks if walked on','Se rompe al pisarla']],['Hot, dry climates','Climas cálidos y secos']],
+  [['Clay tile','Teja de barro'],10,20,100,100,'100+',['Replace cracked tiles; underlayment every 20–30 yrs','Cambiar tejas rotas; membrana cada 20–30 años'],[['Color never fades','El color no se decolora'],['Very long life','Vida muy larga']],[['Heavy','Pesada'],['Brittle','Frágil']],['Spanish and Mediterranean homes','Casas de estilo español y mediterráneo']],
+  [['Standing-seam metal','Metal de junta alzada'],7,25,40,80,null,['Check fasteners and sealant','Revisar sujetadores y sellador'],[['Light and fire-resistant','Ligero y resistente al fuego'],['Reflects heat','Refleja el calor']],[['Higher cost','Costo más alto'],['Can dent','Se puede abollar']],['Modern homes, wildfire areas','Casas modernas, zonas de incendios']],
+  [['Synthetic slate','Pizarra sintética'],7,15,10,35,null,['Minimal','Mínimo'],[['Slate look, much lighter','Aspecto de pizarra, mucho más ligera'],['Lower cost than slate','Más barata que la pizarra']],[['Long-term life unproven','Su duración aún no está comprobada'],['Fewer installers','Menos instaladores']],['Slate look on a budget','Aspecto de pizarra con menos presupuesto']],
+  [['Natural slate','Pizarra natural'],15,33,60,150,null,['Repairs need a specialist','Las reparaciones requieren especialista'],[['Can last a century','Puede durar un siglo'],['Fireproof','No se quema']],[['Very heavy','Muy pesada'],['Very costly','Muy costosa']],['Historic and high-end homes','Casas históricas y de lujo']]]},
+ {id:'siding',n:['Siding','Revestimiento exterior'],u:['per sq ft installed','por pie² instalado'],job:'siding',items:[
+  [['Stucco','Estuco'],7,14.5,50,50,'50+',['Patch cracks; repaint about every 10 yrs','Resanar grietas; pintar cada ~10 años'],[['Fire-resistant','Resiste el fuego'],['Seamless look','Acabado continuo']],[['Cracks over time','Se agrieta con el tiempo'],['Hides moisture if done poorly','Esconde humedad si se hace mal']],['Dry climates like California','Climas secos como California']],
+  [['Fiber cement','Fibrocemento'],5,14.5,100,100,'100+',['Repaint every 10–15 yrs','Pintar cada 10–15 años'],[['Won\'t burn, rot or attract termites','No se quema, no se pudre, no atrae termitas'],['Holds paint well','Mantiene bien la pintura']],[['Heavy','Pesado'],['Costly to install','Instalación costosa']],['Wildfire areas, most homes','Zonas de incendios, la mayoría de las casas']],
+  [['Vinyl','Vinil'],3,12,60,60,null,['Wash','Lavar'],[['Lowest cost','Lo más económico'],['Never needs paint','Nunca necesita pintura']],[['Cracks and warps','Se agrieta y se deforma'],['Not fire-rated','No resiste el fuego']],['Budgets, cold climates','Presupuestos bajos, climas fríos']],
+  [['Cedar wood','Madera de cedro'],5,16,null,null,null,['Stain or paint every 3–6 yrs','Teñir o pintar cada 3–6 años'],[['Natural beauty','Belleza natural'],['Easy to repair','Fácil de reparar']],[['Rot, insects and fire','Pudrición, insectos y fuego'],['Constant upkeep','Mantenimiento constante']],['Craftsman and rustic homes','Casas estilo craftsman y rústicas']],
+  [['Engineered wood','Madera de ingeniería'],4,12,null,null,null,['Repaint every 5–10 yrs','Pintar cada 5–10 años'],[['Wood look, tougher','Aspecto de madera, más resistente'],['Lighter to install','Más ligera de instalar']],[['Must stay sealed','Debe mantenerse sellada'],['Swells if water gets in','Se hincha si le entra agua']],['Wood look for less','Aspecto de madera por menos']],
+  [['Brick veneer','Chapa de ladrillo'],9,28,100,100,'100+',['Repoint mortar now and then','Rellenar juntas de vez en cuando'],[['Almost no upkeep','Casi sin mantenimiento'],['Strong resale appeal','Atractivo para la reventa']],[['Highest cost','El costo más alto'],['Needs earthquake detailing','Necesita refuerzo sísmico']],['Traditional homes','Casas tradicionales']]]},
+ {id:'windows',n:['Window frames','Marcos de ventana'],u:['per window installed (about 3×5 ft)','por ventana instalada (unos 3×5 pies)'],job:'windows',items:[
+  [['Vinyl','Vinil'],200,1200,20,40,null,['Wash; check seals','Lavar; revisar sellos'],[['Best value','La mejor relación precio-calidad'],['Energy efficient','Eficiente en energía']],[['Few colors','Pocos colores'],['Can warp in extreme heat','Se puede deformar con calor extremo']],['Most replacements','La mayoría de los reemplazos']],
+  [['Fiberglass','Fibra de vidrio'],600,1800,20,40,null,['Minimal; can be painted','Mínimo; se puede pintar'],[['Strong and stable in heat','Fuerte y estable con el calor'],['Slim frames, more glass','Marcos delgados, más vidrio']],[['Higher cost','Costo más alto'],['Fewer styles','Menos estilos']],['Hot climates, large windows','Climas cálidos, ventanas grandes']],
+  [['Wood','Madera'],250,1600,30,30,'30+',['Paint or seal the outside','Pintar o sellar por fuera'],[['Classic, warm look','Aspecto clásico y cálido'],['Good insulator','Buen aislante']],[['Can rot','Se puede pudrir'],['Needs upkeep','Necesita mantenimiento']],['Historic homes','Casas históricas']],
+  [['Aluminum','Aluminio'],175,700,15,20,null,['Minimal','Mínimo'],[['Slim, modern frames','Marcos delgados y modernos'],['Low cost','Bajo costo']],[['Poor insulator','Mal aislante'],['Condensation','Condensación']],['Modern homes, mild climates','Casas modernas, climas templados']],
+  [['Composite','Compuesto'],650,1700,null,null,null,['Minimal','Mínimo'],[['Stable; looks like painted wood','Estable; parece madera pintada'],['Low upkeep','Poco mantenimiento']],[['Mostly one brand','Casi solo una marca'],['Dealer pricing','Precios de distribuidor']],['Mid to premium remodels','Remodelaciones medias a de lujo']]]},
+ {id:'heaters',n:['Water heaters','Calentadores de agua'],u:['each, installed','cada uno, instalado'],job:'plumbing',items:[
+  [['Gas tank','Tanque de gas'],700,2700,6,12,null,['Flush yearly; check the anode','Purgar cada año; revisar el ánodo'],[['Low cost','Bajo costo'],['Heats water back up fast','Recupera el agua caliente rápido']],[['Needs a vent','Necesita ventilación'],['Wastes heat while it waits','Pierde calor mientras espera']],['Homes with gas','Casas con gas']],
+  [['Electric tank','Tanque eléctrico'],600,3500,6,12,null,['Flush yearly','Purgar cada año'],[['Cheapest unit','El equipo más barato'],['No vent needed','No necesita ventilación']],[['High running cost','Costo de uso alto'],['Slow to reheat','Tarda en recalentar']],['Homes without gas','Casas sin gas']],
+  [['Gas tankless','Sin tanque de gas'],1400,5600,10,20,null,['Descale yearly','Quitar sarro cada año'],[['Endless hot water','Agua caliente sin fin'],['Compact, on the wall','Compacto, en la pared']],[['Gas line or vent upgrades','Puede requerir cambiar gas o ventilación'],['Higher upfront cost','Costo inicial más alto']],['Large households','Familias grandes']],
+  [['Heat pump (hybrid)','Bomba de calor (híbrido)'],1500,5500,13,15,null,['Clean the filter; flush','Limpiar el filtro; purgar'],[['Uses about 70% less energy','Usa cerca de 70% menos energía'],['Saves about $550 a year for a family of four vs. electric tank (ENERGY STAR)','Ahorra unos $550 al año para una familia de cuatro frente al tanque eléctrico (ENERGY STAR)']],[['Needs space and air around it','Necesita espacio y aire alrededor'],['Cools the room it\'s in','Enfría el cuarto donde está']],['Going electric, rebates','Cambiar a eléctrico, reembolsos']]]},
+ {id:'hvac',n:['Heating & cooling','Calefacción y aire'],u:['whole system, about 2,000 sq ft home','sistema completo, casa de unos 2,000 pies²'],job:'hvac',items:[
+  [['Gas furnace + central AC','Calentador de gas + aire central'],8000,15000,10,20,'Furnace 15–25 · AC 7–15',['Change filters; yearly tune-up','Cambiar filtros; servicio anual'],[['Lowest upfront cost','El menor costo inicial'],['Strong heat','Calefacción potente']],[['Two systems to maintain','Dos sistemas que mantener'],['Burns gas','Quema gas']],['Ducted homes with gas','Casas con ductos y gas']],
+  [['Ducted heat pump','Bomba de calor con ductos'],8000,18000,10,16,null,['Change filters; yearly service','Cambiar filtros; servicio anual'],[['One unit heats and cools','Un solo equipo calienta y enfría'],['Very efficient','Muy eficiente']],[['May need an electrical upgrade','Puede requerir mejora eléctrica'],['Cold-climate models cost more','Los modelos para frío cuestan más']],['Mild climates like LA','Climas templados como LA']],
+  [['Ductless mini-split (multi-zone)','Minisplit sin ductos (varias zonas)'],8000,18000,15,20,null,['Clean filters and indoor heads','Limpiar filtros y unidades interiores'],[['No ducts needed','No necesita ductos'],['Room-by-room control','Control por cuarto']],[['Wall units are visible','Las unidades se ven en la pared'],['Cost grows with each zone','El costo sube con cada zona']],['Homes without ducts, additions, ADUs','Casas sin ductos, ampliaciones, ADUs']],
+  [['Geothermal heat pump','Bomba de calor geotérmica'],15000,30000,20,24,'Up to 24 (ground loop 50+)',['Yearly check','Revisión anual'],[['Lowest running cost','El menor costo de uso'],['Very long-lasting ground loop','Circuito subterráneo muy duradero']],[['Highest upfront cost','El mayor costo inicial'],['Needs drilling and yard space','Requiere perforar y espacio en el patio']],['Large lots, long-term owners','Terrenos grandes, dueños a largo plazo']]]},
+ {id:'cabinets',n:['Kitchen cabinets','Gabinetes de cocina'],u:['per linear ft installed','por pie lineal instalado'],job:'kitchen',items:[
+  [['Ready-to-assemble','Para armar (RTA)'],100,300,null,null,null,['Tighten hinges now and then','Ajustar bisagras de vez en cuando'],[['Cheapest','Lo más barato'],['Available right away','Disponibles de inmediato']],[['Assembly labor','Hay que armarlos'],['Often particleboard','Suelen ser de aglomerado']],['Rentals, DIY','Rentas, hágalo usted mismo']],
+  [['Stock','De línea (stock)'],100,300,50,50,null,['Tighten hinges now and then','Ajustar bisagras de vez en cuando'],[['Short lead time','Entrega rápida'],['Low cost','Bajo costo']],[['Fixed sizes need filler strips','Medidas fijas con rellenos'],['Fewer finishes','Menos acabados']],['Standard layouts','Distribuciones estándar']],
+  [['Semi-custom','Semipersonalizados'],400,600,50,50,null,['Tighten hinges now and then','Ajustar bisagras de vez en cuando'],[['More sizes and finishes','Más medidas y acabados'],['Good value','Buena relación precio-calidad']],[['Longer lead time','Entrega más lenta'],['Upgrades add up','Las mejoras suman']],['Most remodels','La mayoría de las remodelaciones']],
+  [['Custom','A la medida'],500,1200,50,50,null,['Tighten hinges now and then','Ajustar bisagras de vez en cuando'],[['Exact fit, any finish','Ajuste exacto, cualquier acabado'],['Best materials','Los mejores materiales']],[['Highest cost','El costo más alto'],['Weeks of lead time','Semanas de espera']],['Odd layouts, high-end','Espacios irregulares, lujo']]]},
+ {id:'decks',n:['Decking','Terrazas (decks)'],u:['per sq ft, boards and labor (a full deck with framing runs $30–60)','por pie², tablas y mano de obra (una terraza completa con estructura cuesta $30–60)'],job:'outdoor',items:[
+  [['Pressure-treated pine','Pino tratado'],11,17,10,30,null,['Seal every 1–3 yrs','Sellar cada 1–3 años'],[['Lowest cost','Lo más económico'],['Easy to find','Fácil de conseguir']],[['Splits and warps','Se agrieta y se tuerce'],['Needs regular sealing','Necesita sellador seguido']],['Budget decks','Terrazas económicas']],
+  [['Cedar or redwood','Cedro o secuoya'],12,19,null,null,null,['Stain every 2–3 yrs','Teñir cada 2–3 años'],[['Beautiful','Muy bonita'],['Naturally resists rot','Resiste la pudrición de forma natural']],[['Soft; dents','Suave; se marca'],['Upkeep','Mantenimiento']],['A natural look','Un aspecto natural']],
+  [['Composite','Compuesto'],13,25,8,25,'8–25 (often a 25-yr warranty)',['Wash','Lavar'],[['Low upkeep','Poco mantenimiento'],['No splinters','Sin astillas']],[['Gets hot in sun','Se calienta al sol'],['Can look artificial','Puede verse artificial']],['Families','Familias']],
+  [['PVC','PVC'],16.5,23.5,null,null,null,['Wash','Lavar'],[['Moisture-proof','A prueba de humedad'],['Light','Ligero']],[['Expands in heat','Se expande con el calor'],['Priciest synthetic','El sintético más caro']],['Pools, coast','Albercas, costa']],
+  [['Ipe hardwood','Madera ipe'],19,32,40,40,'40+',['Oil yearly or let it gray','Aceitar cada año o dejar que se vuelva gris'],[['Extremely hard','Extremadamente dura'],['Class A fire rating','Clasificación de fuego Clase A']],[['Hard to work','Difícil de trabajar'],['Harder to source','Más difícil de conseguir']],['Wildfire areas, luxury','Zonas de incendios, lujo']]]},
+ {id:'fences',n:['Fencing','Cercas'],u:['per linear ft installed, 6 ft tall','por pie lineal instalado, 6 pies de alto'],job:'outdoor',items:[
+  [['Chain link','Malla ciclónica'],12,30,15,50,null,['Minimal','Mínimo'],[['Cheapest','Lo más barato'],['Durable','Resistente']],[['No privacy without slats','Sin privacidad si no lleva tablillas'],['Utilitarian look','Aspecto industrial']],['Pets, security','Mascotas, seguridad']],
+  [['Wood privacy','Madera de privacidad'],20,50,20,20,null,['Stain or seal every 2–3 yrs','Teñir o sellar cada 2–3 años'],[['Warm look','Aspecto cálido'],['Easy to repair','Fácil de reparar']],[['Rots and warps','Se pudre y se tuerce'],['Upkeep','Mantenimiento']],['Backyard privacy','Privacidad en el patio']],
+  [['Vinyl','Vinil'],30,60,20,30,null,['Wash','Lavar'],[['Never needs paint','Nunca necesita pintura'],['Clean look','Aspecto limpio']],[['Cracks on impact','Se rompe con golpes'],['Higher cost than wood','Más caro que la madera']],['Low-upkeep privacy','Privacidad con poco mantenimiento']],
+  [['Aluminum or ornamental','Aluminio u ornamental'],25,75,50,50,'Up to 50',['Minimal','Mínimo'],[['Won\'t rust','No se oxida'],['Meets pool-fence rules','Cumple reglas para albercas']],[['No privacy','Sin privacidad'],['Can dent','Se puede abollar']],['Front yards, pools','Jardines del frente, albercas']],
+  [['Concrete block wall','Barda de block'],60,240,100,100,'100+',['Seal or paint','Sellar o pintar'],[['Privacy, sound and fire barrier','Privacidad, barrera de ruido y fuego'],['Lasts a lifetime','Dura toda la vida']],[['Highest cost','El costo más alto'],['Needs footing; permit over 3½ ft','Necesita cimiento; permiso arriba de 3½ pies']],['Property lines, noisy streets','Linderos, calles ruidosas']]]}
+];
+
+const MATG={cat:'counters',sort:'none'};try{const v=JSON.parse(localStorage.getItem('hrg-mat'));if(v&&MATERIALS.some(c=>c.id===v.cat))Object.assign(MATG,v)}catch(e){}
+const PL=v=>Array.isArray(v)?v[LANG==='es'?1:0]:v;
+const mny=n=>n>=100?'$'+Math.round(n).toLocaleString('en-US'):'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+function matRows(c){const rows=c.items.map(([nm,lo,hi,l1,l2,lab,up,pros,cons,best])=>{const mid=(lo+hi)/2,life=l1!=null?(l1+l2)/2:null;
+    return {nm,lo,hi,l1,l2,lab,up,pros,cons,best,mid,life,perYr:life?mid/life:null}});
+  const s=MATG.sort,big=1e12;
+  if(s==='cost')rows.sort((a,b)=>a.mid-b.mid);
+  if(s==='life')rows.sort((a,b)=>(b.life??-1)-(a.life??-1));
+  if(s==='value')rows.sort((a,b)=>(a.perYr??big)-(b.perYr??big));
+  return rows}
+function renderMaterials(){const c=MATERIALS.find(x=>x.id===MATG.cat)||MATERIALS[0];
+  $('mat-cats').innerHTML=MATERIALS.map(x=>`<button type="button" class="chip" role="tab" data-cat="${x.id}" aria-selected="${x.id===c.id}" aria-pressed="${x.id===c.id}">${esc(PL(x.n))}</button>`).join('');
+  document.querySelectorAll('.mat-sort .chip').forEach(b=>b.setAttribute('aria-pressed',b.dataset.sort===MATG.sort));
+  const rows=matRows(c),maxLife=Math.max(...rows.map(r=>r.l2||0),1),maxMid=Math.max(...rows.map(r=>r.mid));
+  const bestVal=rows.filter(r=>r.perYr).sort((a,b)=>a.perYr-b.perYr)[0];
+  $('mat-list').innerHTML=`<p class="mat-unit">${esc(PL(c.u))} · <button type="button" class="linkbtn" data-matjob="${c.job}">${T('Price this job','Calcular este trabajo')}</button></p>`+rows.map(r=>{
+    const lifeTxt=r.lab?tr(r.lab):r.l1!=null?(r.l1===r.l2?String(r.l1):r.l1+'–'+r.l2):'—';
+    return `<article class="mat${r===bestVal?' mat-best':''}"><div class="mat-top"><b>${esc(PL(r.nm))}</b>${r===bestVal?`<span class="st st-ok">${T('Lowest cost per year of life','Menor costo por año de vida')}</span>`:''}</div>
+      <div class="mat-cost num">${mny(r.lo)}–${mny(r.hi)}</div>
+      <div class="mat-bar" aria-hidden="true"><i style="width:${(r.mid/maxMid*100).toFixed(1)}%"></i></div>
+      <dl class="mat-dl"><dt>${T('Lasts','Dura')}</dt><dd>${esc(lifeTxt)} ${r.l1!=null||r.lab?T('years','años'):''}</dd>
+        ${r.l2?`<dd class="life-bar" aria-hidden="true"><i style="width:${(Math.min(r.l2,maxLife)/maxLife*100).toFixed(1)}%"></i></dd>`:''}
+        ${r.perYr?`<dt>${T('Cost per year of life','Costo por año de vida')}</dt><dd class="num">${mny(r.perYr)} ${esc(PL(c.u).split(/,| \(/)[0].replace(/ (installed|instalad[oa])$/,''))}</dd>`:''}
+        <dt>${T('Upkeep','Mantenimiento')}</dt><dd>${esc(PL(r.up))}</dd></dl>
+      <ul class="pc">${r.pros.map(p=>`<li class="pro">${esc(PL(p))}</li>`).join('')}${r.cons.map(p=>`<li class="con">${esc(PL(p))}</li>`).join('')}</ul>
+      <p class="mat-best-for"><span>${T('Best for','Ideal para')}</span> ${esc(PL(r.best))}</p></article>`}).join('')}
+const saveMat=()=>{try{localStorage.setItem('hrg-mat',JSON.stringify(MATG))}catch(e){}};
+$('mat-cats').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;MATG.cat=b.dataset.cat;saveMat();renderMaterials()});
+document.querySelector('.mat-sort').addEventListener('click',e=>{const b=e.target.closest('[data-sort]');if(!b)return;MATG.sort=b.dataset.sort;saveMat();renderMaterials()});
+$('mat-list').addEventListener('click',e=>{const b=e.target.closest('[data-matjob]');if(!b)return;startJob(b.dataset.matjob);$('jobpanel').scrollIntoView({behavior:'smooth',block:'start'})});
+renderMaterials();
+
 /* ---------- budget explorer: which jobs fit, and at which finish level ---------- */
 // a job "fits" when the top of its range (most likely +15%) is within the budget
 function budgetRows(){return JOBS.map(j=>{const base={job:j.id,size:j.size?j.size.def:0,a:answers(j,{})};
@@ -2694,7 +2851,7 @@ window.__finReady=true;
 
 /* ---------- language switch: redraw everything that holds text ---------- */
 function setLang(lg){if(lg===LANG)return;LANG=lg;try{localStorage.setItem('hrg-lang',lg)}catch(e){}
-  applyStatic();renderRegions();label3DControls();render3DControls();render();renderRebates();renderPermitPaths();renderPopular();renderBudget();
+  applyStatic();renderRegions();label3DControls();render3DControls();render();renderRebates();renderPermitPaths();renderPopular();renderBudget();renderMaterials();
   renderPermJobs();renderPermit();renderChecks();renderFaq();renderGlossary();renderFinance()}
 document.querySelector('.lang').addEventListener('click',e=>{const b=e.target.closest('[data-lang]');if(b)setLang(b.dataset.lang)});
 
