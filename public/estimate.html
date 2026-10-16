@@ -286,6 +286,9 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
 .fitline{font-size:12.5px;color:var(--ok)}
 .pop.nofit{opacity:.72}
 .pop.nofit .fitline{color:var(--muted)}
+.jobsearch{display:grid;gap:8px}
+.jobsearch input{background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:15px;width:100%;color:var(--fg)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 .hp{position:absolute!important;left:-10000px!important;width:1px;height:1px;overflow:hidden}
 </style>
@@ -308,6 +311,9 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
   <div class="left">
     <section class="card sec" aria-labelledby="h-job">
       <div><p class="eyebrow" data-i18n>Step 1</p><h2 id="h-job" data-i18n>What do you want to change?</h2></div>
+      <div class="jobsearch"><label for="job-q" class="sr" data-i18n>Search for a job</label>
+        <input id="job-q" type="search" autocomplete="off" placeholder="Search: water heater, fence, garage door…" data-i18n-ph aria-describedby="job-hits">
+        <div class="chips" id="job-hits" aria-live="polite"></div></div>
       <div class="jobs" id="jobs" role="group" aria-label="Type of job" data-i18n-aria></div>
     </section>
 
@@ -1624,6 +1630,8 @@ const ES={
 "My budget":"Mi presupuesto",
 "e.g. 50000":"p. ej. 50000",
 "Quick amounts":"Cantidades rápidas",
+"Search for a job":"Buscar un trabajo",
+"Search: water heater, fence, garage door…":"Buscar: calentador, cerca, puerta de garaje…",
 };
 </script>
 <script>
@@ -2229,6 +2237,86 @@ function describe(e,lg){const job=JOB[e.job],a=answers(job,e.a),bits=[];
   if(job.size)bits.push(`${(+e.size||0).toLocaleString('en-US')} ${tr(job.size.unit,lg)}`);
   job.q.forEach(([id,,opts,show])=>{if(show&&!show(a))return;const o=opts.find(x=>x[0]===a[id]);if(o&&o[0]!=='no'&&o[0]!=='0'&&o[0]!=='none'&&o[0]!=='keep')bits.push(tr(o[1],lg))});
   bits.push(T(TIERS[e.tier].n+' finish','Acabado '+tr(TIERS[e.tier].n,'es').toLowerCase(),lg));return bits.join(' · ')}
+
+/* ---------- job search: everyday words → the right job with options already picked ---------- */
+// [English, Spanish, extra search words, job, size (null = job default), preset answers, finish level]
+const SEARCH=[
+ ['Water heater','Calentador de agua','boiler hot water calentador boiler','plumbing',null,{repipe:'no',heater:'yes'}],
+ ['Tankless water heater','Calentador sin tanque','instant on demand','plumbing',null,{repipe:'no',heater:'yes'},2],
+ ['Repipe the house','Cambiar la tubería','pipes leak plomeria tuberia','plumbing',null,{repipe:'yes'}],
+ ['Sewer line','Línea de drenaje','sewer drain alcantarillado drenaje','plumbing',null,{repipe:'no',sewer:'yes'}],
+ ['Electrical panel upgrade','Cambio de panel eléctrico','breaker box 200 amp panel electrico','electrical',null,{panel:'yes'}],
+ ['EV charger','Cargador para auto eléctrico','tesla car charger electric vehicle cargador','electrical',null,{panel:'no',ev:'yes'}],
+ ['Rewire the house','Recablear la casa','wiring knob tube cableado','electrical',null,{panel:'yes',rewire:'yes'}],
+ ['Recessed lighting','Luces empotradas','can lights led luces','electrical',null,{panel:'no',lights:'12'}],
+ ['Solar panels','Paneles solares','solar energia','solar',null,{}],
+ ['Home battery','Batería para la casa','powerwall backup outage bateria','solar',null,{kw:'0',batt:'1'}],
+ ['Garage door','Puerta de garaje','garage door portón','windows',0,{garage:'yes'}],
+ ['Front door','Puerta principal','entry door puerta entrada','windows',0,{entry:'yes'}],
+ ['Sliding or patio door','Puerta corrediza','slider french door puerta de patio','windows',0,{patio:'yes'}],
+ ['Window replacement','Cambiar ventanas','windows ventanas','windows',null,{}],
+ ['Fence','Cerca','fence gate cerco barda reja','outdoor',null,{landscape:"no",irrigation:"no",fence:'100'}],
+ ['Driveway','Entrada de autos','concrete driveway concreto cochera','outdoor',null,{landscape:"no",irrigation:"no",driveway:'yes'}],
+ ['Patio','Patio','pavers hardscape patio','outdoor',null,{landscape:"no",irrigation:"no",patio:'400'}],
+ ['Deck','Terraza de madera','deck composite trex terraza','outdoor',null,{landscape:"no",irrigation:"no",deck:'200'}],
+ ['Lawn replacement','Quitar el césped','grass lawn drought xeriscape cesped pasto','outdoor',null,{}],
+ ['New pool','Alberca nueva','swimming pool alberca piscina','outdoor',null,{landscape:"no",irrigation:"no",pool:'yes'}],
+ ['Pool resurfacing','Renovar la alberca','replaster pebble pool alberca piscina','pool',null,{}],
+ ['Outdoor kitchen','Cocina exterior','bbq grill asador','outdoor',null,{landscape:"no",irrigation:"no",outkitchen:'yes'}],
+ ['Air conditioning','Aire acondicionado','ac cooling a/c clima','hvac',null,{}],
+ ['Heat pump','Bomba de calor','heat pump calefaccion','hvac',null,{},2],
+ ['Mini-split','Minisplit','ductless mini split minisplit','hvac',null,{system:'mini',zones:'2'}],
+ ['Attic insulation','Aislamiento del ático','insulation aislamiento atico','hvac',null,{system:'keep',insul:'yes'}],
+ ['Interior painting','Pintar adentro','paint walls pintura interior','painting',null,{where:'inside'}],
+ ['Exterior painting','Pintar afuera','paint house pintura exterior','painting',null,{where:'outside'}],
+ ['Popcorn ceiling removal','Quitar techo de palomitas','acoustic ceiling texture techo','painting',null,{where:'inside',popcorn:'yes'}],
+ ['Stucco repair','Reparar estuco','stucco cracks estuco','siding',null,{}],
+ ['Hardwood floors','Pisos de madera','wood floor piso madera','flooring',null,{material:'hardwood'}],
+ ['Vinyl plank floors','Piso de vinil','lvp spc vinyl laminate piso vinil','flooring',null,{material:'lvp'}],
+ ['Tile floors','Piso de loseta','tile porcelain ceramic azulejo loseta','flooring',null,{material:'tile'}],
+ ['Carpet','Alfombra','carpet alfombra','flooring',null,{material:'carpet'}],
+ ['Refinish wood floors','Restaurar pisos de madera','sand refinish lijar','flooring',null,{material:'refinish'}],
+ ['New shower','Regadera nueva','shower tile regadera ducha','bathroom',null,{shower:'tile'}],
+ ['Walk-in shower','Regadera sin escalón','tub to shower walk in curbless','bathroom',null,{shower:'convert'}],
+ ['Kitchen cabinets','Gabinetes de cocina','cabinets gabinetes alacenas','kitchen',null,{cabinets:'new',counters:'keep',appliances:'keep',floor:'no'}],
+ ['Countertops','Encimeras','quartz granite counter cubierta encimera granito cuarzo','kitchen',null,{cabinets:'keep',counters:'new',appliances:'keep',floor:'no'}],
+ ['Drywall repair','Reparar tablaroca','drywall sheetrock tablaroca','interior',null,{drywall:'300',doors:'0',trim:'no'}],
+ ['Interior doors','Puertas interiores','doors puertas','interior',null,{doors:'8',trim:'no'}],
+ ['Skylight','Tragaluz','skylight tragaluz','interior',null,{doors:'0',trim:'no',sky:'1'}],
+ ['Fireplace','Chimenea','fireplace chimenea','interior',null,{doors:'0',trim:'no',fireplace:'yes'}],
+ ['Closet','Clóset','closet organizer closet','interior',null,{doors:'0',trim:'no',closets:'2'}],
+ ['Stairs','Escaleras','stair railing escalera barandal','interior',null,{doors:'0',trim:'no',stairs:'yes'}],
+ ['Grab bars','Barras de apoyo','grab bar safety seniors','access',null,{}],
+ ['Wheelchair ramp','Rampa para silla de ruedas','ramp rampa','access',null,{grab:'0',ramp:'yes'}],
+ ['Termites','Termitas','termite tenting fumigation fumigacion','termite',null,{}],
+ ['Dry rot','Madera podrida','rot fascia eaves madera podrida','termite',null,{treat:'none',rot:'50'}],
+ ['Retaining wall','Muro de contención','hillside wall muro contencion','retaining',null,{}],
+ ['Yard drainage','Drenaje del patio','french drain flooding water drenaje','retaining',0,{yard:'100'}],
+ ['Earthquake retrofit','Reforzamiento sísmico','seismic bolt brace sismo terremoto','structural',null,{}],
+ ['Remove a wall','Quitar una pared','open concept wall pared','structural',null,{seismic:'no',wall:'non'}],
+ ['Gutter guards','Protectores de canaletas','gutters canaletas','fire',null,{vents:'no',guards:'yes',zone0:'no'}],
+ ['Laundry room','Cuarto de lavado','laundry washer dryer lavanderia','laundry',null,{laundry:'yes',epoxy:'no'}],
+ ['Epoxy garage floor','Piso epóxico de garaje','epoxy garage floor epoxico','laundry',null,{}],
+ ['Second story','Segundo piso','second floor add a story segundo piso','addition',null,{type:'second'}],
+ ['In-law unit','Unidad para familiares','granny flat casita in law','adu',null,{}]];
+const fold=s=>String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+SEARCH.forEach(s=>{s.idx=fold(s[0]+' '+s[1]+' '+s[2]+' '+JOB[s[3]].name+' '+tr(JOB[s[3]].name,'es'))});
+// every typed word must start a word in the entry; entries whose name starts with the query rank first
+const wordHit=(idx,t)=>(' '+idx).includes(' '+t);
+function searchJobs(q){const w=fold(q).split(/\s+/).filter(Boolean);if(!w.length)return[];const fq=fold(q).trim();
+  const hits=SEARCH.filter(s=>w.every(t=>wordHit(s.idx,t))).map(s=>[s,(fold(s[0]).startsWith(fq)||fold(s[1]).startsWith(fq))?0:1]).sort((a,b)=>a[1]-b[1]).map(x=>x[0]);
+  // whole jobs that match by name come too, after the specific requests
+  JOBS.forEach(j=>{const n=fold(j.name+' '+tr(j.name,'es')+' '+j.blurb);if(w.every(t=>wordHit(n,t))&&!hits.some(s=>s[3]===j.id&&!Object.keys(s[5]).length))hits.push([j.name,tr(j.name,'es'),'',j.id,null,{}])});
+  return hits.slice(0,8)}
+function renderJobHits(){const q=$('job-q').value,hits=searchJobs(q),el=$('job-hits');
+  el.innerHTML=!q.trim()?'':hits.length?hits.map((s,i)=>`<button type="button" class="chip sm" data-hit="${i}">${esc(T(s[0],s[1]))}</button>`).join('')
+    :`<span class="empty">${T('No match. Try another word, or pick a job below.','Sin resultados. Pruebe otra palabra o elija un trabajo abajo.')}</span>`;
+  el._hits=hits}
+function pickHit(s){if(!s)return;const j=JOB[s[3]];startJob(j.id,s[4]!=null?s[4]:null,Object.assign({},s[5]));if(s[6]!=null){S.cur.tier=s[6];render()}
+  S.cur.from3d=null;$('job-q').value='';renderJobHits()}
+$('job-q').addEventListener('input',renderJobHits);
+$('job-q').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();const h=$('job-hits')._hits;if(h&&h[0])pickHit(h[0])}});
+$('job-hits').addEventListener('click',e=>{const b=e.target.closest('[data-hit]');if(b)pickHit($('job-hits')._hits[+b.dataset.hit])});
 
 /* ---------- step 1: job grid ---------- */
 function renderJobs(){const inB=new Set(S.basket.map(b=>b.job));
