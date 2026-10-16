@@ -309,6 +309,17 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
 .pc .con::before{content:'–';position:absolute;left:3px;color:var(--bad);font-weight:700}
 .mat-best-for{margin:0;font-size:13px}
 .mat-best-for span{color:var(--muted)}
+.clamp>:nth-child(n+9){display:none}
+.more-btn{justify-self:start;margin-top:2px}
+.soft .cur{font-weight:700;color:var(--fg)}
+.advice{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;border-top:1px solid var(--line);padding-top:14px}
+.advice h3{font-family:var(--display);font-size:18px;margin:0 0 8px}
+.qlist{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14px}
+.when{margin:0;display:grid;gap:8px}
+.when div{border-left:3px solid var(--gold);padding-left:10px}
+.when dt{font-weight:600;font-size:14px}
+.when dd{margin:2px 0 0;font-size:13.5px;color:var(--muted)}
+@media (pointer:coarse){.chip.sm{min-height:36px;padding:6px 13px}.linkbtn{padding:6px 2px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 .hp{position:absolute!important;left:-10000px!important;width:1px;height:1px;overflow:hidden}
 </style>
@@ -364,6 +375,7 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
       </div>
     </div>
     <div class="est-sec"><p class="eyebrow" data-i18n>Project costs</p><div class="soft num" id="e-soft"></div></div>
+    <div class="est-sec" id="e-tiers-sec" hidden><p class="eyebrow" data-i18n>Your whole estimate at each finish level</p><div class="soft num" id="e-tiers"></div></div>
     <div class="est-sec"><p class="eyebrow" data-i18n>Start to finish</p><div class="gantt" id="e-gantt"></div></div>
     <div class="est-sec acts-sec" id="est-acts" hidden><div class="row-btns"><button type="button" class="btn ghost" id="print-btn" data-i18n>Save as PDF or print</button><button type="button" class="btn ghost" id="share-btn" data-i18n>Copy share link</button></div><p class="msg" id="act-msg" aria-live="polite"></p></div>
     <div class="est-sec" id="lead"></div>
@@ -447,6 +459,10 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
     <div><p class="eyebrow" data-i18n>Plan ahead</p><h2 id="h-check" data-i18n>Before you start: a checklist</h2></div>
     <p class="lede" data-i18n>Tick items off as you go. This list stays on your device.</p>
     <ul class="checks" id="checks"></ul>
+    <div class="advice">
+      <div><h3 data-i18n>Questions to ask any contractor</h3><ol class="qlist" id="ask-list"></ol></div>
+      <div><h3 data-i18n>When to schedule it in Southern California</h3><dl class="when" id="when-list"></dl></div>
+    </div>
   </section>
 
   <section class="card sec" id="faq" aria-labelledby="h-faq">
@@ -1683,6 +1699,9 @@ const ES={
 "30+":"30+",
 "40+":"40+",
 "Lowest cost per year":"Menor costo por año",
+"Your whole estimate at each finish level":"Su estimado completo en cada nivel de acabado",
+"Questions to ask any contractor":"Preguntas para cualquier contratista",
+"When to schedule it in Southern California":"Cuándo programarlo en el sur de California",
 };
 </script>
 <script>
@@ -2425,6 +2444,11 @@ function renderEstimate(){const r=totals(S.basket);
   $('e-gantt').innerHTML=ph.length?ph.map(([n,w])=>{const s=`<div class="g-row"><span>${esc(tr(n))} · ${w} ${T('wk','sem')}</span><div class="g-track"><div class="g-bar${n==='Construction'?' c':''}" style="left:${at/tw*100}%;width:${Math.max(2,w/tw*100)}%"></div></div></div>`;at+=w;return s}).join('')+
     `<div class="g-total">${T(`About ${tw} weeks from signing to final inspection`,`Unas ${tw} semanas desde la firma hasta la inspección final`)}${tw>8?` (≈ ${Math.round(tw/4.33)} ${T('months','meses')})`:''}</div>`:`<p class="empty">${T('Your timeline appears here.','Aquí aparecerá su calendario.')}</p>`;
   $('est-acts').hidden=!r.build;
+  // the same jobs with every finish level set to Basic, Standard, Premium, Luxury
+  $('e-tiers-sec').hidden=!r.build;
+  if(r.build){const mixed=new Set(S.basket.map(e=>e.tier)).size>1;
+    $('e-tiers').innerHTML=TIERS.map((t,i)=>{const x=totals(S.basket.map(e=>Object.assign({},e,{tier:i}))).total,cur=!mixed&&S.basket[0].tier===i;
+      return `<span${cur?' class="tot"':''}>${esc(tr(t.n))}${cur?' · '+T('yours','el suyo'):''}</span><span${cur?' class="cur"':''}>${k(x*0.9)} – ${k(x*1.15)}</span>`}).join('')}
   renderLead(r);if(window.__finReady){syncFinance();renderPopular();if(typeof renderBudget==='function')renderBudget()}}
 $('print-btn').addEventListener('click',printEstimate);$('share-btn').addEventListener('click',copyShare);
 $('basket').addEventListener('click',e=>{const ed=e.target.closest('[data-edit]'),del=e.target.closest('[data-del]');
@@ -2741,6 +2765,14 @@ document.querySelector('.mat-sort').addEventListener('click',e=>{const b=e.targe
 $('mat-list').addEventListener('click',e=>{const b=e.target.closest('[data-matjob]');if(!b)return;startJob(b.dataset.matjob);$('jobpanel').scrollIntoView({behavior:'smooth',block:'start'})});
 renderMaterials();
 
+/* ---------- long lists show 8 cards until the visitor asks for all ---------- */
+function clampList(id,n){const list=$(id);list.classList.add('clamp');list.style.setProperty('--n',n);
+  const btn=document.createElement('button');btn.type='button';btn.className='btn ghost more-btn';list.after(btn);
+  const sync=()=>{const c=list.children.length;btn.hidden=c<=n;btn.textContent=list.classList.contains('clamp')?T(`Show all ${c}`,`Ver los ${c}`):T('Show fewer','Ver menos')};
+  btn.addEventListener('click',()=>{list.classList.toggle('clamp');sync();if(list.classList.contains('clamp'))list.scrollIntoView({block:'nearest'})});
+  new MutationObserver(sync).observe(list,{childList:true});sync();return sync}
+const MORE=[clampList('pop-list',8)];
+
 /* ---------- budget explorer: which jobs fit, and at which finish level ---------- */
 // a job "fits" when the top of its range (most likely +15%) is within the budget
 function budgetRows(){return JOBS.map(j=>{const base={job:j.id,size:j.size?j.size.def:0,a:answers(j,{})};
@@ -2762,7 +2794,7 @@ $('bud-amt').addEventListener('input',e=>{BUD.amt=Math.max(0,+e.target.value||0)
 $('bud-quick').addEventListener('click',e=>{const c=e.target.closest('[data-amt]');if(!c)return;BUD.amt=+c.dataset.amt;try{localStorage.setItem('hrg-budget',BUD.amt)}catch(x){}renderBudget()});
 $('bud-list').addEventListener('click',e=>{const b=e.target.closest('[data-bj]');if(!b)return;const j=JOB[b.dataset.bj];
   S.cur={job:j.id,size:j.size?j.size.def:0,a:{},tier:+b.dataset.bt,from3d:null,edit:null};render();$('jobpanel').scrollIntoView({behavior:'smooth',block:'start'})});
-renderBudget();
+renderBudget();MORE.push(clampList('bud-list',8));
 // a share link pasted into an already-open tab
 addEventListener('hashchange',()=>{if(loadShared()){render();$('plan').scrollIntoView({behavior:'smooth'})}});
 /* ---------- financing calculator ---------- */
@@ -2797,6 +2829,33 @@ const CHECKS=['Write down what you want and why: must-haves vs. nice-to-haves.',
 let CK={};try{CK=JSON.parse(localStorage.getItem('hrg-checks'))||{}}catch(e){}
 function renderChecks(){$('checks').innerHTML=CHECKS.map((c,i)=>`<li><label for="ck${i}"><input type="checkbox" id="ck${i}" data-i="${i}"${CK[i]?' checked':''}><span>${esc(tr(c))}</span></label></li>`).join('')}
 $('checks').addEventListener('change',e=>{const i=e.target.dataset.i;if(i==null)return;CK[i]=e.target.checked;try{localStorage.setItem('hrg-checks',JSON.stringify(CK))}catch(x){}});
+
+/* ---------- contractor questions and seasonal timing (EN/ES pairs) ---------- */
+const ASK=[['Is your contractor license active, and for what kind of work? (In California, look it up at cslb.ca.gov.)','¿Su licencia de contratista está activa y para qué tipo de trabajo? (En California, búsquela en cslb.ca.gov.)'],
+ ['Do you carry liability and workers\' comp insurance? Can I see the certificates?','¿Tiene seguro de responsabilidad civil y de compensación para trabajadores? ¿Puedo ver los certificados?'],
+ ['Who pulls the permits, and are the inspections included in the price?','¿Quién saca los permisos y las inspecciones están incluidas en el precio?'],
+ ['Is the price fixed? What is not included?','¿El precio es fijo? ¿Qué no está incluido?'],
+ ['What is the payment schedule? (In California a home-improvement down payment can\'t exceed 10% or $1,000, whichever is less.)','¿Cuál es el calendario de pagos? (En California el anticipo de una mejora del hogar no puede pasar del 10% o $1,000, lo que sea menor.)'],
+ ['Will you give me lien releases from subcontractors and suppliers as I pay?','¿Me dará liberaciones de gravamen (lien releases) de subcontratistas y proveedores conforme pague?'],
+ ['Who will be on site each day, and who is my main contact?','¿Quién estará en la obra cada día y quién es mi contacto principal?'],
+ ['How do you handle changes once work starts?','¿Cómo manejan los cambios una vez empezada la obra?'],
+ ['What warranty do you give on your work, and who backs the product warranties?','¿Qué garantía da por su trabajo y quién respalda la garantía de los productos?'],
+ ['Can I talk to two or three recent clients with similar projects?','¿Puedo hablar con dos o tres clientes recientes con proyectos parecidos?'],
+ ['When can you start, and how long will it take?','¿Cuándo puede empezar y cuánto tardará?'],
+ ['How will you protect my home and clean up each day?','¿Cómo va a proteger mi casa y limpiar cada día?']];
+const WHEN=[['Roofing','Techos','Late spring to early fall, before the rainy season (about November to March).','De finales de primavera a principios de otoño, antes de la temporada de lluvias (más o menos de noviembre a marzo).'],
+ ['Exterior paint & stucco','Pintura exterior y estuco','Dry months, avoiding rain and the hottest days.','Meses secos, evitando la lluvia y los días más calurosos.'],
+ ['Heating & AC','Calefacción y aire','Spring for AC, before summer demand; early fall for heating.','Primavera para el aire, antes de la demanda del verano; principios de otoño para la calefacción.'],
+ ['Drought-tolerant landscaping','Jardín de bajo consumo de agua','Fall, so cooler weather and winter rain help plants take root. Get turf-rebate approval first.','Otoño, para que el clima fresco y la lluvia de invierno ayuden a las plantas a enraizar. Obtenga primero la aprobación del reembolso de césped.'],
+ ['Fire hardening','Protección contra incendios','Before the fall Santa Ana wind season (about September to December).','Antes de la temporada de vientos de Santa Ana en otoño (más o menos de septiembre a diciembre).'],
+ ['Retaining walls & drainage','Muros de contención y drenaje','Summer and early fall, so it is ready before the rains.','Verano y principios de otoño, para que esté listo antes de las lluvias.'],
+ ['Pools','Albercas','Fall and winter, when waits are shorter, so it is ready by summer.','Otoño e invierno, cuando hay menos espera, para tenerla lista en verano.'],
+ ['Kitchens, baths & interiors','Cocinas, baños e interiores','Any time of year. Order cabinets, tile and appliances 4–10 weeks ahead and plan around holidays.','En cualquier época. Pida gabinetes, loseta y electrodomésticos con 4–10 semanas de anticipación y planee alrededor de los días festivos.'],
+ ['Solar & batteries','Solar y baterías','Any time; utility approval to switch on can take weeks to months, so start early.','En cualquier época; la aprobación de la compañía de luz para encenderlo puede tardar semanas o meses, así que empiece pronto.'],
+ ['ADUs & additions','ADU y ampliaciones','Start design 2–4 months before you want to build; plan check is the longest wait.','Empiece el diseño 2–4 meses antes de querer construir; la revisión de planos es la espera más larga.']];
+function renderAdvice(){const a=$('ask-list'),w=$('when-list');if(!a||!w)return;const i=LANG==='es'?1:0;
+  a.innerHTML=ASK.map(q=>`<li>${esc(q[i])}</li>`).join('');
+  w.innerHTML=WHEN.map(x=>`<div><dt>${esc(x[i])}</dt><dd>${esc(x[2+i])}</dd></div>`).join('')}
 
 /* ---------- FAQ ---------- */
 const FAQ=[
@@ -2846,12 +2905,12 @@ function renderGlossary(){const q=($('glo-q').value||'').trim().toLowerCase();
   $('glo-list').innerHTML=hits.length?hits.map(([t,d])=>`<div><dt>${esc(t)}</dt><dd>${esc(d)}</dd></div>`).join(''):`<p class="empty">${T(`No term matches "${esc(q)}".`,`Ningún término coincide con "${esc(q)}".`)}</p>`}
 $('glo-q').addEventListener('input',renderGlossary);
 
-renderPermit();renderChecks();renderGlossary();syncFinance();
+renderPermit();renderChecks();renderGlossary();syncFinance();renderAdvice();
 window.__finReady=true;
 
 /* ---------- language switch: redraw everything that holds text ---------- */
 function setLang(lg){if(lg===LANG)return;LANG=lg;try{localStorage.setItem('hrg-lang',lg)}catch(e){}
-  applyStatic();renderRegions();label3DControls();render3DControls();render();renderRebates();renderPermitPaths();renderPopular();renderBudget();renderMaterials();
+  applyStatic();renderRegions();label3DControls();render3DControls();render();renderRebates();renderPermitPaths();renderPopular();renderBudget();renderMaterials();MORE.forEach(f=>f());renderAdvice();
   renderPermJobs();renderPermit();renderChecks();renderFaq();renderGlossary();renderFinance()}
 document.querySelector('.lang').addEventListener('click',e=>{const b=e.target.closest('[data-lang]');if(b)setLang(b.dataset.lang)});
 
