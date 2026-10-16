@@ -342,6 +342,14 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
 .startdate{display:grid;gap:6px;margin-top:6px}
 .startdate label{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--muted);flex-wrap:wrap}
 .startdate input{background:var(--surface-2);border:1px solid var(--line);border-radius:7px;padding:6px 8px;color:var(--fg)}
+.measure{border:1px dashed var(--line);border-radius:8px;padding:8px 12px;display:grid;gap:8px;font-size:13.5px}
+.measure summary{cursor:pointer;color:var(--gold-ink);font-weight:600}
+.measure[open]{gap:10px}
+.mrow{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:end}
+.mrow label{display:grid;gap:4px;font-size:12.5px;color:var(--muted)}
+.mrow input{width:110px;background:var(--surface-2);border:1px solid var(--line);border-radius:7px;padding:7px 9px;color:var(--fg);font-size:15px}
+.mrow span{padding-bottom:8px;color:var(--muted)}
+.m-out{margin:0;font-weight:700}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 .hp{position:absolute!important;left:-10000px!important;width:1px;height:1px;overflow:hidden}
 </style>
@@ -2488,7 +2496,11 @@ function startJob(id,size,preset,from3d){const j=JOB[id];S.cur={job:id,size:size
 
 /* ---------- step 2: size + details + this job's price ---------- */
 function renderPanel(){const c=S.cur,job=JOB[c.job],a=answers(job,c.a);
-  const sz=job.size?`<div class="size"><label for="sz">${esc(tr(job.size.label))}<input id="sz" class="num" type="number" inputmode="numeric" min="${job.size.min}" max="${job.size.max}" value="${+c.size||''}"></label><span class="u">${esc(tr(job.size.unit))}</span>${c.from3d?`<span class="from3d">${esc(pick(c.from3d))}</span>`:''}</div>${sizePresets(job).length?`<div class="chips" role="group" aria-label="${T('Common sizes','Tamaños comunes')}">${sizePresets(job).map(([v,l])=>`<button type="button" class="chip sm" data-size="${v}" aria-pressed="${+c.size===v}">${esc(tr(l))}</button>`).join('')}</div>`:''}`:'';
+  const sz=job.size?`<div class="size"><label for="sz">${esc(tr(job.size.label))}<input id="sz" class="num" type="number" inputmode="numeric" min="${job.size.min}" max="${job.size.max}" value="${+c.size||''}"></label><span class="u">${esc(tr(job.size.unit))}</span>${c.from3d?`<span class="from3d">${esc(pick(c.from3d))}</span>`:''}</div>${sizePresets(job).length?`<div class="chips" role="group" aria-label="${T('Common sizes','Tamaños comunes')}">${sizePresets(job).map(([v,l])=>`<button type="button" class="chip sm" data-size="${v}" aria-pressed="${+c.size===v}">${esc(tr(l))}</button>`).join('')}</div>`:''}${job.size.unit==='sq ft'?`<details class="measure"><summary>${T('Not sure? Measure it: length × width','¿No está seguro? Mídalo: largo × ancho')}</summary>
+      <div class="mrow"><label for="m-l">${T('Length (ft)','Largo (pies)')}<input id="m-l" class="num" type="number" min="0" step="0.5" inputmode="decimal"></label><span aria-hidden="true">×</span><label for="m-w">${T('Width (ft)','Ancho (pies)')}<input id="m-w" class="num" type="number" min="0" step="0.5" inputmode="decimal"></label></div>
+      <p class="m-out num" id="m-out">${T('Enter both sides of the room or area.','Escriba los dos lados del cuarto o área.')}</p>
+      <div class="row-btns"><button type="button" class="btn ghost" id="m-use" disabled>${T('Use this size','Usar este tamaño')}</button><button type="button" class="btn ghost" id="m-add" disabled>${T('Add to the size above','Sumar al tamaño de arriba')}</button></div>
+      <p class="note">${T('For an L-shaped space, measure it as two rectangles and add them.','Para un espacio en forma de L, mídalo como dos rectángulos y súmelos.')}</p></details>`:''}`:'';
   const qs=job.q.filter(q=>!q[3]||q[3](a)).map(([id,label,opts])=>`<div class="q"><span id="q-${id}">${esc(tr(label))}</span><div class="chips" role="group" aria-labelledby="q-${id}">${opts.map(([v,l])=>`<button type="button" class="chip" data-q="${id}" data-v="${v}" aria-pressed="${a[id]===v}">${esc(tr(l))}</button>`).join('')}</div></div>`).join('');
   const g=GUIDE[job.id]||{},note=g.tiers?'':ITEMS[job.main].note;
   const list=xs=>`<ul>${xs.map(x=>`<li>${esc(tr(x))}</li>`).join('')}</ul>`;
@@ -2504,6 +2516,12 @@ function renderPanel(){const c=S.cur,job=JOB[c.job],a=answers(job,c.a);
       <details><summary>${T('Not included','Qué no incluye')}</summary>${list(g.excl)}</details>
       <details><summary>${T('Good to know','Bueno saber')}</summary>${list(g.tips)}</details></div>`:''}`;
   const inp=$('sz');if(inp)inp.addEventListener('input',e=>{S.cur.size=e.target.value===''?0:Math.max(0,+e.target.value);S.cur.from3d=null;save();renderPreview()});
+  // length × width: show the area, then replace or add to the size
+  if($('m-l')){const area=()=>Math.round((+$('m-l').value||0)*(+$('m-w').value||0));
+    const upd=()=>{const a=area();$('m-out').textContent=a?T(`${a.toLocaleString('en-US')} sq ft`,`${a.toLocaleString('en-US')} pies²`):T('Enter both sides of the room or area.','Escriba los dos lados del cuarto o área.');$('m-use').disabled=$('m-add').disabled=!a};
+    $('m-l').addEventListener('input',upd);$('m-w').addEventListener('input',upd);
+    const set=v=>{S.cur.size=v;S.cur.from3d=null;render();const d=document.querySelector('.measure');if(d)d.open=true};
+    $('m-use').addEventListener('click',()=>set(area()));$('m-add').addEventListener('click',()=>set((+S.cur.size||0)+area()))}
   const pr=$("pb-rent");if(pr){const go=()=>{S.rent=S.rent||{};S.rent[job.id]=+pr.value||0;save();renderPayback()};pr.addEventListener("input",go);$("pb-exp").addEventListener("change",e=>{S.rentExp=e.target.value;save();renderPayback()})}
   renderPreview()}
 function renderPayback(){const pr=$("pb-rent"),out=$("pb-out");if(!pr||!out)return;const rent=+pr.value||0,exp=+$("pb-exp").value,t=totals([S.cur]).total;
@@ -2719,7 +2737,7 @@ function renderPrint(){const r=totals(S.basket),ar=area(),d=new Date();
     <section class="ps-job"><div class="ps-row ps-h"><b>${T('Project costs','Costos del proyecto')}</b></div><table>
       ${[['Construction',r.build],...r.soft,['Contingency (10%)',r.cont]].map(([a,b])=>`<tr><td>${esc(tr(a))}</td><td class="num">${usd(b)}</td></tr>`).join('')}
       <tr class="ps-sum"><td>${T('Estimated total','Total estimado')}</td><td class="num">${usd(r.total)}</td></tr></table></section>
-    ${tw?`<p class="ps-meta">${T(`About ${tw} weeks from signing to final inspection.`,`Unas ${tw} semanas desde la firma hasta la inspección final.`)}</p>`:''}
+    ${tw?`<p class="ps-meta">${T(`About ${tw} weeks from signing to final inspection.`,`Unas ${tw} semanas desde la firma hasta la inspección final.`)} ${$('finish-msg')&&$('finish-msg').textContent?esc($('finish-msg').textContent):''}</p>`:''}
     <p class="ps-note">${esc(tr(document.querySelector('footer').dataset.en||document.querySelector('footer').textContent))}</p>
     <p class="ps-contact">${T('Get a firm quote','Pida un precio firme')}: 213.216.4416 · sales@hrgprefab.com · hrgprefab.com/estimate</p>`}
 addEventListener('beforeprint',renderPrint);
