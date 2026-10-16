@@ -320,6 +320,17 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
 .when dt{font-weight:600;font-size:14px}
 .when dd{margin:2px 0 0;font-size:13.5px;color:var(--muted)}
 @media (pointer:coarse){.chip.sm{min-height:36px;padding:6px 13px}.linkbtn{padding:6px 2px}}
+.roi{display:grid;gap:6px}
+.roi-row{display:grid;grid-template-columns:minmax(0,230px) minmax(0,1fr) 60px;gap:12px;align-items:center;background:none;border:0;border-bottom:1px dashed var(--line);padding:6px 0;text-align:left;cursor:pointer;color:var(--fg)}
+.roi-row:hover .roi-n{color:var(--gold-ink)}
+.roi-n{font-size:13.5px;font-weight:500;display:grid}
+.roi-n small{font-size:11.5px;color:var(--muted);font-weight:400}
+.roi-track{position:relative;height:12px;background:var(--surface-2);border-radius:6px}
+.roi-track i{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:var(--navy-2)}
+.roi-track i.up{background:var(--ok)}
+.roi-100{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--fg);opacity:.5}
+.roi-v{font-weight:700;text-align:right}
+@media (max-width:560px){.roi-row{grid-template-columns:minmax(0,1fr) 48px}.roi-track{grid-column:1/-1;grid-row:2}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 .hp{position:absolute!important;left:-10000px!important;width:1px;height:1px;overflow:hidden}
 </style>
@@ -334,7 +345,7 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
     <p data-i18n>Pick the job, tell us how big it is and answer a few quick questions. You'll see a price range for your area in seconds, with permits and a start-to-finish timeline. Add as many jobs as you like, then send it to HRG for a firm quote.</p>
   </div>
   <nav class="sitenav" aria-label="Sections" data-i18n-aria><div class="sitenav-in">
-    <a href="#plan" data-i18n>Estimate</a><a href="#popular" data-i18n>Ideas</a><a href="#budget" data-i18n>Budget</a><a href="#materials" data-i18n>Materials</a><a href="#financing" data-i18n>Financing</a><a href="#rebates" data-i18n>Rebates</a><a href="#permits" data-i18n>Permits</a><a href="#how" data-i18n>How it works</a><a href="#faq" data-i18n>FAQ</a><a href="#glossary" data-i18n>Glossary</a><a href="#contact" data-i18n>Contact</a>
+    <a href="#plan" data-i18n>Estimate</a><a href="#popular" data-i18n>Ideas</a><a href="#budget" data-i18n>Budget</a><a href="#materials" data-i18n>Materials</a><a href="#resale" data-i18n>Resale value</a><a href="#financing" data-i18n>Financing</a><a href="#rebates" data-i18n>Rebates</a><a href="#permits" data-i18n>Permits</a><a href="#how" data-i18n>How it works</a><a href="#faq" data-i18n>FAQ</a><a href="#glossary" data-i18n>Glossary</a><a href="#contact" data-i18n>Contact</a>
   </div></nav>
 </header>
 
@@ -402,6 +413,12 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
       <button type="button" class="chip sm" data-sort="cost" data-i18n>Lowest cost</button><button type="button" class="chip sm" data-sort="life" data-i18n>Longest lasting</button><button type="button" class="chip sm" data-sort="value" data-i18n>Lowest cost per year</button><button type="button" class="chip sm" data-sort="none" data-i18n>Default</button></div>
     <div class="mats" id="mat-list"></div>
     <p class="note" data-i18n>Sources: HomeAdvisor, Angi, Fixr and HomeGuide cost guides (2025–2026); lifespans from the InterNACHI life-expectancy chart and the NAHB study of home components, using the more conservative figure where they differ. Value per year = middle of the cost range ÷ middle of the lifespan.</p>
+  </section>
+  <section class="card sec" id="resale" aria-labelledby="h-roi">
+    <div><p class="eyebrow" data-i18n>Resale value</p><h2 id="h-roi" data-i18n>Which projects pay back when you sell?</h2></div>
+    <p class="lede" data-i18n>The share of a project's cost that buyers paid back in higher sale prices, from the 2025 Cost vs. Value report. Over 100% means the project added more value than it cost.</p>
+    <div class="roi" id="roi-list" role="list"></div>
+    <p class="note" data-i18n>Source: Zonda/JLC Cost vs. Value 2025, Los Angeles and Pacific-region figures (read from published summaries). Resale value is an average and depends on your neighborhood and market.</p>
   </section>
   <section class="card sec" id="financing" aria-labelledby="h-fin">
     <div><p class="eyebrow" data-i18n>Financing</p><h2 id="h-fin" data-i18n>What would it cost per month?</h2></div>
@@ -1758,6 +1775,10 @@ const ES={
 "Most are paid after the work is done, by your utility or a state program, and many need approval before you start (LADWP's turf rebate does). Rebates aren't subtracted from the estimate; check the rebates section and HRG confirms them with you.":"La mayoría se paga después de terminar el trabajo, por su compañía de servicios o un programa estatal, y muchos requieren aprobación antes de empezar (el reembolso de césped de LADWP la requiere). Los reembolsos no se restan del estimado; revise la sección de reembolsos y HRG los confirma con usted.",
 "Is my information kept private?":"¿Mi información se mantiene privada?",
 "Your estimate is saved only in your own browser until you choose to send it. When you send it, your details and estimate go to HRG so the team can contact you about your project.":"Su estimado se guarda solo en su propio navegador hasta que decide enviarlo. Cuando lo envía, sus datos y su estimado llegan a HRG para que el equipo lo contacte sobre su proyecto.",
+"Resale value":"Valor de reventa",
+"Which projects pay back when you sell?":"¿Qué proyectos se recuperan al vender?",
+"The share of a project's cost that buyers paid back in higher sale prices, from the 2025 Cost vs. Value report. Over 100% means the project added more value than it cost.":"La parte del costo de un proyecto que los compradores pagaron de vuelta con un precio de venta más alto, según el reporte Cost vs. Value 2025. Más de 100% significa que el proyecto agregó más valor de lo que costó.",
+"Source: Zonda/JLC Cost vs. Value 2025, Los Angeles and Pacific-region figures (read from published summaries). Resale value is an average and depends on your neighborhood and market.":"Fuente: Zonda/JLC Cost vs. Value 2025, cifras de Los Ángeles y de la región del Pacífico (tomadas de resúmenes publicados). El valor de reventa es un promedio y depende de su vecindario y del mercado.",
 };
 </script>
 <script>
@@ -2829,6 +2850,27 @@ function clampList(id,n){const list=$(id);list.classList.add('clamp');list.style
   new MutationObserver(sync).observe(list,{childList:true});sync();return sync}
 const MORE=[clampList('pop-list',8)];
 
+/* ---------- resale value: Cost vs. Value 2025 ---------- */
+// [project EN, project ES, % recouped, region (LA or Pacific), job to open]
+const ROI=[['Garage door replacement','Cambio de puerta de garaje',271.5,'LA','windows',{garage:'yes'},0],
+ ['Steel entry door','Puerta de entrada de acero',214.6,'LA','windows',{entry:'yes'},0],
+ ['Fiber-cement siding','Revestimiento de fibrocemento',128.1,'LA','siding',{wall:'siding'}],
+ ['Minor kitchen remodel (midrange)','Remodelación menor de cocina (media)',126.9,'LA','kitchen',{}],
+ ['Vinyl siding','Revestimiento de vinil',108.3,'LA','siding',{wall:'siding'}],
+ ['Wood deck addition','Terraza de madera nueva',99.6,'LA','outdoor',{landscape:'no',irrigation:'no',deck:'400'}],
+ ['Midrange bathroom remodel','Remodelación de baño (media)',91,'Pacific','bathroom',{}],
+ ['Wood window replacement','Cambio de ventanas de madera',81.9,'LA','windows',{}],
+ ['Major kitchen remodel (midrange)','Remodelación mayor de cocina (media)',57.2,'Pacific','kitchen',{layout:'move',island:'yes'}],
+ ['Metal roof replacement','Techo de metal',51,'Pacific','roofing',{}],
+ ['Upscale bathroom remodel','Remodelación de baño de lujo',42.3,'LA','bathroom',{shower:'convert',vanity:'double'}]];
+function renderROI(){const max=Math.max(...ROI.map(r=>r[2]));
+  $('roi-list').innerHTML=ROI.map((r,i)=>`<button type="button" class="roi-row" role="listitem" data-roi="${i}"><span class="roi-n">${esc(LANG==='es'?r[1]:r[0])}<small>${r[3]==='LA'?T('Los Angeles','Los Ángeles'):T('Pacific region','Región del Pacífico')}</small></span>
+    <span class="roi-track" aria-hidden="true"><i style="width:${(r[2]/max*100).toFixed(1)}%" class="${r[2]>=100?'up':''}"></i><b class="roi-100" style="left:${(100/max*100).toFixed(1)}%"></b></span>
+    <span class="roi-v num">${Number(r[2].toFixed(1)).toLocaleString(LANG==='es'?'es-US':'en-US')}%</span></button>`).join('')}
+$('roi-list').addEventListener('click',e=>{const b=e.target.closest('[data-roi]');if(!b)return;const r=ROI[+b.dataset.roi];
+  startJob(r[4],r[6]!=null?r[6]:null,Object.assign({},r[5]));$('jobpanel').scrollIntoView({behavior:'smooth',block:'start'})});
+renderROI();
+
 /* ---------- budget explorer: which jobs fit, and at which finish level ---------- */
 // a job "fits" when the top of its range (most likely +15%) is within the budget
 function budgetRows(){return JOBS.map(j=>{const base={job:j.id,size:j.size?j.size.def:0,a:answers(j,{})};
@@ -2994,7 +3036,7 @@ window.__finReady=true;
 
 /* ---------- language switch: redraw everything that holds text ---------- */
 function setLang(lg){if(lg===LANG)return;LANG=lg;try{localStorage.setItem('hrg-lang',lg)}catch(e){}
-  applyStatic();renderRegions();label3DControls();render3DControls();render();renderRebates();renderPermitPaths();renderPopular();renderBudget();renderMaterials();MORE.forEach(f=>f());renderAdvice();
+  applyStatic();renderRegions();label3DControls();render3DControls();render();renderRebates();renderPermitPaths();renderPopular();renderBudget();renderMaterials();MORE.forEach(f=>f());renderAdvice();renderROI();
   renderPermJobs();renderPermit();renderChecks();renderFaq();renderGlossary();renderFinance()}
 document.querySelector('.lang').addEventListener('click',e=>{const b=e.target.closest('[data-lang]');if(b)setLang(b.dataset.lang)});
 
