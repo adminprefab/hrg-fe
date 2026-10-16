@@ -350,6 +350,10 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
 .mrow input{width:110px;background:var(--surface-2);border:1px solid var(--line);border-radius:7px;padding:7px 9px;color:var(--fg);font-size:15px}
 .mrow span{padding-bottom:8px;color:var(--muted)}
 .m-out{margin:0;font-weight:700}
+.qstage{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:17px;margin:10px 0 -2px;padding-top:12px;border-top:1px solid var(--line)}
+.qs>.qstage:first-child{border-top:0;padding-top:0;margin-top:0}
+.stage-n{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--navy-2);color:var(--on-navy);font-family:var(--body);font-size:12.5px;font-weight:700;flex:none}
+.seq{margin:6px 0 2px;padding-left:22px;font-size:13.5px;display:grid;gap:3px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 .hp{position:absolute!important;left:-10000px!important;width:1px;height:1px;overflow:hidden}
 </style>
@@ -1802,6 +1806,169 @@ const ES={
 "Source: Zonda/JLC Cost vs. Value 2025, Los Angeles and Pacific-region figures (read from published summaries). Resale value is an average and depends on your neighborhood and market.":"Fuente: Zonda/JLC Cost vs. Value 2025, cifras de Los Ángeles y de la región del Pacífico (tomadas de resúmenes publicados). El valor de reventa es un promedio y depende de su vecindario y del mercado.",
 "What these costs cover":"Qué cubren estos costos",
 "Want to start on":"Quiero empezar el",
+"Demolition & layout":"Demolición y distribución",
+"Plumbing, gas & electrical":"Plomería, gas y electricidad",
+"Walls & windows":"Paredes y ventanas",
+"Backsplash":"Salpicadero (backsplash)",
+"Lighting":"Iluminación",
+"Floor & paint":"Piso y pintura",
+"Bathrooms & layout":"Baños y distribución",
+"Shower & tub":"Regadera y tina",
+"Vanity & storage":"Tocador y almacenamiento",
+"Fan, lights & finish":"Extractor, luces y acabados",
+"Walls":"Paredes",
+"Keep the walls":"Mantener las paredes",
+"New electrical circuits":"Circuitos eléctricos nuevos",
+"2 circuits":"2 circuitos",
+"4 circuits":"4 circuitos",
+"Gas line for the range":"Línea de gas para la estufa",
+"Run a new gas line":"Instalar una línea de gas nueva",
+"Pot filler":"Llave para ollas",
+"Add a pot filler":"Agregar llave para ollas",
+"Drywall":"Tablaroca",
+"No drywall work":"Sin trabajo de tablaroca",
+"Patch and repair":"Resanar y reparar",
+"New drywall":"Tablaroca nueva",
+"Window":"Ventana",
+"Replace the kitchen window":"Cambiar la ventana de la cocina",
+"Reface (new doors and fronts)":"Renovar (puertas y frentes nuevos)",
+"Paint my cabinets":"Pintar mis gabinetes",
+"Hardware":"Jaladeras",
+"New pulls and knobs":"Jaladeras y perillas nuevas",
+"Pantry":"Despensa",
+"Build a pantry":"Construir una despensa",
+"Countertop material":"Material de la encimera",
+"Quartz":"Cuarzo",
+"Granite":"Granito",
+"Quartzite":"Cuarcita",
+"Marble":"Mármol",
+"Solid surface":"Superficie sólida",
+"Butcher block":"Madera (butcher block)",
+"Laminate":"Laminado",
+"Keep my counters":"Mantener mis encimeras",
+"Ceramic or porcelain tile":"Loseta de cerámica o porcelana",
+"Glass tile":"Loseta de vidrio",
+"Natural stone":"Piedra natural",
+"Slab to match the counters":"Losa igual a la encimera",
+"Keep it":"Mantenerlo",
+"Backsplash height":"Altura del salpicadero",
+"Standard (to the upper cabinets)":"Estándar (hasta los gabinetes de arriba)",
+"Full height (to the ceiling)":"Completo (hasta el techo)",
+"Stainless steel":"Acero inoxidable",
+"Farmhouse (apron front)":"Estilo granja (frente expuesto)",
+"Composite granite":"Granito compuesto",
+"New appliance package":"Paquete de electrodomésticos nuevo",
+"Choose one by one":"Elegir uno por uno",
+"Keep my appliances":"Mantener mis electrodomésticos",
+"Range":"Estufa",
+"New range":"Estufa nueva",
+"Cooktop & wall oven":"Parrilla y horno de pared",
+"New cooktop and wall oven":"Parrilla y horno de pared nuevos",
+"Refrigerator":"Refrigerador",
+"New refrigerator":"Refrigerador nuevo",
+"Dishwasher":"Lavavajillas",
+"New dishwasher":"Lavavajillas nuevo",
+"Range hood":"Campana",
+"New hood, vented outside":"Campana nueva con salida al exterior",
+"Microwave":"Microondas",
+"New over-range microwave":"Microondas nuevo sobre la estufa",
+"Pendant lights":"Lámparas colgantes",
+"Under-cabinet lights":"Luces bajo gabinetes",
+"Add LED strips":"Agregar tiras LED",
+"Ceiling fixture":"Lámpara de techo",
+"New ceiling light":"Lámpara de techo nueva",
+"Paint walls and ceiling":"Pintar paredes y techo",
+"Prefab shower base and walls":"Base y paredes de regadera prefabricadas",
+"New bathtub":"Tina nueva",
+"Freestanding soaking tub":"Tina independiente para remojo",
+"Shower tile":"Loseta de la regadera",
+"Porcelain":"Porcelana",
+"Ceramic":"Cerámica",
+"Shower door":"Puerta de regadera",
+"Frameless glass":"Vidrio sin marco",
+"Sliding door":"Puerta corrediza",
+"No door / curtain":"Sin puerta / cortina",
+"Shower niche":"Nicho en la regadera",
+"Add a niche":"Agregar un nicho",
+"Shower bench":"Banca en la regadera",
+"Add a bench":"Agregar una banca",
+"Rain shower head":"Regadera tipo lluvia",
+"Add a rain head":"Agregar regadera tipo lluvia",
+"Floating vanity":"Tocador flotante",
+"Keep my vanity":"Mantener mi tocador",
+"Medicine cabinet":"Botiquín",
+"Add a medicine cabinet":"Agregar un botiquín",
+"New toilet":"Inodoro nuevo",
+"Wall-hung toilet":"Inodoro suspendido",
+"Smart toilet":"Inodoro inteligente",
+"Keep my toilet":"Mantener mi inodoro",
+"Bidet seat":"Asiento con bidé",
+"Add a bidet seat":"Agregar asiento con bidé",
+"Heated floor":"Piso radiante",
+"Add floor heating":"Agregar calefacción en el piso",
+"Exhaust fan & lights":"Extractor y luces",
+"New fan and lighting":"Extractor e iluminación nuevos",
+"Vanity light":"Luz del tocador",
+"New vanity light":"Luz del tocador nueva",
+"Faucets & fixtures":"Llaves y accesorios",
+"New faucets and valves":"Llaves y válvulas nuevas",
+"Cabinet painting":"Pintura de gabinetes",
+"Brushed → sprayed factory-style finish":"A brocha → acabado de fábrica con pistola",
+"Cabinet refacing":"Renovación de frentes de gabinetes",
+"New doors, drawer fronts and veneer on the existing boxes":"Puertas, frentes de cajón y chapa nuevos sobre los gabinetes existentes",
+"New cabinet hardware":"Jaladeras nuevas para gabinetes",
+"Laminate countertops":"Encimeras de laminado",
+"Butcher block countertops":"Encimeras de madera",
+"Solid surface countertops":"Encimeras de superficie sólida",
+"Quartz countertops":"Encimeras de cuarzo",
+"Granite countertops":"Encimeras de granito",
+"Quartzite countertops":"Encimeras de cuarcita",
+"Marble countertops":"Encimeras de mármol",
+"Glass tile backsplash":"Salpicadero de loseta de vidrio",
+"Natural stone backsplash":"Salpicadero de piedra natural",
+"Slab backsplash":"Salpicadero de losa",
+"Farmhouse sink & faucet":"Fregadero estilo granja y llave",
+"Composite sink & faucet":"Fregadero compuesto y llave",
+"New kitchen circuit":"Circuito nuevo para la cocina",
+"Range hood, vented outside":"Campana con salida al exterior",
+"Over-range microwave":"Microondas sobre la estufa",
+"Pendant light":"Lámpara colgante",
+"Under-cabinet LED lighting":"Iluminación LED bajo gabinetes",
+"Ceiling light fixture":"Lámpara de techo",
+"Kitchen window":"Ventana de cocina",
+"New alcove bathtub":"Tina empotrada nueva",
+"Prefab shower base & walls":"Base y paredes de regadera prefabricadas",
+"Sliding shower door":"Puerta corrediza de regadera",
+"Rain shower head & valve upgrade":"Regadera tipo lluvia y válvula nueva",
+"Bidet seat ":"Asiento con bidé",
+"Shower wall tile":"Loseta de pared de la regadera",
+"Floating vanity & top":"Tocador flotante con cubierta",
+"Order of work, start to finish":"Orden del trabajo, de principio a fin",
+"Design, measurements and selections":"Diseño, medidas y selección de materiales",
+"Permits, if plumbing, electrical or walls change":"Permisos, si cambian la plomería, la electricidad o las paredes",
+"Protect the house, then demolition":"Proteger la casa y luego demoler",
+"Rough plumbing, gas and electrical, then city inspection":"Plomería, gas y electricidad en obra negra, luego inspección de la ciudad",
+"Drywall, then prime":"Tablaroca y luego sellador",
+"Cabinets and island":"Gabinetes e isla",
+"Countertop templating, then installation (about 1–2 weeks after cabinets)":"Plantilla de la encimera y luego instalación (1–2 semanas después de los gabinetes)",
+"Sink, faucet, appliances and lighting":"Fregadero, llave, electrodomésticos e iluminación",
+"Floor, paint and touch-ups":"Piso, pintura y retoques",
+"Final inspection and walkthrough":"Inspección final y recorrido",
+"Design and selections (tile, vanity, fixtures)":"Diseño y selección (loseta, tocador, accesorios)",
+"Permit":"Permiso",
+"Rough plumbing and electrical, then city inspection":"Plomería y electricidad en obra negra, luego inspección de la ciudad",
+"Waterproofing, shower pan and backer board":"Impermeabilización, base de regadera y tablero de cemento",
+"Tile walls and floor":"Loseta en paredes y piso",
+"Vanity, toilet and fixtures":"Tocador, inodoro y accesorios",
+"Glass door, lighting, fan and paint":"Puerta de vidrio, iluminación, extractor y pintura",
+"Cabinet refacing ":"Renovación de frentes de gabinetes",
+"Farmhouse sink":"Fregadero estilo granja",
+"Freestanding tub":"Tina independiente",
+"Smart toilet or bidet":"Inodoro inteligente o bidé",
+"Heated bathroom floor":"Piso radiante en el baño",
+"Double vanity":"Tocador doble",
+"Remove old countertops & reconnect the sink":"Quitar las encimeras viejas y reconectar el fregadero",
+"Remove old fixtures & reconnect plumbing":"Quitar los accesorios viejos y reconectar la plomería",
 };
 </script>
 <script>
@@ -1896,7 +2063,35 @@ const ZONES=[
   ['appliances','Appliance package','ea',1,[7200,14400,30000,45000],'','Range, hood, fridge, dishwasher, microwave'],
   ['ksink','Sink & faucet','ea',1,[720,1320,2640,4500]],
   ['klight','Kitchen lighting','ea',1,[1200,2500,5000,9000]],
-  ['pantry','Pantry build-out','ea',1,[1000,2000,5000,10000]]]},
+  ['pantry','Pantry build-out','ea',1,[1000,2000,5000,10000]],
+  // detailed kitchen items (added 2026-10-16)
+  ['cabpaint','Cabinet painting','lf',30,[36,70,110,140],'','Brushed → sprayed factory-style finish'],
+  ['cabreface','Cabinet refacing','lf',30,[180,360,540,720],'','New doors, drawer fronts and veneer on the existing boxes'],
+  ['hardware','New cabinet hardware','ea',1,[200,400,1000,2400]],
+  ['ct_laminate','Laminate countertops','sf',60,[24,45,72,96]],
+  ['ct_butcher','Butcher block countertops','sf',60,[60,100,150,200]],
+  ['ct_solid','Solid surface countertops','sf',60,[60,90,130,180]],
+  ['ct_quartz','Quartz countertops','sf',60,[66,102,156,250]],
+  ['ct_granite','Granite countertops','sf',60,[70,100,150,240]],
+  ['ct_quartzite','Quartzite countertops','sf',60,[100,150,210,300]],
+  ['ct_marble','Marble countertops','sf',60,[80,140,200,300]],
+  ['bs_glass','Glass tile backsplash','sf',35,[36,58,86,130]],
+  ['bs_stone','Natural stone backsplash','sf',35,[40,72,110,160]],
+  ['sink_farm','Farmhouse sink & faucet','ea',1,[1500,2800,4500,6500]],
+  ['sink_comp','Composite sink & faucet','ea',1,[1000,1800,3200,4500]],
+  ['potfiller','Pot filler','ea',1,[720,1650,2500,3600],'p'],
+  ['gasline','Gas line for the range','ea',1,[330,720,1120,1500],'p'],
+  ['circuit','New kitchen circuit','ea',2,[680,840,1200,1500],'p'],
+  ['app_range','Range','ea',1,[800,1800,4500,9000]],
+  ['app_oven','Cooktop & wall oven','ea',1,[1500,3000,5500,9000]],
+  ['app_fridge','Refrigerator','ea',1,[900,1800,4500,12000]],
+  ['app_dw','Dishwasher','ea',1,[1200,1450,1800,3000]],
+  ['app_hood','Range hood, vented outside','ea',1,[780,2100,3000,4500],'p'],
+  ['app_micro','Over-range microwave','ea',1,[300,700,1400,2000]],
+  ['pendant','Pendant light','ea',2,[120,240,360,600]],
+  ['undercab','Under-cabinet LED lighting','ea',1,[240,480,960,1500]],
+  ['ceilfix','Ceiling light fixture','ea',1,[190,400,1000,1500]],
+  ['kwindow','Kitchen window','ea',1,[550,950,1600,2400],'p']]},
  {id:'bath',name:'Bathrooms',blurb:'Showers, tubs, vanities, tile',items:[
   ['bdemo','Bathroom demo & rough-in','bath',h=>h.baths,[4000,5500,7500,10000],'p'],
   ['vanity','Vanity & top','bath',h=>h.baths,[1080,2160,4800,8000]],
@@ -1907,7 +2102,21 @@ const ZONES=[
   ['bfloor','Bathroom floor tile','bath',h=>h.baths,[900,1500,2600,4500]],
   ['bfixtures','Faucets, valves & fixtures','bath',h=>h.baths,[960,1740,3360,6000]],
   ['bfan','Exhaust fan & lighting','bath',h=>h.baths,[300,450,950,1600]],
-  ['newbath','Add a new bathroom','ea',1,[25000,40000,65000,95000],'p','Inside existing space. A bump-out addition costs more']]},
+  ['newbath','Add a new bathroom','ea',1,[25000,40000,65000,95000],'p','Inside existing space. A bump-out addition costs more'],
+  // detailed bathroom items (added 2026-10-16)
+  ['tub_alcove','New alcove bathtub','bath',1,[2500,4000,6000,8000],'p'],
+  ['tub_free','Freestanding soaking tub','bath',1,[5000,8000,12000,16000],'p'],
+  ['showerbase','Prefab shower base & walls','bath',1,[2400,4000,6000,8000],'p'],
+  ['glass_slide','Sliding shower door','bath',1,[840,1300,2400,3000]],
+  ['niche','Shower niche','bath',1,[360,600,840,1200]],
+  ['bench','Shower bench','bath',1,[330,420,600,900]],
+  ['rainhead','Rain shower head & valve upgrade','bath',1,[420,800,1600,2600]],
+  ['medcab','Medicine cabinet','bath',1,[300,550,1000,1500]],
+  ['toilet_wall','Wall-hung toilet','bath',1,[1000,1800,3000,4000],'p'],
+  ['toilet_smart','Smart toilet','bath',1,[1200,2400,3600,6000]],
+  ['bidet','Bidet seat','bath',1,[250,450,800,1200]],
+  ['heatfloor','Heated floor','sf',40,[10,16,24,30]],
+  ['vanlight','Vanity light','bath',1,[180,300,660,900]]]},
  {id:'utility',name:'Laundry & garage',blurb:'Work spaces and storage',items:[
   ['laundry','Laundry room','ea',1,[2500,6000,11000,17000],'p','Hookups, venting, cabinets and counter'],
   ['garagefloor','Garage epoxy floor','sf',400,[3.5,5.5,8.5,12]],
@@ -2063,11 +2272,11 @@ function frame3D(){const m=M(),r=Math.max(m.W+(m.garage?22:0),m.D),tx=m.garage?-
 /* ---------- per-job guide: what each finish level means, what's in and out, permits, time, tips ---------- */
 // tiers: what Basic / Standard / Premium / Luxury look like for this job. time: construction once permits are in hand.
 const GUIDE={
- kitchen:{roi:"A minor kitchen remodel recoups about 127% of its cost at resale in LA; a major midrange one about 57% (Pacific region).",tiers:['Stock cabinets, laminate or butcher-block counters, builder-grade appliances','Semi-custom cabinets, quartz counters, mid-range stainless appliances','Custom cabinets, quartzite, panel-ready or pro-style appliances','Bespoke millwork, marble or exotic stone, luxury appliance suite'],
+ kitchen:{seq:['Design, measurements and selections','Permits, if plumbing, electrical or walls change','Protect the house, then demolition','Rough plumbing, gas and electrical, then city inspection','Drywall, then prime','Cabinets and island','Countertop templating, then installation (about 1–2 weeks after cabinets)','Backsplash','Sink, faucet, appliances and lighting','Floor, paint and touch-ups','Final inspection and walkthrough'],roi:"A minor kitchen remodel recoups about 127% of its cost at resale in LA; a major midrange one about 57% (Pacific region).",tiers:['Stock cabinets, laminate or butcher-block counters, builder-grade appliances','Semi-custom cabinets, quartz counters, mid-range stainless appliances','Custom cabinets, quartzite, panel-ready or pro-style appliances','Bespoke millwork, marble or exotic stone, luxury appliance suite'],
   incl:['Demolition and haul-away','Plumbing and electrical rough-in','Cabinets, counters, backsplash and sink','Lighting, appliances and flooring you pick'],excl:['Moving load-bearing walls (see Foundation & structure)','Structural or termite damage found behind walls','Furniture, décor and small appliances'],
   permit:'Yes when plumbing or electrical changes (express trade permits); moving walls needs plan check. Like-for-like cabinets and counters don\'t need one.',time:'4–8 weeks of construction; 2½–4 months including design and permits',
   tips:['Keeping the sink, stove and fridge where they are saves the most money.','Order cabinets and appliances early; lead times of 4–10 weeks are common.','Plan a temporary kitchen (microwave, fridge, sink) for the weeks without one.']},
- bathroom:{roi:"A midrange bath remodel recoups about 91% at resale in the Pacific region; an upscale one about 42%.",tiers:['Fiberglass or simple tile, stock vanity, chrome fixtures','Porcelain tile shower, semi-custom vanity, quartz top','Floor-to-ceiling tile, frameless glass, custom vanity','Natural stone, curbless shower, heated floors, designer fixtures'],
+ bathroom:{seq:['Design and selections (tile, vanity, fixtures)','Permit','Protect the house, then demolition','Rough plumbing and electrical, then city inspection','Waterproofing, shower pan and backer board','Tile walls and floor','Vanity, toilet and fixtures','Glass door, lighting, fan and paint','Final inspection and walkthrough'],roi:"A midrange bath remodel recoups about 91% at resale in the Pacific region; an upscale one about 42%.",tiers:['Fiberglass or simple tile, stock vanity, chrome fixtures','Porcelain tile shower, semi-custom vanity, quartz top','Floor-to-ceiling tile, frameless glass, custom vanity','Natural stone, curbless shower, heated floors, designer fixtures'],
   incl:['Demolition and haul-away','Waterproofing and tile','Vanity, toilet, shower or tub and fixtures','Exhaust fan, lighting and paint'],excl:['Rot or termite damage under the floor','Moving the bathroom to another room','Heated floors and steam showers (ask for a quote)'],
   permit:'Yes for most remodels that touch plumbing, electrical or the shower pan.',time:'3–5 weeks of construction; 1½–3 months including permits',
   tips:['A curbless walk-in shower costs more now but makes the room usable for life.','Pick tile and fixtures before demolition so the crew never waits.','An exhaust fan vented outside prevents mold; California code calls for one with humidity control in bathrooms with a shower or tub.']},
@@ -2228,24 +2437,87 @@ const wallArea=(sf,st)=>Math.round(4*Math.sqrt(sf/st)*1.15*9*st);
 // q: [id, question, [[value,label],...], show?(answers)] — first option is the default
 const JOBS=[
  {id:'kitchen',name:'Kitchen',blurb:'Cabinets, counters, appliances',main:'cabinets',size:{label:'Kitchen size',unit:'sq ft',def:150,min:40,max:1200},
-  q:[['layout','Layout',[['same','Keep the layout'],['move','Move the sink, stove or walls']]],
-     ['cabinets','Cabinets',[['new','New cabinets'],['keep','Keep my cabinets']]],
-     ['counters','Countertops',[['new','New countertops'],['keep','Keep them']]],
-     ['appliances','Appliances',[['new','New appliances'],['keep','Keep them']]],
-     ['island','Kitchen island',NO_YES('Add an island')],
-     ['floor','Floor',[['yes','New tile floor'],['no','Keep the floor']]]],
-  lines(s,a){const lf=Math.max(8,Math.round(s*0.17)),o=[L('kdemo',1,a.layout==='move'?1.6:1,a.layout==='move'?'Demo & new plumbing/electrical for the new layout':'Demo & plumbing/electrical rough-in')];
-    if(a.cabinets==='new')o.push(L('cabinets',lf));if(a.counters==='new')o.push(L('counters',Math.round(lf*2.2)));
-    if(a.cabinets==='new'||a.counters==='new')o.push(L('backsplash',Math.round(lf*1.4)));if(a.appliances==='new')o.push(L('appliances',1));
-    o.push(L('ksink',1),L('klight',1));if(a.island==='yes')o.push(L('island',1));if(a.floor==='yes')o.push(L('tilefloor',s));return o}},
+  q:[['layout','Layout',[['same','Keep the layout'],['move','Move the sink, stove or walls']],null,'Demolition & layout'],
+     ['walls','Walls',[['none','Keep the walls'],['non','Remove a non-bearing wall'],['bearing','Open a load-bearing wall']],null,'Demolition & layout'],
+     ['circuits','New electrical circuits',[['0','None'],['2','2 circuits'],['4','4 circuits']],null,'Plumbing, gas & electrical'],
+     ['gas','Gas line for the range',NO_YES('Run a new gas line'),null,'Plumbing, gas & electrical'],
+     ['potfiller','Pot filler',NO_YES('Add a pot filler'),null,'Plumbing, gas & electrical'],
+     ['recessed','Recessed lights',[['0','None'],['4','4'],['6','6'],['8','8']],null,'Plumbing, gas & electrical'],
+     ['drywall','Drywall',[['none','No drywall work'],['patch','Patch and repair'],['new','New drywall']],null,'Walls & windows'],
+     ['window','Window',NO_YES('Replace the kitchen window'),null,'Walls & windows'],
+     ['cabinets','Cabinets',[['new','New cabinets'],['reface','Reface (new doors and fronts)'],['paint','Paint my cabinets'],['keep','Keep my cabinets']],null,'Cabinets'],
+     ['hardware','Hardware',NO_YES('New pulls and knobs'),a=>a.cabinets!=='new','Cabinets'],
+     ['island','Kitchen island',NO_YES('Add an island'),null,'Cabinets'],
+     ['pantry','Pantry',NO_YES('Build a pantry'),null,'Cabinets'],
+     ['counters','Countertop material',[['quartz','Quartz'],['granite','Granite'],['quartzite','Quartzite'],['marble','Marble'],['solid','Solid surface'],['butcher','Butcher block'],['laminate','Laminate'],['keep','Keep my counters']],null,'Countertops'],
+     ['backsplash','Backsplash',[['tile','Ceramic or porcelain tile'],['glass','Glass tile'],['stone','Natural stone'],['slab','Slab to match the counters'],['keep','Keep it']],null,'Backsplash'],
+     ['bsheight','Backsplash height',[['std','Standard (to the upper cabinets)'],['full','Full height (to the ceiling)']],a=>a.backsplash!=='keep','Backsplash'],
+     ['sink','Sink & faucet',[['stainless','Stainless steel'],['farmhouse','Farmhouse (apron front)'],['composite','Composite granite'],['keep','Keep them']],null,'Sink & faucet'],
+     ['appliances','Appliances',[['package','New appliance package'],['pick','Choose one by one'],['keep','Keep my appliances']],null,'Appliances'],
+     ['a_range','Range',NO_YES('New range'),a=>a.appliances==='pick','Appliances'],
+     ['a_oven','Cooktop & wall oven',NO_YES('New cooktop and wall oven'),a=>a.appliances==='pick','Appliances'],
+     ['a_fridge','Refrigerator',NO_YES('New refrigerator'),a=>a.appliances==='pick','Appliances'],
+     ['a_dw','Dishwasher',NO_YES('New dishwasher'),a=>a.appliances==='pick','Appliances'],
+     ['a_hood','Range hood',NO_YES('New hood, vented outside'),a=>a.appliances==='pick','Appliances'],
+     ['a_micro','Microwave',NO_YES('New over-range microwave'),a=>a.appliances==='pick','Appliances'],
+     ['pendants','Pendant lights',[['2','2'],['3','3'],['0','None']],null,'Lighting'],
+     ['undercab','Under-cabinet lights',YES_NO('Add LED strips'),null,'Lighting'],
+     ['ceiling','Ceiling fixture',NO_YES('New ceiling light'),null,'Lighting'],
+     ['floor','Floor',[['tile','Tile'],['lvp','Vinyl plank'],['hardwood','Hardwood'],['keep','Keep the floor']],null,'Floor & paint'],
+     ['paint','Paint',YES_NO('Paint walls and ceiling'),null,'Floor & paint']],
+  lines(s,a){const lf=Math.max(8,Math.round(s*0.17)),o=[];
+    // demolition and rough-in only when the work opens walls, floors or plumbing
+    const heavy=a.layout==='move'||a.walls!=='none'||a.cabinets==='new'||a.floor!=='keep';
+    if(heavy)o.push(L('kdemo',1,a.layout==='move'?1.6:1,a.layout==='move'?'Demo & new plumbing/electrical for the new layout':'Demo & plumbing/electrical rough-in'));
+    else if(a.counters!=='keep')o.push(L('kdemo',1,0.3,'Remove old countertops & reconnect the sink'));
+    if(a.walls==='non')o.push(L('wallremove',1));if(a.walls==='bearing')o.push(L('beamwall',1));
+    if(+a.circuits)o.push(L('circuit',+a.circuits));if(a.gas==='yes')o.push(L('gasline',1));if(a.potfiller==='yes')o.push(L('potfiller',1));if(+a.recessed)o.push(L('recessed',+a.recessed));
+    if(a.drywall==='patch')o.push(L('drywall',100));if(a.drywall==='new')o.push(L('drywall',s*2.5));if(a.window==='yes')o.push(L('kwindow',1));
+    if(a.cabinets==='new')o.push(L('cabinets',lf));if(a.cabinets==='reface')o.push(L('cabreface',lf));if(a.cabinets==='paint')o.push(L('cabpaint',lf));
+    if(a.cabinets!=='new'&&a.hardware==='yes')o.push(L('hardware',1));if(a.island==='yes')o.push(L('island',1));if(a.pantry==='yes')o.push(L('pantry',1));
+    if(a.counters!=='keep')o.push(L('ct_'+a.counters,Math.round(lf*2.2)+(a.island==='yes'?20:0)));
+    if(a.backsplash!=='keep'){const bs=Math.round(lf*1.4*(a.bsheight==='full'?2.2:1));
+      o.push(a.backsplash==='tile'?L('backsplash',bs):a.backsplash==='glass'?L('bs_glass',bs):a.backsplash==='stone'?L('bs_stone',bs):L(a.counters!=='keep'?'ct_'+a.counters:'ct_quartz',bs,1,'Slab backsplash'))}
+    if(a.sink==='stainless')o.push(L('ksink',1));if(a.sink==='farmhouse')o.push(L('sink_farm',1));if(a.sink==='composite')o.push(L('sink_comp',1));
+    if(a.appliances==='package')o.push(L('appliances',1));
+    if(a.appliances==='pick')[['a_range','app_range'],['a_oven','app_oven'],['a_fridge','app_fridge'],['a_dw','app_dw'],['a_hood','app_hood'],['a_micro','app_micro']].forEach(([q,id])=>{if(a[q]==='yes')o.push(L(id,1))});
+    if(+a.pendants)o.push(L('pendant',+a.pendants));if(a.undercab==='yes')o.push(L('undercab',1));if(a.ceiling==='yes')o.push(L('ceilfix',1));
+    if(a.floor==='tile')o.push(L('tilefloor',s));if(a.floor==='lvp')o.push(L('lvp',s));if(a.floor==='hardwood')o.push(L('hardwood',s));
+    if(a.paint==='yes')o.push(L('intpaint',s));return o}},
  {id:'bathroom',name:'Bathroom',blurb:'Shower, tub, vanity, tile',main:'vanity',size:{label:'Size of each bathroom',unit:'sq ft',def:50,min:20,max:400},
-  q:[['count','How many bathrooms',[['1','1 bathroom'],['2','2 bathrooms'],['3','3 bathrooms'],['4','4 bathrooms']]],
-     ['shower','Shower or tub',[['tile','New tiled shower or tub'],['convert','Turn the tub into a walk-in shower'],['keep','Keep the tub/shower']]],
-     ['layout','Layout',[['same','Keep the layout'],['move','Move the toilet, shower or sink']]],
-     ['vanity','Vanity',[['single','Single sink'],['double','Double sink']]]],
-  lines(s,a){const n=+a.count,f=s/50,o=[L('bdemo',n,a.layout==='move'?1.7:1),L('vanity',n,a.vanity==='double'?1.7:1),L('toilet',n)];
-    if(a.shower==='tile')o.push(L('showertile',n),L('glass',n));if(a.shower==='convert')o.push(L('tubshower',n),L('glass',n));
-    o.push(L('bfloor',n,f),L('bfixtures',n),L('bfan',n));return o}},
+  q:[['count','How many bathrooms',[['1','1 bathroom'],['2','2 bathrooms'],['3','3 bathrooms'],['4','4 bathrooms']],null,'Bathrooms & layout'],
+     ['layout','Layout',[['same','Keep the layout'],['move','Move the toilet, shower or sink']],null,'Bathrooms & layout'],
+     ['shower','Shower or tub',[['tile','New tiled shower or tub'],['convert','Turn the tub into a walk-in shower'],['prefab','Prefab shower base and walls'],['newtub','New bathtub'],['freestanding','Freestanding soaking tub'],['keep','Keep the tub/shower']],null,'Shower & tub'],
+     ['tilemat','Shower tile',[['porcelain','Porcelain'],['ceramic','Ceramic'],['stone','Natural stone']],a=>a.shower==='tile'||a.shower==='convert','Shower & tub'],
+     ['door','Shower door',[['frameless','Frameless glass'],['sliding','Sliding door'],['none','No door / curtain']],a=>['tile','convert','prefab'].includes(a.shower),'Shower & tub'],
+     ['niche','Shower niche',NO_YES('Add a niche'),a=>a.shower==='tile'||a.shower==='convert','Shower & tub'],
+     ['bench','Shower bench',NO_YES('Add a bench'),a=>a.shower==='tile'||a.shower==='convert','Shower & tub'],
+     ['rain','Rain shower head',NO_YES('Add a rain head'),a=>a.shower!=='keep'&&a.shower!=='freestanding','Shower & tub'],
+     ['vanity','Vanity',[['single','Single sink'],['double','Double sink'],['floating','Floating vanity'],['keep','Keep my vanity']],null,'Vanity & storage'],
+     ['medcab','Medicine cabinet',NO_YES('Add a medicine cabinet'),null,'Vanity & storage'],
+     ['toilet','Toilet',[['standard','New toilet'],['wall','Wall-hung toilet'],['smart','Smart toilet'],['keep','Keep my toilet']],null,'Toilet'],
+     ['bidet','Bidet seat',NO_YES('Add a bidet seat'),a=>a.toilet==='standard'||a.toilet==='keep','Toilet'],
+     ['floor','Floor',[['tile','New tile floor'],['keep','Keep the floor']],null,'Floor'],
+     ['heated','Heated floor',NO_YES('Add floor heating'),a=>a.floor==='tile','Floor'],
+     ['fan','Exhaust fan & lights',YES_NO('New fan and lighting'),null,'Fan, lights & finish'],
+     ['vanlight','Vanity light',YES_NO('New vanity light'),null,'Fan, lights & finish'],
+     ['fixtures','Faucets & fixtures',YES_NO('New faucets and valves'),null,'Fan, lights & finish']],
+  lines(s,a){const n=+a.count,f=s/50,o=[];
+    const heavy=a.layout==='move'||a.shower!=='keep'||a.floor!=='keep';
+    if(heavy)o.push(L('bdemo',n,a.layout==='move'?1.7:1));
+    else if(a.vanity!=='keep'||a.toilet!=='keep')o.push(L('bdemo',n,0.25,'Remove old fixtures & reconnect plumbing'));
+    const tm={porcelain:1,ceramic:0.85,stone:1.6}[a.tilemat]||1;
+    if(a.shower==='tile')o.push(L('showertile',n,tm));if(a.shower==='convert')o.push(L('tubshower',n),L('showertile',n,tm*0.5,'Shower wall tile'));
+    if(a.shower==='prefab')o.push(L('showerbase',n));if(a.shower==='newtub')o.push(L('tub_alcove',n));if(a.shower==='freestanding')o.push(L('tub_free',n));
+    if(['tile','convert','prefab'].includes(a.shower)){if(a.door==='frameless')o.push(L('glass',n));if(a.door==='sliding')o.push(L('glass_slide',n))}
+    if(a.shower==='tile'||a.shower==='convert'){if(a.niche==='yes')o.push(L('niche',n));if(a.bench==='yes')o.push(L('bench',n))}
+    if(a.rain==='yes'&&a.shower!=='keep'&&a.shower!=='freestanding')o.push(L('rainhead',n));
+    if(a.vanity!=='keep')o.push(L('vanity',n,a.vanity==='double'?1.7:a.vanity==='floating'?1.25:1,a.vanity==='floating'?'Floating vanity & top':null));
+    if(a.medcab==='yes')o.push(L('medcab',n));
+    if(a.toilet==='standard')o.push(L('toilet',n));if(a.toilet==='wall')o.push(L('toilet_wall',n));if(a.toilet==='smart')o.push(L('toilet_smart',n));
+    if(a.bidet==='yes'&&(a.toilet==='standard'||a.toilet==='keep'))o.push(L('bidet',n));
+    if(a.floor==='tile'){o.push(L('bfloor',n,f));if(a.heated==='yes')o.push(L('heatfloor',Math.round(s*0.7)*n))}
+    if(a.fan==='yes')o.push(L('bfan',n));if(a.vanlight==='yes')o.push(L('vanlight',n));if(a.fixtures==='yes')o.push(L('bfixtures',n));return o}},
  {id:'flooring',name:'Flooring',blurb:'Vinyl plank, wood, tile, carpet',main:'hardwood',size:{label:'Area to cover',unit:'sq ft',def:800,min:50,max:10000},
   q:[['material','Material',[['lvp','Vinyl plank'],['hardwood','Hardwood'],['tile','Tile'],['carpet','Carpet'],['refinish','Refinish my hardwood']]],
      ['base','Baseboards',[['yes','New baseboards'],['no','Keep them']],a=>a.material!=='refinish']],
@@ -2363,8 +2635,8 @@ const JOBS=[
   q:[['scope','How much',[['refresh','Refresh: paint, floors, trim, doors'],['full','Full: also kitchen, baths, lighting, panel']]],
      ['baths','Bathrooms',[['1','1'],['2','2'],['3','3']],a=>a.scope==='full']],
   lines(s,a){const o=[L('intpaint',s),L('lvp',s*0.6),L('trim',s*0.6),L('intdoors',Math.max(6,Math.round(s/200)))];
-    if(a.scope==='full'){const n=+a.baths;o.push(...JOBS[0].lines(150,{layout:'same',cabinets:'new',counters:'new',appliances:'new',island:'no',floor:'no'}),
-      ...JOBS[1].lines(50,{count:String(n),shower:'tile',layout:'same',vanity:'single'}),L('recessed',20),L('panel',1))}return o}}
+    if(a.scope==='full'){const n=+a.baths;o.push(...JOBS[0].lines(150,answers(JOBS[0],{floor:'keep',pendants:'0',undercab:'no'})),
+      ...JOBS[1].lines(50,answers(JOBS[1],{count:String(n)})),L('recessed',20),L('panel',1))}return o}}
 ];
 const JOB=Object.fromEntries(JOBS.map(j=>[j.id,j]));
 const answers=(job,a)=>Object.fromEntries(job.q.map(([id,,opts])=>[id,a&&a[id]!=null&&opts.some(o=>o[0]===a[id])?a[id]:opts[0][0]]));
@@ -2448,8 +2720,19 @@ const SEARCH=[
  ['Refinish wood floors','Restaurar pisos de madera','sand refinish lijar','flooring',null,{material:'refinish'}],
  ['New shower','Regadera nueva','shower tile regadera ducha','bathroom',null,{shower:'tile'}],
  ['Walk-in shower','Regadera sin escalón','tub to shower walk in curbless','bathroom',null,{shower:'convert'}],
- ['Kitchen cabinets','Gabinetes de cocina','cabinets gabinetes alacenas','kitchen',null,{cabinets:'new',counters:'keep',appliances:'keep',floor:'no'}],
- ['Countertops','Encimeras','quartz granite counter cubierta encimera granito cuarzo','kitchen',null,{cabinets:'keep',counters:'new',appliances:'keep',floor:'no'}],
+ ['Kitchen cabinets','Gabinetes de cocina','cabinets gabinetes alacenas','kitchen',null,{layout:'same',walls:'none',circuits:'0',gas:'no',potfiller:'no',recessed:'0',drywall:'none',window:'no',cabinets:'keep',hardware:'no',island:'no',pantry:'no',counters:'keep',backsplash:'keep',sink:'keep',appliances:'keep',pendants:'0',undercab:'no',ceiling:'no',floor:'keep',paint:'no',cabinets:'new'}],
+ ['Countertops','Encimeras','quartz granite counter cubierta encimera granito cuarzo','kitchen',null,{layout:'same',walls:'none',circuits:'0',gas:'no',potfiller:'no',recessed:'0',drywall:'none',window:'no',cabinets:'keep',hardware:'no',island:'no',pantry:'no',counters:'keep',backsplash:'keep',sink:'keep',appliances:'keep',pendants:'0',undercab:'no',ceiling:'no',floor:'keep',paint:'no',counters:'quartz'}],
+ ['Cabinet painting','Pintar gabinetes','paint cabinets pintar gabinetes','kitchen',null,{layout:'same',walls:'none',circuits:'0',gas:'no',potfiller:'no',recessed:'0',drywall:'none',window:'no',cabinets:'keep',hardware:'no',island:'no',pantry:'no',counters:'keep',backsplash:'keep',sink:'keep',appliances:'keep',pendants:'0',undercab:'no',ceiling:'no',floor:'keep',paint:'no',cabinets:'paint',hardware:'yes'}],
+ ['Cabinet refacing','Renovar frentes de gabinetes','reface doors fronts frentes puertas','kitchen',null,{layout:'same',walls:'none',circuits:'0',gas:'no',potfiller:'no',recessed:'0',drywall:'none',window:'no',cabinets:'keep',hardware:'no',island:'no',pantry:'no',counters:'keep',backsplash:'keep',sink:'keep',appliances:'keep',pendants:'0',undercab:'no',ceiling:'no',floor:'keep',paint:'no',cabinets:'reface',hardware:'yes'}],
+ ['Backsplash','Salpicadero (backsplash)','backsplash tile salpicadero azulejo','kitchen',null,{layout:'same',walls:'none',circuits:'0',gas:'no',potfiller:'no',recessed:'0',drywall:'none',window:'no',cabinets:'keep',hardware:'no',island:'no',pantry:'no',counters:'keep',backsplash:'keep',sink:'keep',appliances:'keep',pendants:'0',undercab:'no',ceiling:'no',floor:'keep',paint:'no',backsplash:'tile'}],
+ ['Farmhouse sink','Fregadero estilo granja','apron sink fregadero tarja','kitchen',null,{layout:'same',walls:'none',circuits:'0',gas:'no',potfiller:'no',recessed:'0',drywall:'none',window:'no',cabinets:'keep',hardware:'no',island:'no',pantry:'no',counters:'keep',backsplash:'keep',sink:'keep',appliances:'keep',pendants:'0',undercab:'no',ceiling:'no',floor:'keep',paint:'no',sink:'farmhouse'}],
+ ['Pot filler','Llave para ollas','pot filler llave','kitchen',null,{layout:'same',walls:'none',circuits:'0',gas:'no',potfiller:'no',recessed:'0',drywall:'none',window:'no',cabinets:'keep',hardware:'no',island:'no',pantry:'no',counters:'keep',backsplash:'keep',sink:'keep',appliances:'keep',pendants:'0',undercab:'no',ceiling:'no',floor:'keep',paint:'no',potfiller:'yes'}],
+ ['New appliances','Electrodomésticos nuevos','appliances fridge range stove dishwasher refrigerador estufa lavavajillas','kitchen',null,{layout:'same',walls:'none',circuits:'0',gas:'no',potfiller:'no',recessed:'0',drywall:'none',window:'no',cabinets:'keep',hardware:'no',island:'no',pantry:'no',counters:'keep',backsplash:'keep',sink:'keep',appliances:'keep',pendants:'0',undercab:'no',ceiling:'no',floor:'keep',paint:'no',appliances:'pick',a_range:'yes',a_fridge:'yes',a_dw:'yes'}],
+ ['Pendant lights','Lámparas colgantes','pendants lights lamparas','kitchen',null,{layout:'same',walls:'none',circuits:'0',gas:'no',potfiller:'no',recessed:'0',drywall:'none',window:'no',cabinets:'keep',hardware:'no',island:'no',pantry:'no',counters:'keep',backsplash:'keep',sink:'keep',appliances:'keep',pendants:'0',undercab:'no',ceiling:'no',floor:'keep',paint:'no',pendants:'3',undercab:'yes'}],
+ ['Freestanding tub','Tina independiente','soaking tub tina','bathroom',null,{shower:'freestanding'}],
+ ['Smart toilet or bidet','Inodoro inteligente o bidé','bidet toilet inodoro','bathroom',null,{shower:'keep',vanity:'keep',toilet:'smart',floor:'keep',fan:'no',vanlight:'no',fixtures:'no'}],
+ ['Heated bathroom floor','Piso radiante en el baño','heated floor radiant piso calefaccion','bathroom',null,{shower:'keep',vanity:'keep',toilet:'keep',floor:'tile',heated:'yes',fan:'no',vanlight:'no',fixtures:'no'}],
+ ['Double vanity','Tocador doble','double sink vanity tocador lavabo','bathroom',null,{shower:'keep',vanity:'double',toilet:'keep',floor:'keep',fan:'no',vanlight:'yes',fixtures:'no'}],
  ['Drywall repair','Reparar tablaroca','drywall sheetrock tablaroca','interior',null,{drywall:'300',doors:'0',trim:'no'}],
  ['Interior doors','Puertas interiores','doors puertas','interior',null,{doors:'8',trim:'no'}],
  ['Skylight','Tragaluz','skylight tragaluz','interior',null,{doors:'0',trim:'no',sky:'1'}],
@@ -2501,7 +2784,9 @@ function renderPanel(){const c=S.cur,job=JOB[c.job],a=answers(job,c.a);
       <p class="m-out num" id="m-out">${T('Enter both sides of the room or area.','Escriba los dos lados del cuarto o área.')}</p>
       <div class="row-btns"><button type="button" class="btn ghost" id="m-use" disabled>${T('Use this size','Usar este tamaño')}</button><button type="button" class="btn ghost" id="m-add" disabled>${T('Add to the size above','Sumar al tamaño de arriba')}</button></div>
       <p class="note">${T('For an L-shaped space, measure it as two rectangles and add them.','Para un espacio en forma de L, mídalo como dos rectángulos y súmelos.')}</p></details>`:''}`:'';
-  const qs=job.q.filter(q=>!q[3]||q[3](a)).map(([id,label,opts])=>`<div class="q"><span id="q-${id}">${esc(tr(label))}</span><div class="chips" role="group" aria-labelledby="q-${id}">${opts.map(([v,l])=>`<button type="button" class="chip" data-q="${id}" data-v="${v}" aria-pressed="${a[id]===v}">${esc(tr(l))}</button>`).join('')}</div></div>`).join('');
+  let stg=null,sn=0;
+  const qs=job.q.filter(q=>!q[3]||q[3](a)).map(([id,label,opts,,stage])=>{const head=stage&&stage!==stg?`<h3 class="qstage"><span class="stage-n">${++sn}</span>${esc(tr(stage))}</h3>`:'';if(stage)stg=stage;
+    return head+`<div class="q"><span id="q-${id}">${esc(tr(label))}</span><div class="chips" role="group" aria-labelledby="q-${id}">${opts.map(([v,l])=>`<button type="button" class="chip" data-q="${id}" data-v="${v}" aria-pressed="${a[id]===v}">${esc(tr(l))}</button>`).join('')}</div></div>`}).join('');
   const g=GUIDE[job.id]||{},note=g.tiers?'':ITEMS[job.main].note;
   const list=xs=>`<ul>${xs.map(x=>`<li>${esc(tr(x))}</li>`).join('')}</ul>`;
   const rentText=T('Enter the rent you expect to see how long the unit takes to pay for itself.','Escriba la renta que espera para ver en cuánto tiempo la unidad se paga sola.');
@@ -2514,7 +2799,7 @@ function renderPanel(){const c=S.cur,job=JOB[c.job],a=answers(job,c.a);
       <div class="facts"><div><span class="eyebrow">${T('Permit','Permiso')}</span><p>${esc(tr(g.permit))}</p></div><div><span class="eyebrow">${T('Typical time','Tiempo típico')}</span><p>${esc(tr(g.time))}</p></div>${g.roi?`<div><span class="eyebrow">${T('Resale value','Valor de reventa')}</span><p>${esc(tr(g.roi))}</p></div>`:""}${(()=>{const rb=(typeof REBATES!=='undefined'?localRebates():[]).filter(r=>r.jobs.includes(job.id)&&r.st!=='closed');return rb.length?`<div><span class="eyebrow">${T('Rebates & rules','Reembolsos y reglas')}</span><p>${rb.map(r=>esc(tr(r.n)+': '+tr(r.amt))).join(' · ')} <a href="#rebates">${T('See all','Ver todos')}</a></p></div>`:''})()}</div>
       <details open><summary>${T("What's included",'Qué incluye')}</summary>${list(g.incl)}</details>
       <details><summary>${T('Not included','Qué no incluye')}</summary>${list(g.excl)}</details>
-      <details><summary>${T('Good to know','Bueno saber')}</summary>${list(g.tips)}</details></div>`:''}`;
+      <details><summary>${T('Good to know','Bueno saber')}</summary>${list(g.tips)}</details>${g.seq?`<details><summary>${T('Order of work, start to finish','Orden del trabajo, de principio a fin')}</summary><ol class="seq">${g.seq.map(x=>`<li>${esc(tr(x))}</li>`).join('')}</ol></details>`:''}</div>`:''}`;
   const inp=$('sz');if(inp)inp.addEventListener('input',e=>{S.cur.size=e.target.value===''?0:Math.max(0,+e.target.value);S.cur.from3d=null;save();renderPreview()});
   // length × width: show the area, then replace or add to the size
   if($('m-l')){const area=()=>Math.round((+$('m-l').value||0)*(+$('m-w').value||0));
@@ -2887,7 +3172,7 @@ function renderMaterials(){const c=MATERIALS.find(x=>x.id===MATG.cat)||MATERIALS
   const rows=matRows(c),maxLife=Math.max(...rows.map(r=>r.l2||0),1),maxMid=Math.max(...rows.map(r=>r.mid));
   const bestVal=rows.filter(r=>r.perYr).sort((a,b)=>a.perYr-b.perYr)[0];
   $('mat-list').innerHTML=`<p class="mat-unit">${esc(PL(c.u))} · <button type="button" class="linkbtn" data-matjob="${c.job}">${T('Price this job','Calcular este trabajo')}</button></p>`+rows.map(r=>{
-    const lifeTxt=r.lab?tr(r.lab):r.l1!=null?(r.l1===r.l2?String(r.l1):r.l1+'–'+r.l2):'—';
+    const lifeTxt=r.lab?(Array.isArray(r.lab)?PL(r.lab):tr(r.lab)):r.l1!=null?(r.l1===r.l2?String(r.l1):r.l1+'–'+r.l2):'—';
     return `<article class="mat${r===bestVal?' mat-best':''}"><div class="mat-top"><b>${esc(PL(r.nm))}</b>${r===bestVal?`<span class="st st-ok">${T('Lowest cost per year of life','Menor costo por año de vida')}</span>`:''}</div>
       <div class="mat-cost num">${mny(r.lo)}–${mny(r.hi)}</div>
       <div class="mat-bar" aria-hidden="true"><i style="width:${(r.mid/maxMid*100).toFixed(1)}%"></i></div>
