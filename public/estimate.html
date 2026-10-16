@@ -96,7 +96,7 @@ h3{font-size:15px;margin:0;font-weight:600}
 .nogl{padding:24px;color:var(--muted)}
 
 /* step 2: size + details */
-.jobpanel{scroll-margin-top:16px}
+.jobpanel{scroll-margin-top:60px}
 .size{display:flex;flex-wrap:wrap;align-items:end;gap:12px}
 .size label{display:grid;gap:4px;font-size:13px;color:var(--muted);font-weight:500}
 .size input{width:150px;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:17px;font-weight:600;color:var(--fg)}
@@ -138,7 +138,7 @@ h3{font-size:15px;margin:0;font-weight:600}
 .row-btns{display:flex;flex-wrap:wrap;gap:8px}
 
 /* right: estimate */
-.est{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);overflow:hidden}
+.est{position:sticky;top:calc(env(safe-area-inset-top,0px) + 60px);overflow:hidden}
 @media (max-width:980px){.est{position:static}}
 .est-top{background:var(--navy);color:var(--on-navy);padding:18px}
 .est-top .eyebrow{color:var(--on-navy);opacity:.75}
@@ -187,12 +187,15 @@ textarea.fallback{width:100%;min-height:120px;font-size:12px;background:var(--su
   .mbar small{display:block;font-size:11.5px;opacity:.75}
   .mbar .btn{padding:9px 12px}
 }
-.sitenav{border-top:1px solid rgba(255,255,255,.12)}
-.sitenav-in{max-width:1240px;margin:0 auto;display:flex;gap:4px 18px;flex-wrap:wrap;padding-block:10px}
-.sitenav a{color:var(--on-navy);opacity:.82;text-decoration:none;font-size:13.5px;font-weight:500;padding:2px 0}
-.sitenav a:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
+.sitenav{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:var(--navy);border-top:1px solid rgba(255,255,255,.12);padding-inline:16px;box-shadow:0 2px 10px rgba(0,0,0,.12)}
+.sitenav-in{max-width:1240px;margin:0 auto;display:flex;gap:4px 18px;padding-block:10px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.sitenav-in::-webkit-scrollbar{display:none}
+.sitenav a{color:var(--on-navy);opacity:.82;text-decoration:none;font-size:13.5px;font-weight:500;padding:2px 0;white-space:nowrap;border-bottom:2px solid transparent}
+.sitenav a:hover{opacity:1}
+.sitenav a.on{opacity:1;border-bottom-color:var(--gold)}
+@media (max-width:980px){.est{top:auto}}
 html{scroll-behavior:smooth}
-section[id],main[id]{scroll-margin-top:16px}
+section[id],main[id]{scroll-margin-top:60px}
 .more{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 32px;display:grid;gap:16px}
 .lede{margin:0;color:var(--muted);max-width:70ch}
 .presets{display:flex;flex-wrap:wrap;gap:6px}
@@ -344,10 +347,10 @@ footer{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:0 40px;c
     <h1 data-i18n>What would it cost to <em>change</em> your home?</h1>
     <p data-i18n>Pick the job, tell us how big it is and answer a few quick questions. You'll see a price range for your area in seconds, with permits and a start-to-finish timeline. Add as many jobs as you like, then send it to HRG for a firm quote.</p>
   </div>
-  <nav class="sitenav" aria-label="Sections" data-i18n-aria><div class="sitenav-in">
+</header>
+  <nav class="sitenav sticky" aria-label="Sections" data-i18n-aria><div class="sitenav-in">
     <a href="#plan" data-i18n>Estimate</a><a href="#popular" data-i18n>Ideas</a><a href="#budget" data-i18n>Budget</a><a href="#materials" data-i18n>Materials</a><a href="#resale" data-i18n>Resale value</a><a href="#financing" data-i18n>Financing</a><a href="#rebates" data-i18n>Rebates</a><a href="#permits" data-i18n>Permits</a><a href="#how" data-i18n>How it works</a><a href="#faq" data-i18n>FAQ</a><a href="#glossary" data-i18n>Glossary</a><a href="#contact" data-i18n>Contact</a>
   </div></nav>
-</header>
 
 <main class="wrap" id="plan">
   <div class="left">
@@ -2691,6 +2694,16 @@ function renderPrint(){const r=totals(S.basket),ar=area(),d=new Date();
     <p class="ps-contact">${T('Get a firm quote','Pida un precio firme')}: 213.216.4416 · sales@hrgprefab.com · hrgprefab.com/estimate</p>`}
 addEventListener('beforeprint',renderPrint);
 function printEstimate(){renderPrint();window.print()}
+
+/* ---------- section menu follows the reader ---------- */
+(function(){const links=[...document.querySelectorAll('.sitenav a[href^="#"]')],map=new Map();
+  links.forEach(a=>{const s=document.getElementById(a.getAttribute('href').slice(1));if(s)map.set(s,a)});
+  if(!('IntersectionObserver' in window)||!map.size)return;let cur=null;
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)cur=e.target});if(!cur)return;
+    links.forEach(a=>a.classList.toggle('on',map.get(cur)===a));const a=map.get(cur);
+    if(a){const box=a.parentElement;if(a.offsetLeft<box.scrollLeft||a.offsetLeft+a.offsetWidth>box.scrollLeft+box.clientWidth)box.scrollTo({left:a.offsetLeft-16,behavior:'smooth'})}},
+    {rootMargin:'-45% 0px -50% 0px'});
+  map.forEach((a,s)=>io.observe(s))})();
 
 /* ---------- wiring ---------- */
 function render(){save();renderJobs();renderPanel();renderEstimate()}
