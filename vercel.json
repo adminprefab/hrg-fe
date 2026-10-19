@@ -1,5 +1,10 @@
 {
   "rewrites": [
+    {
+      "source": "/((?!api/).*)",
+      "has": [{ "type": "host", "value": "estimate.thehomeremodelgroup.com" }],
+      "destination": "/estimate.html"
+    },
     { "source": "/estimate", "destination": "/estimate.html" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
