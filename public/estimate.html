@@ -2185,9 +2185,15 @@ function init3D(){
   try{V.r=new THREE.WebGLRenderer({antialias:true,alpha:true})}catch(e){return fail()}
   V.r.setPixelRatio(Math.min(2,window.devicePixelRatio||1));stage.prepend(V.r.domElement);
   V.scene=new THREE.Scene();V.cam=new THREE.PerspectiveCamera(38,1,1,1200);
-  V.scene.add(new THREE.HemisphereLight(0xffffff,0x7d836f,0.8));
-  const sun=new THREE.DirectionalLight(0xffffff,0.65);sun.position.set(70,140,90);V.scene.add(sun);
-  MAT={ext:new THREE.MeshLambertMaterial({color:0xe9e3d6}),int:new THREE.MeshLambertMaterial({color:0xf6f4ef}),roof:new THREE.MeshLambertMaterial({color:0x4a4f5a})};
+  // soft sky fill plus a warm afternoon sun that casts shadows (smaller shadow map on phones)
+  V.r.shadowMap.enabled=true;V.r.shadowMap.type=THREE.PCFSoftShadowMap;
+  V.scene.add(new THREE.HemisphereLight(0xe4eef8,0x6f735f,0.72));V.scene.add(new THREE.AmbientLight(0xffffff,0.12));
+  const sun=new THREE.DirectionalLight(0xfff1dc,0.78);sun.position.set(-55,120,85);sun.castShadow=true;
+  const sm=matchMedia('(max-width:760px)').matches?1024:2048;sun.shadow.mapSize.set(sm,sm);
+  Object.assign(sun.shadow.camera,{left:-95,right:95,top:95,bottom:-95,near:10,far:400});sun.shadow.bias=-0.0006;sun.shadow.normalBias=0.03;V.scene.add(sun);
+  buildTextures();
+  MAT={ext:new THREE.MeshLambertMaterial({color:0xffffff,map:TX.stucco}),int:new THREE.MeshLambertMaterial({color:0xf6f4ef}),
+    roof:new THREE.MeshLambertMaterial({color:0xffffff,map:TX.shingles})};
   V.ctl=new THREE.OrbitControls(V.cam,V.r.domElement);V.ctl.enableDamping=true;V.ctl.maxPolarAngle=1.45;V.ctl.minDistance=18;V.ctl.maxDistance=280;
   const size=()=>{const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;V.r.setSize(w,h,false);V.cam.aspect=w/h;V.cam.updateProjectionMatrix()};
   new ResizeObserver(size).observe(stage);size();
@@ -2197,9 +2203,47 @@ function init3D(){
   (function loop(){requestAnimationFrame(loop);V.ctl.update();V.r.render(V.scene,V.cam)})();
   buildHouse();return true}
 
+/* ---------- procedural textures: drawn once on small canvases, no image downloads ---------- */
+let TX={};
+function canvasTex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');draw(g,w,h);
+  const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.anisotropy=4;return t}
+function speckle(g,w,h,base,n,cols,sz){g.fillStyle=base;g.fillRect(0,0,w,h);for(let i=0;i<n;i++){g.fillStyle=cols[i%cols.length];const s=sz*(0.5+Math.random());g.fillRect(Math.random()*w,Math.random()*h,s,s)}}
+function buildTextures(){
+  TX.grass=canvasTex(256,256,(g,w,h)=>speckle(g,w,h,'#7b9461',5600,['#6d8656','#869d6a','#748e57','#8ea472','#62794d','#7f8a5c'],2.2));
+  TX.stucco=canvasTex(256,256,(g,w,h)=>{speckle(g,w,h,'#efe8da',3800,['rgba(0,0,0,.035)','rgba(255,255,255,.35)','rgba(120,100,70,.04)'],2.4)});
+  TX.stucco.repeat.set(5,1.4);
+  TX.shingles=canvasTex(256,256,(g,w,h)=>{g.fillStyle='#4e535c';g.fillRect(0,0,w,h);const rh=32,tw=40;
+    for(let r=0;r<h/rh;r++)for(let c=-1;c<w/tw+1;c++){const v=72+Math.floor(Math.random()*26);g.fillStyle=`rgb(${v},${v+4},${v+12})`;
+      g.fillRect(c*tw+(r%2?tw/2:0)+1,r*rh+1,tw-2,rh-3);g.fillStyle='rgba(0,0,0,.35)';g.fillRect(c*tw+(r%2?tw/2:0),r*rh+rh-3,tw,3)}});
+  TX.shingles.repeat.set(0.22,0.22);TX.shingles.rotation=Math.PI/2;
+  TX.wood=canvasTex(256,256,(g,w,h)=>{const ph=32;for(let r=0;r<h/ph;r++){let x=-Math.random()*120;while(x<w){const len=90+Math.random()*120,v=Math.random()*22;
+      g.fillStyle=`rgb(${178+v},${136+v*0.8},${92+v*0.5})`;g.fillRect(x,r*ph,len,ph);g.strokeStyle='rgba(90,60,30,.18)';
+      for(let k=0;k<4;k++){g.beginPath();g.moveTo(x,r*ph+4+Math.random()*24);g.lineTo(x+len,r*ph+4+Math.random()*24);g.stroke()}
+      g.fillStyle='rgba(60,40,20,.45)';g.fillRect(x,r*ph,2,ph);x+=len}g.fillStyle='rgba(60,40,20,.4)';g.fillRect(0,r*ph,w,1.5)}});
+  TX.tile=canvasTex(256,256,(g,w,h)=>{speckle(g,w,h,'#e4e7eb',900,['rgba(0,0,0,.03)','rgba(255,255,255,.4)'],3);g.fillStyle='#b9bec6';
+    for(let i=0;i<=4;i++){g.fillRect(i*64-1,0,2,h);g.fillRect(0,i*64-1,w,2)}});
+  TX.carpet=canvasTex(128,128,(g,w,h)=>speckle(g,w,h,'#cbc1b0',2600,['#c2b7a5','#d4cbbc','#bfb3a0'],1.4));
+  TX.concrete=canvasTex(256,256,(g,w,h)=>{speckle(g,w,h,'#c8c5be',2600,['rgba(0,0,0,.05)','rgba(255,255,255,.3)'],2);g.fillStyle='rgba(90,90,85,.45)';g.fillRect(0,0,w,2);g.fillRect(0,0,2,h)});
+  TX.pavers=canvasTex(256,256,(g,w,h)=>{g.fillStyle='#9b8c76';g.fillRect(0,0,w,h);const bh=32,bw=64;
+    for(let r=0;r<h/bh;r++)for(let c=-1;c<w/bw+1;c++){const v=Math.random()*24;g.fillStyle=`rgb(${196+v},${178+v},${150+v})`;g.fillRect(c*bw+(r%2?bw/2:0)+2,r*bh+2,bw-4,bh-4)}});
+  TX.asphalt=canvasTex(256,256,(g,w,h)=>speckle(g,w,h,'#55585e',3000,['#4a4d52','#62656b','#5b5e64'],1.6));
+  TX.solar=canvasTex(128,128,(g,w,h)=>{g.fillStyle='#1d3557';g.fillRect(0,0,w,h);g.strokeStyle='rgba(180,200,230,.45)';g.lineWidth=1.5;
+    for(let i=0;i<=8;i++){g.beginPath();g.moveTo(i*16,0);g.lineTo(i*16,h);g.stroke();g.beginPath();g.moveTo(0,i*16);g.lineTo(w,i*16);g.stroke()}});
+}
+// a textured material whose pattern repeats every `unit` feet on a w × d surface
+function texMat(key,w,d,unit,tint){const t=TX[key].clone();t.needsUpdate=true;t.repeat.set(Math.max(1,w/unit),Math.max(1,d/unit));
+  return new THREE.MeshLambertMaterial({color:tint||0xffffff,map:t})}
+// shared plain materials for decoration (one per color)
+const DMAT={};const dmat=c=>DMAT[c]||(DMAT[c]=new THREE.MeshLambertMaterial({color:c}));
 function box(w,h,d,x,y,z,color,ud,center){const g=new THREE.BoxGeometry(w,h,d);if(!center)g.translate(0,h/2,0);
   const m=new THREE.Mesh(g,ud.mat||new THREE.MeshLambertMaterial({color}));m.position.set(x,y,z);
+  // everything solid casts and receives shadows; systems (pipes, wires, ducts) only receive
+  m.castShadow=!['elec','plumb','hvac','ground'].includes(ud.role);m.receiveShadow=true;
   m.userData=Object.assign({},ud,{base:color});delete m.userData.mat;V.g.add(m);V.meshes.push(m);if(ud.key)V.pick.push(m);return m}
+// decorative pieces: never picked, hidden or shown by role (scape = yard, furn = furniture, trim = exterior detail)
+function deco(w,h,d,x,y,z,color,role,level,mat){return box(w,h,d,x,y,z,color,{role,level:level||0,mat:mat||dmat(color)})}
+function ball(r,x,y,z,color,role){const m=new THREE.Mesh(new THREE.IcosahedronGeometry(r,1),dmat(color));m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;
+  m.userData={role,level:0};V.g.add(m);V.meshes.push(m);return m}
 function cyl(r,h,x,y,z,color,ud){const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,18),new THREE.MeshLambertMaterial({color}));
   m.position.set(x,y+h/2,z);m.userData=Object.assign({},ud,{base:color});V.g.add(m);V.meshes.push(m);if(ud.key)V.pick.push(m);return m}
 function run(pts,t,color,ud){for(let i=1;i<pts.length;i++){const a=pts[i-1],b=pts[i];
@@ -2211,16 +2255,17 @@ function buildHouse(){
   const m=M(),mm=V.mm=measure(m),W=m.W,D=m.D,st=mm.st,X=x=>x-W/2,Z=z=>D/2-z,cx=r=>X(r.x)+r.w/2,cz=r=>Z(r.z)-r.d/2;
   const [LW,LD]=m.lot,front=mm.front,lotX=m.garage?-11:0,gx=X(-11),gz=Z(11);
   // site
-  box(LW,0.4,LD,lotX,-0.9,front-LD/2,0x93b07a,{key:'ground',role:'ground'});
-  if(m.garage)box(22,0.15,26,gx,-0.55,D/2+13,0xc4c2bb,{key:'driveway',role:'ground'});
-  box(W-8,0.2,12,0,-0.55,-D/2-6,0xcdbfa8,{key:'patio',role:'ground'});
+  box(LW,0.4,LD,lotX,-0.9,front-LD/2,0x93b07a,{key:'ground',role:'ground',mat:texMat('grass',LW,LD,14)});
+  if(m.garage)box(22,0.15,26,gx,-0.55,D/2+13,0xc4c2bb,{key:'driveway',role:'ground',mat:texMat('concrete',22,26,11)});
+  box(W-8,0.2,12,0,-0.55,-D/2-6,0xcdbfa8,{key:'patio',role:'ground',mat:texMat('pavers',W-8,12,6)});
   box(W+1,0.8,D+1,0,-0.8,0,0x8f8f8a,{key:'foundation',role:'site'});
   if(m.garage)box(23,0.8,23,gx,-0.8,gz,0x8f8f8a,{key:'foundation',role:'site'});
   box(3,3,3,W/2+3.5,-0.5,0,0x9aa3ad,{key:'condenser',role:'site'});
   // floors and partitions
   const FC={living:0xc8a77e,hall:0xc8a77e,bed:0xbdb3a3,kitchen:0xd8dce1,bath:0xdfe6ea,powder:0xdfe6ea,laundry:0xd8dce1,garage:0xa9a9a4};
   mm.R.forEach(r=>{const y=r.level*10,iw={role:'intwall',level:r.level,mat:MAT.int};
-    box(r.w-0.1,0.25,r.d-0.1,cx(r),y,cz(r),FC[r.type],{key:'room:'+r.id,role:'floor',level:r.level,room:r.id});
+    const ft={living:['wood',8],hall:['wood',8],bed:['carpet',6],kitchen:['tile',5],bath:['tile',4],powder:['tile',4],laundry:['tile',4],garage:['concrete',11]}[r.type]||['wood',8];
+    box(r.w-0.1,0.25,r.d-0.1,cx(r),y,cz(r),FC[r.type],{key:'room:'+r.id,role:'floor',level:r.level,room:r.id,mat:texMat(ft[0],r.w,r.d,ft[1])});
     box(r.w,9.8,0.3,cx(r),y,Z(r.z),0,iw);box(r.w,9.8,0.3,cx(r),y,Z(r.z+r.d),0,iw);box(0.3,9.8,r.d,X(r.x),y,cz(r),0,iw);box(0.3,9.8,r.d,X(r.x+r.w),y,cz(r),0,iw)});
   // exterior walls
   const T=0.6;for(let l=0;l<st;l++){const y=l*10,ew={role:'extwall',key:'extwall',mat:MAT.ext,level:l};
@@ -2228,20 +2273,33 @@ function buildHouse(){
   if(m.garage){const ew={role:'extwall',key:'extwall',mat:MAT.ext,level:0};box(22,10,T,gx,0,Z(22),0,ew);box(T,10,22,X(-22),0,gz,0,ew);box(22,10,T,gx,0,D/2,0,ew)}
   // doors and windows
   const liv=mm.R.find(r=>r.id==='living'),doorX=cx(liv);
-  box(3.5,7,0.25,doorX,0,D/2+0.42,0x6b4a33,{key:'entry',role:'opening',level:0});
-  box(8,7,0.25,0,0,-D/2-0.42,0xa9cde3,{key:'slider',role:'opening',level:0});
-  if(m.garage)box(16,7.5,0.3,gx,0,D/2+0.45,0xf0efe9,{key:'garagedoor',role:'opening',level:0});
-  const win=(x,y,z,side,l)=>{mm.windows++;box(side?0.2:3,4,side?3:0.2,x,y,z,0x9cc7e0,{key:'window',role:'opening',level:l})};
+  const TRIM=0xf8f6f0;
+  box(3.5,7,0.25,doorX,0,D/2+0.42,0x5b3a24,{key:'entry',role:'opening',level:0});
+  deco(4.5,7.6,0.18,doorX,0,D/2+0.33,TRIM,'opening');deco(0.3,0.3,0.3,doorX+1.25,3.3,D/2+0.62,0xc9a227,'opening');      // frame, knob
+  deco(6,0.45,3.4,doorX,-0.5,D/2+1.9,0xc7c3bb,'scape');deco(0.5,0.8,0.4,doorX+2.6,6.2,D/2+0.5,0x2b2b2b,'opening');        // step, porch light
+  box(8,7,0.25,0,0,-D/2-0.42,0xa9cde3,{key:'slider',role:'opening',level:0});deco(8.8,7.5,0.18,0,0,-D/2-0.33,0x3a3d42,'opening');deco(0.15,7,0.32,0,0,-D/2-0.5,0x3a3d42,'opening');
+  if(m.garage){box(16,7.5,0.3,gx,0,D/2+0.45,0xf0efe9,{key:'garagedoor',role:'opening',level:0});deco(17,8.1,0.2,gx,0,D/2+0.34,TRIM,'opening');
+    for(let i=1;i<4;i++)deco(16,0.12,0.12,gx,i*1.9,D/2+0.66,0xc9c7c0,'opening')}                                         // panel grooves
+  const win=(x,y,z,side,l)=>{mm.windows++;box(side?0.2:3,4,side?3:0.2,x,y,z,0x86aec8,{key:'window',role:'opening',level:l});
+    const o=side?Math.sign(x):Math.sign(z),fx=side?x-o*0.09:x,fz=side?z:z-o*0.09;                                          // frame behind the glass
+    deco(side?0.15:3.6,4.6,side?3.6:0.15,fx,y-0.3,fz,TRIM,'opening',l);
+    deco(side?0.5:3.9,0.22,side?3.9:0.5,side?x+o*0.1:x,y-0.32,side?z:z+o*0.1,TRIM,'opening',l);                            // sill
+    deco(side?0.06:0.1,4,side?0.1:0.06,side?x+o*0.12:x,y,side?z:z+o*0.12,TRIM,'opening',l);                                // mullion
+    deco(side?0.06:3,0.1,side?3:0.06,side?x+o*0.12:x,y+2,side?z:z+o*0.12,TRIM,'opening',l)};
   for(let l=0;l<st;l++){const y=l*10+3;
     for(let x=-W/2+5;x<=W/2-4;x+=8){if(!(l===0&&Math.abs(x-doorX)<4))win(x,y,D/2+0.42,0,l);if(!(l===0&&Math.abs(x)<6))win(x,y,-D/2-0.42,0,l)}
     for(let z=-D/2+6;z<=D/2-5;z+=10){win(W/2+0.42,y,z,1,l);if(!m.garage||l>0)win(-W/2-0.42,y,z,1,l)}}
   // roofs and solar
   const gable=(x0,len,zc,depth,y,rise)=>{const s=new THREE.Shape();s.moveTo(-depth/2-1,0);s.lineTo(depth/2+1,0);s.lineTo(0,rise);s.closePath();
     const g=new THREE.ExtrudeGeometry(s,{depth:len+2,bevelEnabled:false});g.rotateY(Math.PI/2);g.translate(x0-1,y,zc);
-    const me=new THREE.Mesh(g,MAT.roof);me.userData={key:'roof',role:'roof',level:9,base:0x4a4f5a};V.g.add(me);V.meshes.push(me);V.pick.push(me)};
+    const me=new THREE.Mesh(g,[MAT.ext,MAT.roof]);me.castShadow=true;me.receiveShadow=true;me.userData={key:'roof',role:'roof',level:9,base:0x4a4f5a};V.g.add(me);V.meshes.push(me);V.pick.push(me)};
   gable(-W/2,W,0,D,st*10,mm.rise);if(m.garage)gable(X(-22),22,gz,22,10,6);
+  // fascia boards and gutters along the eaves
+  const eave=(x0,x1,zc,depth,y)=>{[1,-1].forEach(s=>{const z=zc+s*(depth/2+1);deco(x1-x0+2,0.7,0.25,(x0+x1)/2,y-0.7,z,TRIM,'roof',9);
+    deco(x1-x0+2,0.4,0.4,(x0+x1)/2,y-0.75,z+s*0.3,0x6d7076,'roof',9)})};
+  eave(-W/2,W/2,0,D,st*10);if(m.garage)eave(X(-22),X(0),gz,22,10);
   const th=Math.atan(mm.rise/(D/2+1)),sl=Math.hypot(D/2+1,mm.rise);
-  const sp=box(W*0.55,0.25,sl*0.55,W*0.1,st*10+mm.rise/2+0.3,(D/2+1)/2,0x1f3a66,{key:'solar',role:'roof',level:9},true);sp.rotation.x=th;
+  const sp=box(W*0.55,0.25,sl*0.55,W*0.1,st*10+mm.rise/2+0.3,(D/2+1)/2,0x1f3a66,{key:'solar',role:'roof',level:9,mat:texMat('solar',W*0.55,sl*0.55,3.5)},true);sp.rotation.x=th;
   // electrical: a circuit loop and outlets in every room, panel and EV charger in the garage
   mm.R.forEach(r=>{const b=r.level*10,y=b+2.6,i=0.9,ud={key:'room:'+r.id,role:'elec',level:r.level,room:r.id},x0=X(r.x)+i,x1=X(r.x+r.w)-i,z0=Z(r.z)-i,z1=Z(r.z+r.d)+i;
     run([[x0,y,z0],[x1,y,z0],[x1,y,z1],[x0,y,z1],[x0,y,z0]],0.25,0xf2c230,ud);
@@ -2263,10 +2321,59 @@ function buildHouse(){
     const xs=rs.map(cx),x0=Math.min(...xs),x1=Math.max(...xs);run([[x0,y,0],[x1,y,0]],1.1,0xb7c0cc,ud);
     if(l===0)run([[fu[0],5,fu[1]],[fu[0],y,fu[1]],[fu[0],y,0],[x0,y,0]],1.1,0xb7c0cc,ud);
     rs.forEach(r=>{run([[cx(r),y,0],[cx(r),y,cz(r)]],0.8,0xb7c0cc,ud);box(1.6,0.2,1.6,cx(r),y-0.7,cz(r),0xe5e9ef,ud)})}
+  landscape(m,mm,{W,D,LW,LD,front,lotX,gx,doorX});
+  mm.R.forEach(r=>furnish(r,X,Z));
   frame3D();applyMode()}
 
-function frame3D(){const m=M(),r=Math.max(m.W+(m.garage?22:0),m.D),tx=m.garage?-11:0;
-  V.ctl.target.set(tx,m.floors.length*4,0);V.cam.position.set(tx+r*0.7,r*0.72+10,r*1.1+10);V.ctl.update()}
+/* ---------- yard: street, sidewalk, front walk, shrubs, trees and a back fence ---------- */
+function landscape(m,mm,{W,D,LW,LD,front,lotX,gx,doorX}){const G=-0.5,lx0=lotX-LW/2,lx1=lotX+LW/2,back=front-LD;
+  deco(LW+40,0.1,16,lotX,-1.05,front+11,0x55585e,'scape',0,texMat('asphalt',LW+40,16,10));                    // street
+  for(let x=lx0-18;x<lx1+18;x+=12)deco(5,0.02,0.4,x,-0.94,front+11,0xf2efe6,'scape');                           // lane marks
+  deco(LW+40,0.5,0.6,lotX,-1.05,front+2.9,0xbdbab2,'scape');                                                    // curb
+  deco(LW,0.16,4.5,lotX,-0.62,front-2.3,0xd2cfc8,'scape',0,texMat('concrete',LW,4.5,5));                       // sidewalk
+  const walkLen=front-4.5-(D/2+3.6);if(walkLen>1)deco(4,0.14,walkLen,doorX,-0.6,D/2+3.6+walkLen/2,0xcbbfa9,'scape',0,texMat('pavers',4,walkLen,5));
+  for(let x=-W/2+2;x<=W/2-2;x+=3.4)if(Math.abs(x-doorX)>3.6)ball(1.25,x,0.5,D/2+2.3,[0x557e45,0x4d7540,0x62894c][Math.floor(Math.abs(x))%3],'scape');
+  const tree=(x,z,s)=>{const t=new THREE.Mesh(new THREE.CylinderGeometry(0.35*s,0.5*s,7*s,8),dmat(0x6b4f36));t.position.set(x,G+3.5*s,z);t.castShadow=true;
+    t.userData={role:'scape',level:0};V.g.add(t);V.meshes.push(t);
+    [[0,8.3,0,3.6],[1.6,7.2,1,2.8],[-1.5,7.4,-0.8,2.9],[0.4,9.8,-0.4,2.5]].forEach(([dx,dy,dz,r],i)=>ball(r*s,x+dx*s,G+dy*s,z+dz*s,[0x4f7d45,0x5f8f4e,0x56874a,0x6b9a57][i],'scape'))};
+  tree(W/2+12,D/2+14,1.1);tree(lx0+7,back+12,1.25);tree(W/2+16,back+18,1);if(!m.garage)tree(-W/2-10,D/2+10,1);
+  ball(1.6,W/2+4,0.6,D/2+8,0x4d7540,'scape');ball(1.3,W/2+6.5,0.5,D/2+6,0x62894c,'scape');
+  // 6 ft wood fence along the back and sides, with posts every 8 ft
+  const F=0xa98763;deco(LW,6,0.3,lotX,G,back+0.3,F,'scape');
+  [lx0+0.3,lx1-0.3].forEach(x=>{const len=(D/2)-(back);deco(0.3,6,len,x,G,back+len/2,F,'scape')});
+  for(let x=lx0;x<=lx1;x+=8)deco(0.5,6.4,0.5,x,G,back+0.3,0x8a6c4c,'scape');
+  deco(0.35,3.6,0.35,doorX+5,G,front-5,0x3a3d42,'scape');deco(1.2,1,1.8,doorX+5,G+3.6,front-5,0x2f3236,'scape');        // mailbox
+}
+
+/* ---------- furniture so the Inside view reads as a home ---------- */
+function furnish(r,X,Z){const y0=r.level*10+0.25,L_=r.level;
+  // f(w,h,d, x from the room's left edge, z from its front edge, lift, color) — x/z are the piece's center
+  const f=(w,h,d,rx,rz,lift,c)=>deco(w,h,d,X(r.x)+rx,y0+(lift||0),Z(r.z)-rz,c,'furn',L_);
+  const W_=r.w,D_=r.d;
+  if(r.type==='living'&&r.id==='dining'){f(7,0.2,3.6,W_/2,D_/2,2.4,0x7a5636);f(6.4,2.4,0.3,W_/2,D_/2,0,0x6a4a2e);
+    [-2.2,0,2.2].forEach(dx=>{f(1.5,1.6,1.5,W_/2+dx,D_/2-2.8,0,0x8e6a46);f(1.5,1.6,1.5,W_/2+dx,D_/2+2.8,0,0x8e6a46)});return}
+  if(r.type==='living'){f(W_*0.6,0.05,D_*0.5,W_/2,D_/2,0,0xb7a58c);                                                  // rug
+    f(8,1.5,3,W_/2,D_-2.2,0,0x5d6b7a);f(8,2.6,0.8,W_/2,D_-0.9,0,0x56636f);f(0.9,2,3,W_/2-4.3,D_-2.2,0,0x56636f);f(0.9,2,3,W_/2+4.3,D_-2.2,0,0x56636f); // sofa
+    f(4,1.3,2,W_/2,D_/2,0,0x7a5636);f(6,1.8,1.3,W_/2,1.2,0,0x3e3a36);f(4.6,2.6,0.2,W_/2,1.2,1.8,0x16181b);return}       // coffee table, TV
+  if(r.type==='bed'){const bx=W_/2,bz=D_-4.2;f(Math.min(6,W_-4),0.05,6.5,bx,bz,0,0xc4b8a6);
+    f(5.6,1.5,7,bx,bz,0,0x8a6a4b);f(5.3,0.6,6.6,bx,bz,1.5,0xf4f1ea);f(4.6,0.35,1.4,bx,bz-2.6,2.1,0xe3dccf);f(5.6,3.4,0.4,bx,D_-0.5,0,0x6a4f37);
+    if(W_>=10){f(1.6,2,1.6,bx-3.8,D_-1.3,0,0x7a5a3c);f(1.6,2,1.6,bx+3.8,D_-1.3,0,0x7a5a3c)}return}
+  if(r.type==='kitchen'){const run_=W_-2;f(run_,3,2,W_/2,D_-1.2,0,0xf2efe8);f(run_+0.2,0.18,2.3,W_/2,D_-1.25,3,0x3b3f45);  // back run + counter
+    f(2,3,Math.min(D_*0.55,10),W_-1.2,D_-1.2-Math.min(D_*0.55,10)/2,0,0xf2efe8);f(2.3,0.18,Math.min(D_*0.55,10),W_-1.25,D_-1.2-Math.min(D_*0.55,10)/2,3,0x3b3f45);
+    f(3,6.4,2.6,1.8,D_-1.5,0,0xc4c8cd);                                                                              // fridge
+    if(W_>=12&&D_>=12){f(6,3,3,W_/2-1,D_/2-0.5,0,0x2f4a6a);f(6.6,0.2,3.6,W_/2-1,D_/2-0.5,3,0xe9e6df)}return}         // island
+  if(r.type==='bath'){f(Math.min(5,W_-1.2),1.9,2.6,W_/2,D_-1.5,0,0xfbfbf8);f(3,2.8,1.8,W_/2,1.2,0,0xe8e2d6);f(3.2,0.18,2,W_/2,1.2,2.8,0x9aa0a8);
+    f(1.4,1.4,2.2,1.1,D_/2,0,0xfdfdfb);f(1.7,1.5,0.7,1.1,D_/2+1.2,1.4,0xfdfdfb);return}
+  if(r.type==='powder'){f(2.4,2.8,1.6,W_/2,1.1,0,0xe8e2d6);f(1.4,1.4,2.2,W_/2,D_-1.4,0,0xfdfdfb);return}
+  if(r.type==='laundry'){f(2.4,3,2.4,1.6,D_-1.5,0,0xf6f6f4);f(2.4,3,2.4,4.2,D_-1.5,0,0xf6f6f4);return}
+  if(r.type==='hall'){f(W_*0.7,0.05,2.2,W_/2,D_/2,0,0x8c6f55);return}
+  if(r.type==='garage'){f(6.2,2.4,13.5,W_/2-3,D_/2+1,0.5,0x9b2d30);f(5.6,1.8,6.5,W_/2-3,D_/2+1.5,2.9,0x2a3038);    // car
+    [[-2.7,-4.2],[2.7,-4.2],[-2.7,4.6],[2.7,4.6]].forEach(([dx,dz])=>f(0.8,1.6,1.6,W_/2-3+dx,D_/2+1+dz,0,0x1c1d20));
+    f(W_-2,6,1.6,W_/2,D_-1,0,0x7c8590);return}
+}
+
+function frame3D(){const m=M(),a=V.cam?V.cam.aspect:2,r=Math.max(m.W+(m.garage?22:0),m.D)*(a<1.4?Math.min(1.75,1.4/a):1),tx=m.garage?-11:0;
+  V.ctl.target.set(tx,m.floors.length*4,0);V.cam.position.set(tx+r*0.62,r*0.62+10,r*0.98+10);V.ctl.update()}
 
 
 /* ---------- per-job guide: what each finish level means, what's in and out, permits, time, tips ---------- */
@@ -2960,6 +3067,8 @@ function applyMode(){if(!V.g)return;const cut=V.mode!=='outside',sys=['elec','pl
     else if(u.role==='floor')v=show;
     else if(u.role==='elec'||u.role==='plumb'||u.role==='hvac')v=u.role===V.mode&&show;
     else if(u.role==='ground'){const t=V.mode==='plumb';o.material.transparent=t;o.material.opacity=t?0.35:1;o.material.depthWrite=!t}
+    else if(u.role==='scape')v=!sys;                                   // yard: hidden while looking at pipes, wires or ducts
+    else if(u.role==='furn')v=cut&&!sys&&show;                         // furniture: only in the Inside view
     o.visible=v});
   render3DControls();paint3D()}
 function render3DControls(){const two=M().floors.length>1&&V.mode!=='outside';
@@ -2971,7 +3080,8 @@ function pickAt(e){const rc=e.target.getBoundingClientRect(),p=new THREE.Vector2
   const sys=['elec','plumb','hvac'].includes(V.mode),cand=V.pick.filter(o=>o.visible&&!(sys&&o.userData.role==='extwall'));
   const hit=ray.intersectObjects(cand,false)[0];V.sel=hit?hit.object.userData.key:null;paint3D();
   const j=V.sel&&jobFor(V.sel);if(j)startJob(j[0],j[1],j[2],j[3])}
-function paint3D(){if(!V.g)return;V.meshes.forEach(o=>{const mt=o.material;if(mt.emissive)mt.emissive.setHex(o.userData.key&&o.userData.key===V.sel?0x6a4500:0)})}
+function paint3D(){if(!V.g)return;V.meshes.forEach(o=>{const hi=o.userData.key&&o.userData.key===V.sel?0x6a4500:0;
+  (Array.isArray(o.material)?o.material:[o.material]).forEach(mt=>{if(mt.emissive&&!(Array.isArray(o.material)&&mt===MAT.ext))mt.emissive.setHex(hi)})})}
 function label3DControls(){
   $('models').innerHTML=Object.entries(MODELS).map(([key,m])=>`<button type="button" class="model" data-k="${key}" aria-pressed="${key===S.model}">${tr(m.name)}</button>`).join('');
   $('modes').innerHTML=MODES.map(([key,n,c])=>`<button type="button" class="mode" data-m="${key}" aria-pressed="${key===V.mode}" style="--dot:${c}"><i></i>${tr(n)}</button>`).join('')}
