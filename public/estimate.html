@@ -8,7 +8,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://www.hrgprefab.com/estimate">
 <meta name="theme-color" content="#1a1a1a">
-<script>try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}</script>
+<script>try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}if(/(^|\.)thehomeremodelgroup\.com$/.test(location.hostname))document.documentElement.classList.add("remodel")</script>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="The Home Remodel Group">
 <meta property="og:title" content="What would it cost to change your home? · HRG Remodel Cost Planner">
@@ -59,6 +59,16 @@ button,input,select,textarea{font:inherit;color:inherit}
 .navbar{background:var(--bg);border-bottom:1px solid var(--line);padding-inline:16px}
 .navbar-in{max-width:1240px;margin:0 auto;height:72px;display:flex;align-items:center;gap:20px}
 .logo{display:flex;flex:none}
+/* the same page serves hrgprefab.com/estimate and estimate.thehomeremodelgroup.com */
+html.remodel .for-prefab{display:none!important}
+html:not(.remodel) .for-remodel{display:none!important}
+.wm{display:flex;align-items:center;gap:10px;color:var(--fg);text-decoration:none;flex:none}
+.wm-mark{display:grid;justify-items:center;line-height:1}
+.wm-mark svg{width:46px;height:12px;margin-bottom:-1px}
+.wm-hrg{font-family:Georgia,"Times New Roman",serif;font-size:25px;letter-spacing:.02em}
+.wm-sub{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;line-height:1.25;max-width:9.5em}
+.foot .wm{color:#fff;margin-bottom:14px}
+@media (max-width:640px){.navbar .wm-sub{display:none}}
 .logo img{height:46px;width:auto}
 .logo-d{display:none}
 .mainlinks{display:flex;gap:20px;flex:1;justify-content:center}
@@ -401,8 +411,10 @@ section[id],main[id]{scroll-margin-top:60px}
 <div class="topbar"><div class="topbar-in"><p data-i18n>Remodeling, additions and ADUs across Los Angeles County.</p>
   <div class="tb-links"><a href="tel:+12132164416">213.216.4416</a><a href="mailto:sales@hrgprefab.com">sales@hrgprefab.com</a></div></div></div>
 <header class="navbar"><div class="navbar-in">
-  <a class="logo" href="https://www.hrgprefab.com/" aria-label="HRG home" data-i18n-aria><img class="logo-l" src="/assets/logo-01-sm.png" alt="HRG"><img class="logo-d" src="/assets/logo-02-sm.png" alt="" aria-hidden="true"></a>
-  <nav class="mainlinks" aria-label="hrgprefab.com"><a href="https://www.hrgprefab.com/" data-i18n>Home</a><a href="https://www.hrgprefab.com/collection" data-i18n>Builds</a><a href="https://www.hrgprefab.com/financing" data-i18n>Financing</a><a href="https://www.hrgprefab.com/why-hrg" data-i18n>Why HRG</a><a href="https://www.hrgprefab.com/contact" data-i18n>Contact</a></nav>
+  <a class="wm for-remodel" href="https://thehomeremodelgroup.com/" aria-label="The Home Remodel Group, home"><span class="wm-mark"><svg viewBox="0 0 46 12" aria-hidden="true"><path d="M1 11 23 1.5 45 11" fill="none" stroke="currentColor" stroke-width="2"/></svg><span class="wm-hrg">HRG</span></span><span class="wm-sub">The Home Remodel Group</span></a>
+  <a class="logo for-prefab" href="https://www.hrgprefab.com/" aria-label="HRG home" data-i18n-aria><img class="logo-l" src="/assets/logo-01-sm.png" alt="HRG"><img class="logo-d" src="/assets/logo-02-sm.png" alt="" aria-hidden="true"></a>
+  <nav class="mainlinks for-remodel" aria-label="thehomeremodelgroup.com"><a href="https://thehomeremodelgroup.com/guides" data-i18n>Guides</a><a href="https://thehomeremodelgroup.com/guides/remodel-process" data-i18n>How it works</a><a href="https://thehomeremodelgroup.com/about" data-i18n>About</a><a href="https://thehomeremodelgroup.com/contact" data-i18n>Contact</a><a href="https://www.hrgprefab.com/">HRG Prefab</a></nav>
+  <nav class="mainlinks for-prefab" aria-label="hrgprefab.com"><a href="https://www.hrgprefab.com/" data-i18n>Home</a><a href="https://www.hrgprefab.com/collection" data-i18n>Builds</a><a href="https://www.hrgprefab.com/financing" data-i18n>Financing</a><a href="https://www.hrgprefab.com/why-hrg" data-i18n>Why HRG</a><a href="https://www.hrgprefab.com/contact" data-i18n>Contact</a></nav>
   <div class="nav-tools">
     <div class="lang" role="group" aria-label="Language / Idioma"><button type="button" data-lang="en" lang="en" aria-pressed="true" title="English">EN</button><button type="button" data-lang="es" lang="es" aria-pressed="false" title="Español">ES</button></div>
     <button type="button" class="themebtn" id="theme-btn" aria-label="Dark mode" aria-pressed="false" data-i18n-aria><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></button>
@@ -585,10 +597,11 @@ section[id],main[id]{scroll-margin-top:60px}
 <div id="print-sheet" aria-hidden="true"></div>
 <footer class="foot">
   <div class="foot-in">
-    <div><img class="foot-logo" src="/assets/logo-02-sm.png" alt="HRG"><p data-i18n>Remodeling, additions and ADUs across Los Angeles County.</p></div>
-    <div><h4 data-i18n>Menu</h4><ul><li><a href="https://www.hrgprefab.com/" data-i18n>Home</a></li><li><a href="https://www.hrgprefab.com/collection" data-i18n>Builds</a></li><li><a href="https://www.hrgprefab.com/financing" data-i18n>Financing</a></li><li><a href="https://www.hrgprefab.com/why-hrg" data-i18n>Why HRG</a></li><li><a href="https://www.hrgprefab.com/contact" data-i18n>Contact</a></li></ul></div>
+    <div><a class="wm for-remodel" href="https://thehomeremodelgroup.com/" aria-label="The Home Remodel Group, home"><span class="wm-mark"><svg viewBox="0 0 46 12" aria-hidden="true"><path d="M1 11 23 1.5 45 11" fill="none" stroke="currentColor" stroke-width="2"/></svg><span class="wm-hrg">HRG</span></span><span class="wm-sub">The Home Remodel Group</span></a><img class="foot-logo for-prefab" src="/assets/logo-02-sm.png" alt="HRG"><p data-i18n>Remodeling, additions and ADUs across Los Angeles County.</p></div>
+    <div class="for-remodel"><h4 data-i18n>Menu</h4><ul><li><a href="https://thehomeremodelgroup.com/" data-i18n>Home</a></li><li><a href="https://thehomeremodelgroup.com/guides" data-i18n>Guides</a></li><li><a href="https://thehomeremodelgroup.com/guides/remodel-process" data-i18n>How it works</a></li><li><a href="https://thehomeremodelgroup.com/about" data-i18n>About</a></li><li><a href="https://thehomeremodelgroup.com/contact" data-i18n>Contact</a></li></ul></div>
+    <div class="for-prefab"><h4 data-i18n>Menu</h4><ul><li><a href="https://www.hrgprefab.com/" data-i18n>Home</a></li><li><a href="https://www.hrgprefab.com/collection" data-i18n>Builds</a></li><li><a href="https://www.hrgprefab.com/financing" data-i18n>Financing</a></li><li><a href="https://www.hrgprefab.com/why-hrg" data-i18n>Why HRG</a></li><li><a href="https://www.hrgprefab.com/contact" data-i18n>Contact</a></li></ul></div>
     <div><h4 data-i18n>Planner</h4><ul><li><a href="#plan" data-i18n>Estimate</a></li><li><a href="#budget" data-i18n>Budget</a></li><li><a href="#materials" data-i18n>Materials</a></li><li><a href="#permits" data-i18n>Permits</a></li><li><a href="#faq" data-i18n>FAQ</a></li></ul></div>
-    <div><h4 data-i18n>Talk to HRG</h4><ul><li><a href="tel:+12132164416">213.216.4416</a></li><li><a href="mailto:sales@hrgprefab.com">sales@hrgprefab.com</a></li><li><a href="https://www.hrgprefab.com/">hrgprefab.com</a></li></ul></div>
+    <div><h4 data-i18n>Talk to HRG</h4><ul><li><a href="tel:+12132164416">213.216.4416</a></li><li><a href="mailto:sales@hrgprefab.com">sales@hrgprefab.com</a></li><li><a href="https://thehomeremodelgroup.com/guides" data-i18n>Remodeling guides</a></li><li><a href="https://www.hrgprefab.com/">hrgprefab.com</a></li></ul></div>
   </div>
   <div class="foot-legal"><div><p data-i18n>Planning ranges built from Los Angeles County prices, including materials, labor and sales tax from licensed, insured contractors, and adjusted for other areas with regional construction cost indexes. Real prices depend on site conditions, access, hidden damage and the exact products you choose. HRG confirms every number after a site visit. Homes built before 1978 get lead and asbestos testing before demolition.</p><p>© <span id="yr">2026</span> The Home Remodel Group · <span data-i18n>Estimates are planning ranges, not contracts or bids.</span></p></div></div>
 </footer>
@@ -2040,6 +2053,9 @@ const ES={
 "Menu":"Menú",
 "Planner":"Planificador",
 "Estimates are planning ranges, not contracts or bids.":"Los estimados son rangos para planear, no contratos ni ofertas.",
+"Guides":"Guías",
+"About":"Nosotros",
+"Remodeling guides":"Guías de remodelación",
 };
 </script>
 <script>
@@ -3422,6 +3438,11 @@ $('bud-list').addEventListener('click',e=>{const b=e.target.closest('[data-bj]')
 renderBudget();MORE.push(clampList('bud-list',8));
 // a share link pasted into an already-open tab
 addEventListener('hashchange',()=>{if(loadShared()){render();$('plan').scrollIntoView({behavior:'smooth'})}});
+// a guide on thehomeremodelgroup.com can open a job directly: #job=kitchen
+function loadJobLink(){const m=/^#job=([a-z]+)$/.exec(location.hash||'');if(!m||!JOB[m[1]])return false;
+  history.replaceState(null,'',location.pathname+location.search);startJob(m[1]);
+  setTimeout(()=>$('jobpanel').scrollIntoView({behavior:'auto',block:'start'}),250);return true}
+addEventListener('hashchange',loadJobLink);setTimeout(loadJobLink,0);
 /* ---------- financing calculator ---------- */
 const FIN={edited:false};
 function payment(p,apr,yrs){const n=yrs*12,r=apr/100/12;return p<=0?0:r===0?p/n:p*r/(1-Math.pow(1+r,-n))}

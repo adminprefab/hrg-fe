@@ -82,6 +82,16 @@ export default function Footer() {
                 hrgprefab.com
               </a>
             </li>
+            <li>
+              <a href="https://thehomeremodelgroup.com" className="hover:text-primary transition-colors">
+                thehomeremodelgroup.com
+              </a>
+            </li>
+            <li>
+              <a href="/estimate" className="hover:text-primary transition-colors">
+                Remodel cost planner
+              </a>
+            </li>
             <li>Mon – Fri, 8am – 5pm</li>
           </ul>
         </div>
