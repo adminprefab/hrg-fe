@@ -44,7 +44,7 @@ export default function FindMyFitSection() {
               <span className="text-sm text-foreground/60">About 2 minutes. No account required.</span>
             </div>
             <p className="mt-6 text-sm text-foreground/50">
-              Prefer to talk? (909) 616-1182 · (909) 274-0272 · (917) 559-5056
+              Prefer to talk? (909) 616-1182 · (917) 559-5056
             </p>
           </div>
         </motion.div>

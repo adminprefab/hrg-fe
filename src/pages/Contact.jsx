@@ -14,8 +14,8 @@ const contacts = [
   },
   {
     name: "Jason A. Scott",
-    phone: "+1 (909) 274-0272",
-    phoneHref: "tel:+19092740272",
+    phone: null,
+    phoneHref: null,
     email: "Jason@HRGPrefab.com",
   },
   {
@@ -111,9 +111,11 @@ export default function Contact() {
                   className="border-l-2 border-primary pl-6"
                 >
                   <h3 className="font-heading text-lg font-semibold mb-3">{c.name}</h3>
-                  <a href={c.phoneHref} className="flex items-center gap-3 text-foreground/70 hover:text-primary transition-colors mb-2">
-                    <Phone className="w-4 h-4 text-primary" /> {c.phone}
-                  </a>
+                  {c.phone && (
+                    <a href={c.phoneHref} className="flex items-center gap-3 text-foreground/70 hover:text-primary transition-colors mb-2">
+                      <Phone className="w-4 h-4 text-primary" /> {c.phone}
+                    </a>
+                  )}
                   <a href={`mailto:${c.email}`} className="flex items-center gap-3 text-foreground/70 hover:text-primary transition-colors">
                     <Mail className="w-4 h-4 text-primary" /> {c.email}
                   </a>
