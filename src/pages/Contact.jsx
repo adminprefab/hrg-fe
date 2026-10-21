@@ -7,22 +7,10 @@ import PageHero from "@/components/shared/PageHero";
 
 const contacts = [
   {
-    name: "HRG Admin",
-    phone: "+1 (909) 616-1182",
-    phoneHref: "tel:+19096161182",
-    email: "admin@HRGPrefab.com",
-  },
-  {
-    name: "Jason A. Scott",
-    phone: null,
-    phoneHref: null,
-    email: "Jason@HRGPrefab.com",
-  },
-  {
-    name: "Michael Tsveitel",
-    phone: "+1 (917) 559-5056",
-    phoneHref: "tel:+19175595056",
-    email: "Michael@HRGPrefab.com",
+    name: "HRG Sales",
+    phone: "213.216.4416",
+    phoneHref: "tel:+12132164416",
+    email: "sales@hrgprefab.com",
   },
 ];
 
@@ -79,7 +67,7 @@ export default function Contact() {
       setSubmitted(true);
     } catch (err) {
       console.error(err);
-      setError("Something went wrong sending your message. Please try again, or call us at (909) 616-1182.");
+      setError("Something went wrong sending your message. Please try again, or call us at 213.216.4416.");
     } finally {
       setLoading(false);
     }

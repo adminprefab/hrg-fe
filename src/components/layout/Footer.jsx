@@ -12,9 +12,7 @@ const SITE_LINKS = [
 ];
 
 const CONTACTS = [
-  { name: "HRG Admin", phone: "(909) 616-1182", email: "admin@HRGPrefab.com" },
-  { name: "Jason A. Scott", phone: null, email: "Jason@HRGPrefab.com" },
-  { name: "Michael Tsveitel", phone: "(917) 559-5056", email: "Michael@HRGPrefab.com" },
+  { name: "HRG Sales", phone: "213.216.4416", email: "sales@hrgprefab.com" },
 ];
 
 export default function Footer() {

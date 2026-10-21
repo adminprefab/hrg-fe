@@ -8,11 +8,11 @@ export default function TopBar() {
           Prefab additions &amp; ADUs, engineered off-site and assembled on your property.
         </p>
         <div className="flex items-center gap-6">
-          <a href="tel:+19096161182" className="hover:text-white transition-colors">
-            (909) 616-1182
+          <a href="tel:+12132164416" className="hover:text-white transition-colors">
+            213.216.4416
           </a>
-          <a href="tel:+19175595056" className="hover:text-white transition-colors">
-            (917) 559-5056
+          <a href="mailto:sales@hrgprefab.com" className="hover:text-white transition-colors">
+            sales@hrgprefab.com
           </a>
         </div>
       </div>
