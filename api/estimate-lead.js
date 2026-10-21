@@ -38,6 +38,21 @@ function rateLimited(ip) {
   return recent.length > RATE_MAX;
 }
 
+// thehomeremodelgroup.com's lead form posts here from another origin. The planner itself is same-origin.
+const CORS_ORIGIN =
+  /^https:\/\/((www|estimate)\.)?thehomeremodelgroup\.com$|^https:\/\/thehomeremodelgroup(-[a-z0-9-]+)?\.vercel\.app$/;
+
+function cors(req, res) {
+  const origin = String(req.headers.origin || "");
+  if (CORS_ORIGIN.test(origin)) {
+    res.setHeader("access-control-allow-origin", origin);
+    res.setHeader("vary", "origin");
+    res.setHeader("access-control-allow-methods", "POST, OPTIONS");
+    res.setHeader("access-control-allow-headers", "content-type");
+    res.setHeader("access-control-max-age", "86400");
+  }
+}
+
 function send(res, status, body) {
   res.statusCode = status;
   res.setHeader("content-type", "application/json");
@@ -79,7 +94,7 @@ export function toIntake(b) {
     .reduce((s, j) => s + (Number(j.size) || 0), 0);
 
   const details = [
-    "Source: hrgprefab.com remodel cost planner (/estimate)",
+    `Source: ${text(b.form, 80) || "hrgprefab.com remodel cost planner (/estimate)"}`,
     jobNames.length ? `Jobs: ${jobNames.join(", ")}` : null,
     money(low) && money(high)
       ? `Estimate: ${money(low)} – ${money(high)} (most likely ${money(total) || "n/a"})`
@@ -139,6 +154,11 @@ function validate(b) {
 }
 
 export default async function handler(req, res) {
+  cors(req, res);
+  if (req.method === "OPTIONS") {
+    res.statusCode = 204;
+    return res.end();
+  }
   if (req.method !== "POST") {
     res.setHeader("allow", "POST");
     return send(res, 405, { ok: false, error: "Use POST." });

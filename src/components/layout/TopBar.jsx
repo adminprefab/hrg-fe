@@ -11,9 +11,6 @@ export default function TopBar() {
           <a href="tel:+19096161182" className="hover:text-white transition-colors">
             (909) 616-1182
           </a>
-          <a href="tel:+19092740272" className="hover:text-white transition-colors">
-            (909) 274-0272
-          </a>
           <a href="tel:+19175595056" className="hover:text-white transition-colors">
             (917) 559-5056
           </a>

@@ -13,7 +13,7 @@ const SITE_LINKS = [
 
 const CONTACTS = [
   { name: "HRG Admin", phone: "(909) 616-1182", email: "admin@HRGPrefab.com" },
-  { name: "Jason A. Scott", phone: "(909) 274-0272", email: "Jason@HRGPrefab.com" },
+  { name: "Jason A. Scott", phone: null, email: "Jason@HRGPrefab.com" },
   { name: "Michael Tsveitel", phone: "(917) 559-5056", email: "Michael@HRGPrefab.com" },
 ];
 
@@ -44,7 +44,7 @@ export default function Footer() {
         <div>
           <h4 className="text-primary text-xs font-bold uppercase tracking-[0.2em] mb-4">Call</h4>
           <ul className="space-y-3 text-sm text-white">
-            {CONTACTS.map((c) => (
+            {CONTACTS.filter((c) => c.phone).map((c) => (
               <li key={c.name}>
                 <span className="block text-xs text-white/50 mb-1">{c.name}</span>
                 <a href={`tel:+1${c.phone.replace(/\D/g, "")}`} className="hover:text-primary transition-colors">
