@@ -108,7 +108,14 @@ h3{font-size:15px;margin:0;font-weight:600}
 @media (max-width:520px){.jobs{grid-template-columns:1fr 1fr;gap:6px}.job{padding:9px 10px}.job small{display:none}.job strong{font-size:13.5px}}
 .job{border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:11px 12px;cursor:pointer;text-align:left;display:grid;gap:2px;min-width:0}
 .job strong{font-size:14.5px}
-.job small{color:var(--muted);font-size:12px;line-height:1.35}
+.job small{display:none}
+.job-photo{width:100%;height:auto;aspect-ratio:21/8;object-fit:cover;border-radius:8px;display:block;background:var(--surface-2)}
+.guide-more{border:1px solid var(--line);border-radius:8px;padding:10px 14px;background:var(--surface-2)}
+.guide-more>summary{cursor:pointer;font-weight:600;font-size:14px}
+.guide-more .guide{border-top:0;padding-top:8px}
+.form .more-f{border:1px dashed var(--line);border-radius:7px;padding:8px 10px;display:grid;gap:8px}
+.form .more-f>summary{cursor:pointer;font-size:12.5px;color:var(--muted);font-weight:600}
+.form .fine{font-size:11.5px;color:var(--muted);margin:0}
 .job:hover{border-color:var(--gold)}
 .job[aria-pressed="true"]{border-color:var(--gold);background:var(--gold-soft);box-shadow:inset 0 0 0 1px var(--gold)}
 .job .in{font-size:11px;font-weight:700;color:var(--ok);letter-spacing:.04em;text-transform:uppercase}
@@ -425,11 +432,11 @@ section[id],main[id]{scroll-margin-top:60px}
   <div class="mast-in">
     <p class="m-eye" data-i18n>The Home Remodel Group · Remodel cost planner</p>
     <h1 data-i18n>What would it cost to <em>change</em> your home?</h1>
-    <p data-i18n>Pick the job, tell us how big it is and answer a few quick questions. You'll see a price range for your area in seconds, with permits and a start-to-finish timeline. Add as many jobs as you like, then send it to HRG for a firm quote.</p>
+    <p data-i18n>Pick a job, enter the size and see your price in seconds. Then send it to HRG for a firm quote.</p>
     <ol class="m-steps"><li><b>01</b><span data-i18n>Job</span></li><li><b>02</b><span data-i18n>Size</span></li><li><b>03</b><span data-i18n>Details</span></li><li><b>04</b><span data-i18n>Estimate</span></li><li><b>05</b><span data-i18n>Firm quote</span></li></ol>
   </div>
 </section>
-  <nav class="sitenav sticky" aria-label="Sections" data-i18n-aria><div class="sitenav-in">
+  <nav class="sitenav sticky" aria-label="Sections" data-i18n-aria hidden><div class="sitenav-in">
     <a href="#plan" data-i18n>Estimate</a><a href="#popular" data-i18n>Ideas</a><a href="#budget" data-i18n>Budget</a><a href="#materials" data-i18n>Materials</a><a href="#resale" data-i18n>Resale value</a><a href="#financing" data-i18n>Financing</a><a href="#rebates" data-i18n>Rebates</a><a href="#permits" data-i18n>Permits</a><a href="#how" data-i18n>How it works</a><a href="#faq" data-i18n>FAQ</a><a href="#glossary" data-i18n>Glossary</a><a href="#contact" data-i18n>Contact</a>
   </div></nav>
 
@@ -478,7 +485,7 @@ section[id],main[id]{scroll-margin-top:60px}
     <div class="est-sec" id="lead"></div>
   </aside>
 </main>
-<div class="more">
+<div class="more" hidden>
   <section class="card sec" id="popular" aria-labelledby="h-pop">
     <div><p class="eyebrow" data-i18n>Ideas</p><h2 id="h-pop" data-i18n>Popular projects at a glance</h2></div>
     <p class="lede" data-i18n>Typical versions of the jobs homeowners ask for most, priced for your area. Pick one to adjust it.</p>
@@ -600,7 +607,6 @@ section[id],main[id]{scroll-margin-top:60px}
     <div><a class="wm for-remodel" href="https://thehomeremodelgroup.com/" aria-label="The Home Remodel Group, home"><span class="wm-mark"><svg viewBox="0 0 46 12" aria-hidden="true"><path d="M1 11 23 1.5 45 11" fill="none" stroke="currentColor" stroke-width="2"/></svg><span class="wm-hrg">HRG</span></span><span class="wm-sub">The Home Remodel Group</span></a><img class="foot-logo for-prefab" src="/assets/logo-02-sm.png" alt="HRG"><p data-i18n>Remodeling cost estimates for homes anywhere in the United States.</p></div>
     <div class="for-remodel"><h4 data-i18n>Menu</h4><ul><li><a href="https://thehomeremodelgroup.com/" data-i18n>Home</a></li><li><a href="https://thehomeremodelgroup.com/guides" data-i18n>Guides</a></li><li><a href="https://thehomeremodelgroup.com/guides/remodel-process" data-i18n>How it works</a></li><li><a href="https://thehomeremodelgroup.com/about" data-i18n>About</a></li><li><a href="https://thehomeremodelgroup.com/contact" data-i18n>Contact</a></li></ul></div>
     <div class="for-prefab"><h4 data-i18n>Menu</h4><ul><li><a href="https://www.hrgprefab.com/" data-i18n>Home</a></li><li><a href="https://www.hrgprefab.com/collection" data-i18n>Builds</a></li><li><a href="https://www.hrgprefab.com/financing" data-i18n>Financing</a></li><li><a href="https://www.hrgprefab.com/why-hrg" data-i18n>Why HRG</a></li><li><a href="https://www.hrgprefab.com/contact" data-i18n>Contact</a></li></ul></div>
-    <div><h4 data-i18n>Planner</h4><ul><li><a href="#plan" data-i18n>Estimate</a></li><li><a href="#budget" data-i18n>Budget</a></li><li><a href="#materials" data-i18n>Materials</a></li><li><a href="#permits" data-i18n>Permits</a></li><li><a href="#faq" data-i18n>FAQ</a></li></ul></div>
     <div><h4 data-i18n>Talk to HRG</h4><ul><li><a href="tel:+12132164416">213.216.4416</a></li><li><a href="mailto:sales@hrgprefab.com">sales@hrgprefab.com</a></li><li><a href="https://thehomeremodelgroup.com/guides" data-i18n>Remodeling guides</a></li><li><a href="https://www.hrgprefab.com/">hrgprefab.com</a></li></ul></div>
   </div>
   <div class="foot-legal"><div><p data-i18n>Planning ranges built from prices for materials, labor and sales tax from licensed, insured contractors, adjusted to your area with regional construction cost indexes. Real prices depend on site conditions, access, hidden damage and the exact products you choose. HRG confirms every number after a site visit. Homes built before 1978 get lead and asbestos testing before demolition.</p><p>© <span id="yr">2026</span> The Home Remodel Group · <span data-i18n>Estimates are planning ranges, not contracts or bids.</span></p></div></div>
@@ -2098,6 +2104,7 @@ const ES={
 "Historic district":"Distrito histórico",
 "United States":"Estados Unidos",
 "National average":"Promedio nacional",
+"Pick a job, enter the size and see your price in seconds. Then send it to HRG for a firm quote.":"Elija un trabajo, ponga el tamaño y vea su precio en segundos. Luego envíelo a HRG para un precio firme.",
 };
 </script>
 <script>
@@ -3017,6 +3024,11 @@ function startJob(id,size,preset,from3d){const j=JOB[id];S.cur={job:id,size:size
   const p=$('jobpanel');if(p.getBoundingClientRect().top>innerHeight*0.6||p.getBoundingClientRect().top<0)p.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})}
 
 /* ---------- step 2: size + details + this job's price ---------- */
+const JOB_PHOTO={kitchen:'1601760561441-16420502c7e0',bathroom:'1584622650111-993a426fbf0a',adu:'1628394029761-acc83a2a08a6',garage:'1628394029761-acc83a2a08a6',jadu:'1628394029761-acc83a2a08a6',
+ addition:'1646324554833-f0b6a479fa5d',whole:'1600607687920-4e2a09cf159d',flooring:'1600607687920-4e2a09cf159d',painting:'1600607687920-4e2a09cf159d',interior:'1600607687920-4e2a09cf159d',
+ roofing:'1580587771525-78b9dba3b914',windows:'1580587771525-78b9dba3b914',siding:'1580587771525-78b9dba3b914'};
+const jobPhoto=id=>{const p=JOB_PHOTO[id];if(!p)return'';const u=w=>`https://images.unsplash.com/photo-${p}?auto=format&fit=crop&w=${w}&h=${Math.round(w*8/21)}&q=70`;
+  return `<img class="job-photo" src="${u(900)}" srcset="${u(600)} 600w, ${u(900)} 900w, ${u(1400)} 1400w" sizes="(max-width:980px) 100vw, 800px" width="900" height="343" alt="" loading="lazy" decoding="async">`};
 function renderPanel(){const c=S.cur,job=JOB[c.job],a=answers(job,c.a);
   const sz=job.size?`<div class="size"><label for="sz">${esc(tr(job.size.label))}<input id="sz" class="num" type="number" inputmode="numeric" min="${job.size.min}" max="${job.size.max}" value="${+c.size||''}"></label><span class="u">${esc(tr(job.size.unit))}</span>${c.from3d?`<span class="from3d">${esc(pick(c.from3d))}</span>`:''}</div>${sizePresets(job).length?`<div class="chips" role="group" aria-label="${T('Common sizes','Tamaños comunes')}">${sizePresets(job).map(([v,l])=>`<button type="button" class="chip sm" data-size="${v}" aria-pressed="${+c.size===v}">${esc(tr(l))}</button>`).join('')}</div>`:''}${job.size.unit==='sq ft'?`<details class="measure"><summary>${T('Not sure? Measure it: length × width','¿No está seguro? Mídalo: largo × ancho')}</summary>
       <div class="mrow"><label for="m-l">${T('Length (ft)','Largo (pies)')}<input id="m-l" class="num" type="number" min="0" step="0.5" inputmode="decimal"></label><span aria-hidden="true">×</span><label for="m-w">${T('Width (ft)','Ancho (pies)')}<input id="m-w" class="num" type="number" min="0" step="0.5" inputmode="decimal"></label></div>
@@ -3029,16 +3041,16 @@ function renderPanel(){const c=S.cur,job=JOB[c.job],a=answers(job,c.a);
   const g=GUIDE[job.id]||{},note=g.tiers?'':ITEMS[job.main].note;
   const list=xs=>`<ul>${xs.map(x=>`<li>${esc(tr(x))}</li>`).join('')}</ul>`;
   const rentText=T('Enter the rent you expect to see how long the unit takes to pay for itself.','Escriba la renta que espera para ver en cuánto tiempo la unidad se paga sola.');
-  $('jobpanel').innerHTML=`<div><p class="eyebrow">${T('Step 2','Paso 2')} · ${esc(tr(job.name))}</p><h2 id="h-detail">${job.size?T('How big is it, and what are you changing?','¿Qué tamaño tiene y qué quiere cambiar?'):T('What are you changing?','¿Qué quiere cambiar?')}</h2></div>
+  $('jobpanel').innerHTML=`${jobPhoto(job.id)}<div><p class="eyebrow">${T('Step 2','Paso 2')} · ${esc(tr(job.name))}</p><h2 id="h-detail">${job.size?T('How big is it, and what are you changing?','¿Qué tamaño tiene y qué quiere cambiar?'):T('What are you changing?','¿Qué quiere cambiar?')}</h2></div>
     ${sz}${qs?`<div class="qs">${qs}</div>`:''}
     <div class="q"><span>${T('Finish level','Nivel de acabados')} <small class="hintx">${T('price for this job at each level','precio de este trabajo en cada nivel')}</small></span><div class="tiers">${TIERS.map((t,i)=>`<button type="button" class="tier" data-t="${i}" aria-pressed="${c.tier===i}"><strong>${esc(tr(t.n))} <span class="tp num" id="tp-${i}"></span></strong><small>${esc(tr(g.tiers?g.tiers[i]:t.d))}</small></button>`).join('')}</div>${note?`<p class="tiernote">${esc(tr(note))}</p>`:''}</div>
     <div class="preview" id="preview"></div>
     ${["adu","jadu","garage"].includes(job.id)?`<div class="payback"><span class="eyebrow">${T('Rental payback','Recuperación con la renta')}</span><div class="pb-row"><label for="pb-rent">${T('Expected monthly rent','Renta mensual esperada')}<input id="pb-rent" class="num" type="number" min="0" step="50" inputmode="numeric" placeholder="${T('e.g. 2500','p. ej. 2500')}" value="${S.rent&&S.rent[job.id]||""}"></label><label for="pb-exp">${T('Costs (tax, insurance, upkeep)','Gastos (impuestos, seguro, mantenimiento)')}<select id="pb-exp">${['0.2','0.3','0.4'].map(v=>`<option value="${v}"${v===(S.rentExp||'0.3')?' selected':''}>${Math.round(v*100)}% ${T('of rent','de la renta')}</option>`).join('')}</select></label></div><p class="pb-out" id="pb-out">${rentText}</p><p class="note">${T('Check rents for similar units nearby. Payback ignores loan interest and rising rents.','Compare las rentas de unidades parecidas en su zona. El cálculo no incluye intereses de préstamos ni aumentos de renta.')}</p></div>`:""}
-    ${g.incl?`<div class="guide">
-      <div class="facts"><div><span class="eyebrow">${T('Permit','Permiso')}</span><p>${esc(tr(g.permit))}</p></div><div><span class="eyebrow">${T('Typical time','Tiempo típico')}</span><p>${esc(tr(g.time))}</p></div>${g.roi?`<div><span class="eyebrow">${T('Resale value','Valor de reventa')}</span><p>${esc(tr(g.roi))}</p></div>`:""}${(()=>{const rb=(typeof REBATES!=='undefined'?localRebates():[]).filter(r=>r.jobs.includes(job.id)&&r.st!=='closed');return rb.length?`<div><span class="eyebrow">${T('Rebates & rules','Reembolsos y reglas')}</span><p>${rb.map(r=>esc(tr(r.n)+': '+tr(r.amt))).join(' · ')} <a href="#rebates">${T('See all','Ver todos')}</a></p></div>`:''})()}</div>
-      <details open><summary>${T("What's included",'Qué incluye')}</summary>${list(g.incl)}</details>
+    ${g.incl?`<details class="guide-more"><summary>${T('Permits, timing and what\'s included','Permisos, tiempos y qué incluye')}</summary><div class="guide">
+      <div class="facts"><div><span class="eyebrow">${T('Permit','Permiso')}</span><p>${esc(tr(g.permit))}</p></div><div><span class="eyebrow">${T('Typical time','Tiempo típico')}</span><p>${esc(tr(g.time))}</p></div>${g.roi?`<div><span class="eyebrow">${T('Resale value','Valor de reventa')}</span><p>${esc(tr(g.roi))}</p></div>`:""}${(()=>{const rb=(typeof REBATES!=='undefined'?localRebates():[]).filter(r=>r.jobs.includes(job.id)&&r.st!=='closed');return rb.length?`<div><span class="eyebrow">${T('Rebates & rules','Reembolsos y reglas')}</span><p>${rb.map(r=>esc(tr(r.n)+': '+tr(r.amt))).join(' · ')}</p></div>`:''})()}</div>
+      <details><summary>${T("What's included",'Qué incluye')}</summary>${list(g.incl)}</details>
       <details><summary>${T('Not included','Qué no incluye')}</summary>${list(g.excl)}</details>
-      <details><summary>${T('Good to know','Bueno saber')}</summary>${list(g.tips)}</details>${g.seq?`<details><summary>${T('Order of work, start to finish','Orden del trabajo, de principio a fin')}</summary><ol class="seq">${g.seq.map(x=>`<li>${esc(tr(x))}</li>`).join('')}</ol></details>`:''}</div>`:''}`;
+      <details><summary>${T('Good to know','Bueno saber')}</summary>${list(g.tips)}</details>${g.seq?`<details><summary>${T('Order of work, start to finish','Orden del trabajo, de principio a fin')}</summary><ol class="seq">${g.seq.map(x=>`<li>${esc(tr(x))}</li>`).join('')}</ol></details>`:''}</div></details>`:''}`;
   const inp=$('sz');if(inp)inp.addEventListener('input',e=>{S.cur.size=e.target.value===''?0:Math.max(0,+e.target.value);S.cur.from3d=null;save();renderPreview()});
   // length × width: show the area, then replace or add to the size
   if($('m-l')){const area=()=>Math.round((+$('m-l').value||0)*(+$('m-w').value||0));
@@ -3133,26 +3145,25 @@ function renderLead(r){const el=$('lead');
     <label for="l-name">${T('Name','Nombre')}<input id="l-name" autocomplete="name" required value="${esc(d.name||'')}"></label>
     <div class="two"><label for="l-phone">${T('Phone','Teléfono')}<input id="l-phone" type="tel" autocomplete="tel" required value="${esc(d.phone||'')}"></label>
     <label for="l-email">${T('Email','Correo electrónico')}<input id="l-email" type="email" autocomplete="email" required value="${esc(d.email||'')}"></label></div>
-    <label for="l-addr">${T('Property address','Dirección de la propiedad')}<input id="l-addr" autocomplete="street-address" value="${esc(d.addr||'')}"></label>
+    <label for="l-addr">${T('Property address or ZIP','Dirección o código postal')}<input id="l-addr" autocomplete="street-address" value="${esc(d.addr||'')}"></label>
+    <details class="more-f"><summary>${T('Add more details (optional)','Agregar más detalles (opcional)')}</summary>
     <div class="two"><label for="l-time">${T('Best time to reach you','Mejor hora para llamarle')}<select id="l-time">${opt(LEAD_TIMES,d.time)}</select></label>
     <label for="l-lang">${T('Language','Idioma')}<select id="l-lang">${['English','Español'].map(t=>`<option value="${t}"${leadLang(d)===t?' selected':''}>${t}</option>`).join('')}</select></label></div>
     <div class="two"><label for="l-when">${T('When do you want to start?','¿Cuándo quiere empezar?')}<select id="l-when">${opt(LEAD_WHEN,d.when)}</select></label>
     <label for="l-src">${T('How did you hear about us?','¿Cómo supo de nosotros?')}<select id="l-src">${opt(LEAD_SRC,d.src)}</select></label></div>
     <label class="hp" aria-hidden="true">Website<input id="l-hp" name="website" tabindex="-1" autocomplete="off" value=""></label>
-    <label for="l-notes">${T('Anything else we should know?','¿Algo más que debamos saber?')}<textarea id="l-notes">${esc(d.notes||'')}</textarea></label>
-    <label class="consent" for="l-ok"><input type="checkbox" id="l-ok"${d.ok?' checked':''}> ${T('HRG may call, text or email me about this project.','HRG puede llamarme, mandarme mensajes de texto o escribirme por correo sobre este proyecto.')}</label>
-    <button class="btn" type="submit"${r.build?'':' disabled'}>${T('Send my estimate to HRG','Enviar mi estimado a HRG')}</button>
-    ${r.build?'':`<p class="note">${T('Add at least one job first.','Primero agregue al menos un trabajo.')}</p>`}<p class="msg bad" id="l-err">${esc(pick(LEAD.msg))}</p></form>`;
+    <label for="l-notes">${T('Anything else we should know?','¿Algo más que debamos saber?')}<textarea id="l-notes">${esc(d.notes||'')}</textarea></label></details>
+    <button class="btn" type="submit">${T('Get my firm quote','Pedir mi precio firme')}</button>
+    <p class="fine">${T('By sending, you agree HRG may call, text or email you about this project.','Al enviar, acepta que HRG le llame, le mande mensajes o le escriba sobre este proyecto.')}</p><p class="msg bad" id="l-err">${esc(pick(LEAD.msg))}</p></form>`;
   // the language field follows the page until the client picks one
-  const keep=()=>{LEAD.draft={name:$('l-name').value,phone:$('l-phone').value,email:$('l-email').value,addr:$('l-addr').value,time:$('l-time').value,lang:LEAD.draft&&LEAD.draft.lang||'',when:$('l-when').value,src:$('l-src').value,notes:$('l-notes').value,ok:$('l-ok').checked,hp:$('l-hp').value}};
+  const keep=()=>{LEAD.draft={name:$('l-name').value,phone:$('l-phone').value,email:$('l-email').value,addr:$('l-addr').value,time:$('l-time').value,lang:LEAD.draft&&LEAD.draft.lang||'',when:$('l-when').value,src:$('l-src').value,notes:$('l-notes').value,ok:true,hp:$('l-hp').value}};
   $('leadform').addEventListener('input',keep);$('leadform').addEventListener('change',keep);
   $('l-lang').addEventListener('change',e=>{keep();LEAD.draft.lang=e.target.value});
   $('leadform').addEventListener('submit',async ev=>{ev.preventDefault();keep();const f=LEAD.draft,err=$('l-err');
     const phoneOk=(f.phone.match(/\d/g)||[]).length>=10,emailOk=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email);
     if(!f.name.trim()||!phoneOk||!emailOk){err.textContent=T('Add your name, a 10-digit phone number and a valid email so HRG can reach you.','Escriba su nombre, un teléfono de 10 dígitos y un correo válido para que HRG pueda comunicarse con usted.');return}
-    if(!f.ok){err.textContent=T('Tick the box so HRG can contact you about this project.','Marque la casilla para que HRG pueda comunicarse con usted sobre este proyecto.');return}
     const btn=ev.target.querySelector('button[type=submit]');btn.disabled=true;btn.textContent=T('Sending…','Enviando…');err.textContent='';
-    const t=totals(S.basket);
+    const t=totals(S.basket.length?S.basket:[{id:0,job:S.cur.job,size:S.cur.size,a:S.cur.a,tier:S.cur.tier}]);
     const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),20000);
     // job details and the summary stay in English for HRG's lead list
     try{const res=await fetch('/api/estimate-lead',{method:'POST',headers:{'content-type':'application/json'},signal:ctl.signal,body:JSON.stringify({
@@ -3297,6 +3308,7 @@ $('p-year').addEventListener('input',e=>{S.year=e.target.value;save();renderPrev
 $('m-go').addEventListener('click',()=>$('estimate').scrollIntoView({behavior:'smooth'}));
 S.model=MODELS[S.model]?S.model:'ranch';
 const SHARED=loadShared();
+if(/^#(popular|budget|materials|resale|financing|rebates|permits|how|checklist|faq|glossary|contact)$/.test(location.hash)){history.replaceState(null,'',location.pathname+location.search);setTimeout(()=>$('plan').scrollIntoView(),0)}
 build3DControls();render();lazy3D();
 $('rebate-list').addEventListener('click',e=>{const b=e.target.closest('[data-start]');if(b){startJob(b.dataset.start);$('plan').scrollIntoView({behavior:'smooth'})}});
 renderRebates();renderPermitPaths();
