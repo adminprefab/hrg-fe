@@ -41,13 +41,23 @@ export default function ConfigCard({ config, collectionSlug, index = 0 }) {
         {config.price && (
           <p className="mt-3 font-heading font-bold text-primary">{config.price}</p>
         )}
-        <Link
-          to={to}
-          className="mt-5 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-primary hover:underline"
-        >
-          {config.custom ? "See What Fits My Property" : "Explore This Build"}
-          <ArrowRight className="w-4 h-4" />
-        </Link>
+        <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
+          {config.buildTo && (
+            <Link
+              to={config.buildTo}
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-md text-sm font-semibold uppercase tracking-wide hover:bg-primary/90 transition-colors"
+            >
+              Build yours
+            </Link>
+          )}
+          <Link
+            to={to}
+            className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-primary hover:underline"
+          >
+            {config.custom ? "See What Fits My Property" : config.buildTo ? "Details" : "Explore This Build"}
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
       </div>
     </motion.div>
   );

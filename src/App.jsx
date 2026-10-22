@@ -27,6 +27,7 @@ import AppleCabin from '@/pages/collection/AppleCabin';
 import ExpandableContainer from '@/pages/collection/ExpandableContainer';
 import OutdoorKitchen from '@/pages/collection/OutdoorKitchen';
 import BuildDetail from '@/pages/collection/BuildDetail';
+import BuildYours from '@/pages/collection/BuildYours';
 import Pool from '@/pages/collection/Pool';
 import PrivacyPolicy from '@/pages/PrivacyPolicy';
 import TermsConditions from '@/pages/TermsConditions';
@@ -72,6 +73,7 @@ const AuthenticatedApp = () => {
         <Route path="/collection/apple-cabin" element={<AppleCabin />} />
         <Route path="/collection/expandable-container" element={<ExpandableContainer />} />
         <Route path="/collection/outdoor-kitchen" element={<OutdoorKitchen />} />
+        <Route path="/collection/prefab-design-build/:modelSlug/build" element={<BuildYours />} />
         <Route path="/collection/:collectionSlug/:modelSlug" element={<BuildDetail />} />
         <Route path="/pools" element={<Pool />} />
         <Route path="/collection/pool" element={<Navigate to="/pools" replace />} />

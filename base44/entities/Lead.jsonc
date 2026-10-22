@@ -33,12 +33,10 @@
       "type": "string"
     },
     "model_selection": {
-      "type": "string",
-      "enum": [
-        "500 SF Prototype",
-        "800 SF Prototype",
-        "Not Sure"
-      ]
+      "type": "string"
+    },
+    "finish_selections": {
+      "type": "string"
     },
     "square_footage": {
       "type": "string",

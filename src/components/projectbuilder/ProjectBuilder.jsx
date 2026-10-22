@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { Check } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import { createLead, landDevFields, leadDetails, sendLeadEmail, uploadNote } from "@/lib/leadEmail";
 import { PRICING, buildProject, money } from "@/lib/projectPricing";
+import { presetLeadFields } from "@/lib/buildPreset";
 import AddressLookup from "./AddressLookup";
 import SizeStep from "./SizeStep";
 import ScopeCards from "./ScopeCards";
@@ -19,7 +21,9 @@ const STEP_TITLES = [
   "Proceed",
 ];
 
-export default function ProjectBuilder() {
+// `preset` is a model the visitor picked elsewhere (see buildPreset.js): its size starts the
+// size step, and its finishes and add-ons are priced in. With a preset the budget shows as a range.
+export default function ProjectBuilder({ preset = null }) {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -30,7 +34,7 @@ export default function ProjectBuilder() {
     city: "",
     zip_code: "",
     jurisdiction: "",
-    sf: "",
+    sf: preset ? String(preset.sf) : "",
     original_sf: null,
     plumbing: "",
     has_drawings: "",
@@ -57,7 +61,12 @@ export default function ProjectBuilder() {
     landDevAnswers: form,
     materials: form.materials,
     siteWork: form.site_work,
+    finishes: preset?.finishes,
+    addOns: preset?.addOns,
   });
+  const budgetText = preset
+    ? `${money(estimate.range.low)} – ${money(estimate.range.high)}`
+    : money(estimate.total);
 
   const anyScope = estimate.p1 > 0 || form.materials || form.site_work;
   const contactValid =
@@ -102,6 +111,7 @@ export default function ProjectBuilder() {
         }
       }
       const landDev = landDevFields(form, estimate);
+      const build = presetLeadFields(preset, estimate, sf);
       await createLead({
         full_name: form.full_name.trim(),
         email: form.email.trim(),
@@ -127,8 +137,8 @@ export default function ProjectBuilder() {
         utility_info: form.utility_info || undefined,
         timeline: form.timeline || undefined,
         plans_file_url: plans_file_url || undefined,
-        lead_flow: "Project Builder",
-      }, landDev.entityNew);
+        lead_flow: preset ? "Build Yours" : "Project Builder",
+      }, landDev.entityNew, build.entity);
 
       await sendLeadEmail({
         full_name: form.full_name.trim(),
@@ -140,7 +150,7 @@ export default function ProjectBuilder() {
         plumbing: form.plumbing || "-",
         scope_materials: form.materials ? "Yes" : "No",
         scope_site_work: form.site_work ? "Yes" : "No",
-        expected_budget: money(estimate.total),
+        expected_budget: budgetText,
         timeline: form.timeline || "-",
         ...landDev.email,
         plans_file_url: uploadNote(!!form.plans_file, plans_file_url),
@@ -148,9 +158,10 @@ export default function ProjectBuilder() {
         city_contact: form.city_contact || "-",
         sewer_type: form.sewer_type || "-",
         utility_info: form.utility_info || "-",
-        lead_flow: "Project Builder",
+        lead_flow: preset ? "Build Yours" : "Project Builder",
         details: leadDetails({
-          flow: "Project Builder (/see-what-fits)",
+          flow: preset ? "Build Yours (/collection/prefab-design-build/…/build → /see-what-fits)" : "Project Builder (/see-what-fits)",
+          build: build.lines,
           jurisdiction: form.jurisdiction,
           cityContact: form.city_contact,
           sewerType: form.sewer_type,
@@ -187,8 +198,8 @@ export default function ProjectBuilder() {
               <span className="block text-xs font-bold uppercase tracking-[0.2em] text-foreground/50">
                 Your Expected Project Budget
               </span>
-              <span className="block mt-1 font-heading text-4xl font-bold text-primary">
-                {money(estimate.total)}
+              <span className="block mt-1 font-heading text-3xl md:text-4xl font-bold text-primary">
+                {budgetText}
               </span>
             </div>
           </div>
@@ -201,6 +212,24 @@ export default function ProjectBuilder() {
     <div className="py-8 md:py-12">
       <div id="builder" className="max-w-3xl mx-auto px-4 sm:px-6 scroll-mt-24">
         <div className="bg-card rounded-lg border border-border px-6 md:px-10 py-8 md:py-10">
+          {preset && (
+            <div className="mb-6 flex items-center gap-4 rounded-md border border-border p-3">
+              <img src={preset.img} alt={preset.name} className="w-16 h-12 rounded object-cover bg-white shrink-0" />
+              <div className="min-w-0 flex-1">
+                <div className="text-sm font-semibold truncate">{preset.name}</div>
+                <div className="text-xs text-foreground/60">
+                  {sf ? `${sf.toLocaleString("en-US")} SF` : ""}
+                  {preset.finishes ? " · your finishes" : ""}
+                </div>
+              </div>
+              {preset.editTo && (
+                <Link to={preset.editTo} className="text-xs font-semibold uppercase tracking-wide text-primary hover:underline shrink-0">
+                  Edit
+                </Link>
+              )}
+            </div>
+          )}
+
           {/* Progress */}
           <div>
             <div className="flex justify-between text-xs text-foreground/60 mb-2">
@@ -223,8 +252,8 @@ export default function ProjectBuilder() {
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-foreground/50">
                 Expected Project Budget
               </span>
-              <span className="font-heading text-2xl font-bold text-primary">
-                {money(estimate.total)}
+              <span className="font-heading text-xl md:text-2xl font-bold text-primary text-right">
+                {budgetText}
               </span>
             </div>
           )}
@@ -275,6 +304,7 @@ export default function ProjectBuilder() {
                 form={form}
                 setField={setField}
                 estimate={estimate}
+                budgetText={budgetText}
               />
             )}
             {step === 6 && (
@@ -283,6 +313,8 @@ export default function ProjectBuilder() {
                 setField={setField}
                 estimate={estimate}
                 sf={sf}
+                preset={preset}
+                budgetText={budgetText}
                 onSubmit={submit}
                 loading={loading}
                 error={error}

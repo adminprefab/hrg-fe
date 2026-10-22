@@ -11,9 +11,11 @@ export const uploadNote = (hadFile, url) =>
   url || (hadFile ? "UPLOAD FAILED · the customer attached a file; ask them to send it again" : "No file uploaded");
 
 // Every answer that isn't its own template field, as one block ({{details}} in the EmailJS template).
-export function leadDetails({ flow, jurisdiction, cityContact, sewerType, utilityInfo, originalSf, finalSf }) {
+// `build` is the catalogue model and finish lines, when the lead came from "Build yours".
+export function leadDetails({ flow, build = [], jurisdiction, cityContact, sewerType, utilityInfo, originalSf, finalSf }) {
   return [
     `Form: ${flow}`,
+    ...build,
     `Jurisdiction: ${jurisdiction || "-"}`,
     `Spoken with the city: ${cityContact || "-"}`,
     `Sewer or septic: ${sewerType || "-"}`,
@@ -62,14 +64,17 @@ export function landDevFields(answers, estimate) {
 
 // Saves the lead. If the hosted Lead schema refuses the newer fields (it lags behind
 // base44/entities/Lead.jsonc until that is pushed), save without them rather than lose
-// the lead; the email still carries every answer.
-export async function createLead(fields, newerFields) {
-  try {
-    return await base44.entities.Lead.create({ ...fields, ...newerFields });
-  } catch (err) {
-    console.error("Lead save with the newer fields failed; saving without them.", err);
-    return base44.entities.Lead.create(fields);
+// the lead; the email still carries every answer. Newer field sets are dropped newest
+// first, so one unpushed field never costs the others.
+export async function createLead(fields, ...newerFieldSets) {
+  for (let keep = newerFieldSets.length; keep > 0; keep--) {
+    try {
+      return await base44.entities.Lead.create(Object.assign({}, fields, ...newerFieldSets.slice(0, keep)));
+    } catch (err) {
+      console.error(`Lead save with ${keep} newer field set(s) failed; trying with fewer.`, err);
+    }
   }
+  return base44.entities.Lead.create(fields);
 }
 
 // The lead is already saved by the time this runs, so a failed email never blocks the visitor.

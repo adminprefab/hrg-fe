@@ -10,6 +10,7 @@ import PropertyFitCTA from "@/components/collection/PropertyFitCTA";
 import ExploreMoreDesigns from "@/components/collection/ExploreMoreDesigns";
 import SecondaryModelGrid from "@/components/collection/SecondaryModelGrid";
 import { prefabModels, prefabConfigs } from "@/lib/collectionData";
+import { FINISH_GROUPS, levelUpgradePerSf } from "@/lib/finishPricing";
 
 const advantages = [
   { stat: "15–20 Days", label: "Construction Speed", desc: "On-site assembly time" },
@@ -21,26 +22,21 @@ const advantages = [
   { stat: "≥ 93 MPH", label: "Wind Resistance", desc: "(150 km/h) sustained winds" },
 ];
 
-const finishes = [
-  {
-    name: "Standard",
-    price: "$79",
-    desc: "Builder-grade fixtures, LVT flooring, painted drywall, stock cabinetry and countertops.",
-    popular: false,
-  },
-  {
-    name: "Premium",
-    price: "$99",
-    desc: "Engineered hardwood, quartz countertops, designer lighting, upgraded cabinetry and tile.",
-    popular: true,
-  },
-  {
-    name: "Luxury",
-    price: "$129",
-    desc: "Natural stone, custom millwork, high-end appliances, smart-home integration.",
-    popular: false,
-  },
-];
+// The three finish levels are the configurator's options taken together, so the prices
+// here always match "Build yours" (finishPricing.js).
+const finishes = ["Standard", "Premium", "Luxury"].map((name, i) => {
+  const upgrade = levelUpgradePerSf(i);
+  return {
+    name,
+    price: upgrade ? `+${upgrade}` : "Included",
+    unit: upgrade ? "per ft²" : "in every price",
+    desc: FINISH_GROUPS.filter((g) => ["flooring", "kitchen", "bath"].includes(g.key))
+      .map((g) => g.options[i].name)
+      .join(" · "),
+    img: FINISH_GROUPS.find((g) => g.key === "kitchen").options[i].img,
+    popular: i === 1,
+  };
+});
 
 const primarySlugs = ["hrg-101", "hrg-103", "hrg-106", "hrg-111", "hrg-110"];
 const secondaryModels = prefabModels.filter((m) => !primarySlugs.includes(m.slug));
@@ -120,7 +116,7 @@ export default function PrefabDesignBuild() {
             <AnimatedHeading className="font-heading text-3xl font-normal text-foreground">
               Finish <em className="not-italic font-bold">Levels</em>
             </AnimatedHeading>
-            <p className="text-muted-foreground mt-3">Three finish packages, pricing per square foot of conditioned floor area.</p>
+            <p className="text-muted-foreground mt-3">Or mix and match on any model.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {finishes.map((f, i) => (
@@ -130,21 +126,24 @@ export default function PrefabDesignBuild() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className={`rounded-lg p-8 text-center relative ${f.popular ? "bg-primary text-primary-foreground shadow-xl scale-105" : "bg-card border border-border"}`}
+                className={`rounded-lg overflow-hidden text-center relative ${f.popular ? "bg-primary text-primary-foreground shadow-xl md:scale-105" : "bg-card border border-border"}`}
               >
+                <img src={f.img} alt={`${f.name} kitchen`} loading="lazy" className="w-full h-40 object-cover" />
+                <div className="p-8">
                 {f.popular && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-foreground text-background text-xs font-bold uppercase tracking-widest px-4 py-1 rounded-full">
+                  <span className="absolute top-3 left-1/2 -translate-x-1/2 bg-foreground text-background text-xs font-bold uppercase tracking-widest px-4 py-1 rounded-full">
                     Most Popular
                   </span>
                 )}
                 <div className={`font-heading font-bold uppercase tracking-widest text-sm mb-3 ${f.popular ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{f.name}</div>
                 <div className={`text-5xl font-bold font-heading mb-1 ${f.popular ? "text-primary-foreground" : "text-primary"}`}>{f.price}</div>
-                <div className={`text-sm mb-4 ${f.popular ? "text-primary-foreground/70" : "text-muted-foreground"}`}>per ft²</div>
+                <div className={`text-sm mb-4 ${f.popular ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{f.unit}</div>
                 <p className={`text-sm leading-relaxed font-semibold ${f.popular ? "text-primary-foreground" : "text-foreground"}`}>{f.desc}</p>
+                </div>
               </motion.div>
             ))}
           </div>
-          <p className="text-xs text-muted-foreground text-center mt-6">Pricing illustrative. Excludes site preparation, foundation, utility connections, permits, and applicable taxes.</p>
+          <p className="text-xs text-muted-foreground text-center mt-6">Upgrade over the base finishes in every starting price. Pick each finish yourself with Build yours.</p>
         </div>
       </section>
 

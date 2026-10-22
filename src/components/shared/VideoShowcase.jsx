@@ -1,32 +1,32 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { getPrefabModel } from "@/lib/collectionData";
 
-const videos = [
+const videoRows = [
   {
     src: "https://media.base44.com/videos/public/6a3d99160f311f943d2b9488/2527ed7bf_HRG-101.mp4",
     id: "HRG-101",
     name: "Studio Cabin",
-    sqft: "258 ft²",
   },
   {
     src: "https://media.base44.com/videos/public/6a3d99160f311f943d2b9488/53cf20b05_HRG-102.mp4",
     id: "HRG-102",
     name: "Single-Bedroom Suite",
-    sqft: "452 ft²",
   },
   {
     src: "https://media.base44.com/videos/public/6a3d99160f311f943d2b9488/8c1830fee_HRG-104.mp4",
     id: "HRG-104",
     name: "Compact Two-Bedroom",
-    sqft: "592 ft²",
   },
   {
     src: "https://media.base44.com/videos/public/6a3d99160f311f943d2b9488/61b13364d_HRG-112-withCustomLuxuryOptions.mp4",
     id: "HRG-112",
     name: "Modern Pool Villa: Luxury Options",
-    sqft: "1,475 ft²",
   },
 ];
+
+// Sizes come from the catalogue so they never drift from the model pages.
+const videos = videoRows.map((v) => ({ ...v, sqft: getPrefabModel(v.id.toLowerCase()).sqft }));
 
 export default function VideoShowcase() {
   return (

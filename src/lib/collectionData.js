@@ -1,5 +1,8 @@
 // Central registry for the Builds / Collection section.
 // All models, prices, dimensions and images reuse existing HRG catalogue data.
+// Prefab prices come from projectPricing.js, never from strings here.
+import { moneyShort, startingPrice } from "./projectPricing";
+import { FINISH_GROUPS } from "./finishPricing";
 
 const DECK = "https://media.base44.com/images/public/6a3d99160f311f943d2b9488";
 const img = (file) => `${DECK}/${file}`;
@@ -9,67 +12,77 @@ const photo = (file) => `${PRODUCTPHOTOS}/${file}`;
 
 /* ---------------------------- Prefab Design & Build ---------------------------- */
 
-export const prefabModels = [
-  { slug: "hrg-101", id: "HRG-101", name: "Studio Cabin", beds: 1, baths: 1, sqft: "258 ft²", sqftMetric: "24 m²", dim: "10'-10\" × 23'-0\"", dimMetric: "3.3 m × 7.0 m", img: img("2d1d9dc3d_HRGPREFABLab-04.png"), photo: photo("5efe4f57e_ChatGPTImageSep29202603_53_17PM1.png") },
-  { slug: "hrg-102", id: "HRG-102", name: "Single-Bedroom Suite", beds: 1, baths: 1, sqft: "452 ft²", sqftMetric: "42 m²", dim: "18'-4\" × 24'-7\"", dimMetric: "5.6 m × 7.5 m", img: img("fd865dcd4_HRGPREFABLab-05.png") },
-  { slug: "hrg-103", id: "HRG-103", name: "Linear Two-Bedroom", beds: 2, baths: 1, sqft: "646 ft²", sqftMetric: "60 m²", dim: "15'-9\" × 39'-1\"", dimMetric: "4.8 m × 11.9 m", img: img("8a0a7c4f2_HRGPREFABLab-06.png"), photo: photo("26751b3ff_ChatGPTImageSep29202603_53_18PM1.png") },
-  { slug: "hrg-104", id: "HRG-104", name: "Compact Two-Bedroom", beds: 2, baths: 1, sqft: "592 ft²", sqftMetric: "55 m²", dim: null, dimMetric: null, img: img("c7f1a7aff_HRGPREFABLab-07.png"), photo: photo("9a3d18dab_ChatGPTImageSep29202605_40_26PM1.png") },
-  { slug: "hrg-106", id: "HRG-106", name: "Modern Two-Bedroom", beds: 2, baths: 1, sqft: "829 ft²", sqftMetric: "77 m²", dim: "29'-4\" × 35'-9\"", dimMetric: "8.9 m × 10.9 m", img: img("e59984e29_HRGPREFABLab-08.png"), photo: photo("f0c372083_ChatGPTImageSep29202603_53_21PM1.png") },
-  { slug: "hrg-107", id: "HRG-107", name: "Two-Bedroom + Dining", beds: 2, baths: 1, sqft: "1,076 ft²", sqftMetric: "100 m²", dim: "37'-9\"", dimMetric: "11.5 m", img: img("5767f99d9_HRGPREFABLab-09.png") },
-  { slug: "hrg-108", id: "HRG-108", name: "Three-Bedroom + Carport", beds: 3, baths: 1, sqft: "1,130 ft²", sqftMetric: "105 m²", dim: "22'-4\"", dimMetric: "6.8 m", img: img("8f1ba1b5b_HRGPREFABLab-10.png") },
-  { slug: "hrg-109", id: "HRG-109", name: "Hip-Roof Three-Bedroom", beds: 3, baths: 1, sqft: "1,292 ft²", sqftMetric: "120 m²", dim: "30'-10\" × 36'-10\"", dimMetric: "9.4 m × 11.2 m", img: img("8b9869bef_HRGPREFABLab-11.png") },
-  { slug: "hrg-110", id: "HRG-110", name: "Four-Bedroom Family", beds: 4, baths: 2, sqft: "1,378 ft²", sqftMetric: "128 m²", dim: null, dimMetric: null, img: img("92d806ae1_HRGPREFABLab-12.png"), photo: photo("e2663e3f5_ChatGPTImageSep29202603_53_25PM1.png") },
-  { slug: "hrg-111", id: "HRG-111", name: "Three-Bedroom + Pool", beds: 3, baths: 2, sqft: "1,432 ft²", sqftMetric: "133 m²", dim: "46'-3\"", dimMetric: "14.1 m", img: img("3dc32ac97_HRGPREFABLab-13.png"), photo: photo("90b775055_ChatGPTImageSep29202603_53_23PM1.png") },
-  { slug: "hrg-112", id: "HRG-112", name: "Modern Pool Villa", beds: 3, baths: 2, sqft: "1,475 ft²", sqftMetric: "137 m²", dim: "60'-4\"", dimMetric: "18.4 m", img: img("de1a22739_HRGPREFABLab-14.png") },
-  { slug: "hrg-113", id: "HRG-113", name: "Four-Bedroom Linear Villa", beds: 4, baths: 2, sqft: "2,007 ft²", sqftMetric: "186.5 m²", dim: "97'-0\"", dimMetric: "29.6 m", img: img("cdffdcf6a_HRGPREFABLab-15.png") },
-  { slug: "hrg-114", id: "HRG-114", name: "Stone-Clad Three-Bedroom", beds: 3, baths: 3, sqft: "2,422 ft²", sqftMetric: "225 m²", dim: "43'-2\"", dimMetric: "13.2 m", img: img("9d19bf47f_HRGPREFABLab-16.png") },
-  { slug: "hrg-115", id: "HRG-115", name: "Three-Bedroom Estate", beds: 3, baths: 3, sqft: "2,885 ft²", sqftMetric: "268 m²", dim: null, dimMetric: null, img: img("362b49e77_HRGPREFABLab-17.png") },
-  { slug: "hrg-201", id: "HRG-201", name: "Two-Story Three-Bedroom", beds: 3, baths: 1, sqft: "915 ft²", sqftMetric: "85 m²", dim: "37'-5\" × 32'-10\"", dimMetric: "11.4 m × 10.0 m", img: img("d12b6ba2d_HRGPREFABLab-18.png") },
-  { slug: "hrg-202", id: "HRG-202", name: "Cubic Three-Bedroom", beds: 3, baths: 2, sqft: "1,399 ft²", sqftMetric: "130 m²", dim: null, dimMetric: null, img: img("f3d2deaa3_HRGPREFABLab-19.png") },
-  { slug: "hrg-203", id: "HRG-203", name: "Loft Four-Bedroom", beds: 4, baths: 2, sqft: "1,507 ft²", sqftMetric: "140 m²", dim: "31'-6\"", dimMetric: "9.6 m", img: img("c3a999e3a_HRGPREFABLab-20.png") },
-  { slug: "hrg-204", id: "HRG-204", name: "Cantilever Four-Bedroom", beds: 4, baths: 3, sqft: "1,701 ft²", sqftMetric: "158 m²", dim: "22'-9\"", dimMetric: "6.9 m", img: img("90b2f2d39_HRGPREFABLab-21.png") },
-  { slug: "hrg-205", id: "HRG-205", name: "Modern Two-Story", beds: 3, baths: 3, sqft: "1,755 ft²", sqftMetric: "163 m²", dim: "37'-9\"", dimMetric: "11.5 m", img: img("e99317683_HRGPREFABLab-22.png") },
-  { slug: "hrg-206", id: "HRG-206", name: "Cedar Two-Story + Garage", beds: 4, baths: 3, sqft: "2,583 ft²", sqftMetric: "240 m²", dim: "43'-10\" × 35'-5\"", dimMetric: "13.3 m × 10.8 m", img: img("9c4dd3939_HRGPREFABLab-23.png") },
-  { slug: "hrg-207", id: "HRG-207", name: "Two-Story Modern + Garage", beds: 3, baths: 3, sqft: "2,799 ft²", sqftMetric: "260 m²", dim: "48'-0\" × 24'-8\"", dimMetric: "14.6 m × 7.5 m", img: img("69c4ccbd5_HRGPREFABLab-24.png") },
-  { slug: "hrg-208", id: "HRG-208", name: "Hillside Pool Estate", beds: 4, baths: 4, sqft: "3,229 ft²", sqftMetric: "300 m²", dim: null, dimMetric: null, img: img("924073f7e_HRGPREFABLab-25.png") },
-  { slug: "hrg-209", id: "HRG-209", name: "Five-Bedroom Estate", beds: 5, baths: 4, sqft: "3,832 ft²", sqftMetric: "356 m²", dim: "73'-7\" × 44'-11\"", dimMetric: "22.4 m × 13.7 m", img: img("b80572518_HRGPREFABLab-26.png") },
+const prefabModelRows = [
+  { slug: "hrg-101", id: "HRG-101", name: "Studio Cabin", beds: 1, baths: 1, sf: 258, sqftMetric: "24 m²", dim: "10'-10\" × 23'-0\"", dimMetric: "3.3 m × 7.0 m", img: img("2d1d9dc3d_HRGPREFABLab-04.png"), photo: photo("5efe4f57e_ChatGPTImageSep29202603_53_17PM1.png") },
+  { slug: "hrg-102", id: "HRG-102", name: "Single-Bedroom Suite", beds: 1, baths: 1, sf: 452, sqftMetric: "42 m²", dim: "18'-4\" × 24'-7\"", dimMetric: "5.6 m × 7.5 m", img: img("fd865dcd4_HRGPREFABLab-05.png") },
+  { slug: "hrg-103", id: "HRG-103", name: "Linear Two-Bedroom", beds: 2, baths: 1, sf: 646, sqftMetric: "60 m²", dim: "15'-9\" × 39'-1\"", dimMetric: "4.8 m × 11.9 m", img: img("8a0a7c4f2_HRGPREFABLab-06.png"), photo: photo("26751b3ff_ChatGPTImageSep29202603_53_18PM1.png") },
+  { slug: "hrg-104", id: "HRG-104", name: "Compact Two-Bedroom", beds: 2, baths: 1, sf: 592, sqftMetric: "55 m²", dim: null, dimMetric: null, img: img("c7f1a7aff_HRGPREFABLab-07.png"), photo: photo("9a3d18dab_ChatGPTImageSep29202605_40_26PM1.png") },
+  { slug: "hrg-106", id: "HRG-106", name: "Modern Two-Bedroom", beds: 2, baths: 1, sf: 829, sqftMetric: "77 m²", dim: "29'-4\" × 35'-9\"", dimMetric: "8.9 m × 10.9 m", img: img("e59984e29_HRGPREFABLab-08.png"), photo: photo("f0c372083_ChatGPTImageSep29202603_53_21PM1.png") },
+  { slug: "hrg-107", id: "HRG-107", name: "Two-Bedroom + Dining", beds: 2, baths: 1, sf: 1076, sqftMetric: "100 m²", dim: "37'-9\"", dimMetric: "11.5 m", img: img("5767f99d9_HRGPREFABLab-09.png") },
+  { slug: "hrg-108", id: "HRG-108", name: "Three-Bedroom + Carport", beds: 3, baths: 1, sf: 1130, sqftMetric: "105 m²", dim: "22'-4\"", dimMetric: "6.8 m", img: img("8f1ba1b5b_HRGPREFABLab-10.png") },
+  { slug: "hrg-109", id: "HRG-109", name: "Hip-Roof Three-Bedroom", beds: 3, baths: 1, sf: 1292, sqftMetric: "120 m²", dim: "30'-10\" × 36'-10\"", dimMetric: "9.4 m × 11.2 m", img: img("8b9869bef_HRGPREFABLab-11.png") },
+  { slug: "hrg-110", id: "HRG-110", name: "Four-Bedroom Family", beds: 4, baths: 2, sf: 1378, sqftMetric: "128 m²", dim: null, dimMetric: null, img: img("92d806ae1_HRGPREFABLab-12.png"), photo: photo("e2663e3f5_ChatGPTImageSep29202603_53_25PM1.png") },
+  { slug: "hrg-111", id: "HRG-111", name: "Three-Bedroom + Pool", beds: 3, baths: 2, sf: 1432, sqftMetric: "133 m²", dim: "46'-3\"", dimMetric: "14.1 m", img: img("3dc32ac97_HRGPREFABLab-13.png"), photo: photo("90b775055_ChatGPTImageSep29202603_53_23PM1.png") },
+  { slug: "hrg-112", id: "HRG-112", name: "Modern Pool Villa", beds: 3, baths: 2, sf: 1475, sqftMetric: "137 m²", dim: "60'-4\"", dimMetric: "18.4 m", img: img("de1a22739_HRGPREFABLab-14.png") },
+  { slug: "hrg-113", id: "HRG-113", name: "Four-Bedroom Linear Villa", beds: 4, baths: 2, sf: 2007, sqftMetric: "186.5 m²", dim: "97'-0\"", dimMetric: "29.6 m", img: img("cdffdcf6a_HRGPREFABLab-15.png") },
+  { slug: "hrg-114", id: "HRG-114", name: "Stone-Clad Three-Bedroom", beds: 3, baths: 3, sf: 2422, sqftMetric: "225 m²", dim: "43'-2\"", dimMetric: "13.2 m", img: img("9d19bf47f_HRGPREFABLab-16.png") },
+  { slug: "hrg-115", id: "HRG-115", name: "Three-Bedroom Estate", beds: 3, baths: 3, sf: 2885, sqftMetric: "268 m²", dim: null, dimMetric: null, img: img("362b49e77_HRGPREFABLab-17.png") },
+  { slug: "hrg-201", id: "HRG-201", name: "Two-Story Three-Bedroom", beds: 3, baths: 1, sf: 915, sqftMetric: "85 m²", dim: "37'-5\" × 32'-10\"", dimMetric: "11.4 m × 10.0 m", img: img("d12b6ba2d_HRGPREFABLab-18.png") },
+  { slug: "hrg-202", id: "HRG-202", name: "Cubic Three-Bedroom", beds: 3, baths: 2, sf: 1399, sqftMetric: "130 m²", dim: null, dimMetric: null, img: img("f3d2deaa3_HRGPREFABLab-19.png") },
+  { slug: "hrg-203", id: "HRG-203", name: "Loft Four-Bedroom", beds: 4, baths: 2, sf: 1507, sqftMetric: "140 m²", dim: "31'-6\"", dimMetric: "9.6 m", img: img("c3a999e3a_HRGPREFABLab-20.png") },
+  { slug: "hrg-204", id: "HRG-204", name: "Cantilever Four-Bedroom", beds: 4, baths: 3, sf: 1701, sqftMetric: "158 m²", dim: "22'-9\"", dimMetric: "6.9 m", img: img("90b2f2d39_HRGPREFABLab-21.png") },
+  { slug: "hrg-205", id: "HRG-205", name: "Modern Two-Story", beds: 3, baths: 3, sf: 1755, sqftMetric: "163 m²", dim: "37'-9\"", dimMetric: "11.5 m", img: img("e99317683_HRGPREFABLab-22.png") },
+  { slug: "hrg-206", id: "HRG-206", name: "Cedar Two-Story + Garage", beds: 4, baths: 3, sf: 2583, sqftMetric: "240 m²", dim: "43'-10\" × 35'-5\"", dimMetric: "13.3 m × 10.8 m", img: img("9c4dd3939_HRGPREFABLab-23.png") },
+  { slug: "hrg-207", id: "HRG-207", name: "Two-Story Modern + Garage", beds: 3, baths: 3, sf: 2799, sqftMetric: "260 m²", dim: "48'-0\" × 24'-8\"", dimMetric: "14.6 m × 7.5 m", img: img("69c4ccbd5_HRGPREFABLab-24.png") },
+  { slug: "hrg-208", id: "HRG-208", name: "Hillside Pool Estate", beds: 4, baths: 4, sf: 3229, sqftMetric: "300 m²", dim: null, dimMetric: null, img: img("924073f7e_HRGPREFABLab-25.png") },
+  { slug: "hrg-209", id: "HRG-209", name: "Five-Bedroom Estate", beds: 5, baths: 4, sf: 3832, sqftMetric: "356 m²", dim: "73'-7\" × 44'-11\"", dimMetric: "22.4 m × 13.7 m", img: img("b80572518_HRGPREFABLab-26.png") },
 ];
 
+export const sqftLabel = (sf) => `${sf.toLocaleString("en-US")} ft²`;
+
+// Size variants offered in "Build yours": the plan as drawn, one bay shorter and one bay
+// longer. DRAFT (draft: true): ±15% rounded to 10 SF until HRG sets real variants per model.
+const sizeVariants = (sf) => [
+  { key: "compact", label: "Compact", sf: Math.round((sf * 0.85) / 10) * 10, draft: true },
+  { key: "drawn", label: "As drawn", sf },
+  { key: "extended", label: "Extended", sf: Math.round((sf * 1.15) / 10) * 10, draft: true },
+];
+
+// The one source for every prefab model: numeric size, display size, starting price, the
+// size variants and the finish groups the configurator offers (all of them, for now).
+export const prefabModels = prefabModelRows.map((m) => ({
+  ...m,
+  sqft: sqftLabel(m.sf),
+  fromPrice: startingPrice(m.sf),
+  sizes: sizeVariants(m.sf),
+  finishGroups: FINISH_GROUPS.map((g) => g.key),
+}));
+
+export const getPrefabModel = (slug) => prefabModels.find((m) => m.slug === slug);
+
+export const fromLabel = (m) => `From ${moneyShort(m.fromPrice)}`;
+
+// The "Build yours" configurator for a prefab model.
+export const buildPath = (slug) => `/collection/prefab-design-build/${slug}/build`;
+
+const prefabConfig = (name, slug, blurb) => {
+  const m = getPrefabModel(slug);
+  return { name, slug, meta: [m.sqft, `${m.beds} Bed · ${m.baths} Bath`], price: fromLabel(m), blurb, img: m.photo || m.img, buildTo: buildPath(slug) };
+};
+
 export const prefabConfigs = [
-  { name: "Compact", slug: "hrg-101", meta: ["258 ft²", "1 Bed · 1 Bath"], price: "From $79/ft²", blurb: "An efficient footprint for one: a guest suite, rental, or compact full-time home.", img: photo("5efe4f57e_ChatGPTImageSep29202603_53_17PM1.png") },
-  { name: "Essential", slug: "hrg-103", meta: ["646 ft²", "2 Bed · 1 Bath"], price: "From $79/ft²", blurb: "Two bedrooms in a smart linear plan: the essentials for small households.", img: photo("26751b3ff_ChatGPTImageSep29202603_53_18PM1.png") },
-  { name: "Family", slug: "hrg-106", meta: ["829 ft²", "2 Bed · 1 Bath"], price: "From $79/ft²", blurb: "Two bedrooms with generous living space for daily family life.", img: photo("f0c372083_ChatGPTImageSep29202603_53_21PM1.png") },
-  { name: "Family Plus", slug: "hrg-111", meta: ["1,432 ft²", "3 Bed · 2 Bath"], price: "From $79/ft²", blurb: "Three bedrooms, two bathrooms, and a pool-ready plan.", img: photo("90b775055_ChatGPTImageSep29202603_53_23PM1.png") },
-  { name: "Large", slug: "hrg-110", meta: ["1,378 ft²", "4 Bed · 2 Bath"], price: "From $79/ft²", blurb: "Four bedrooms for a growing household.", img: photo("e2663e3f5_ChatGPTImageSep29202603_53_25PM1.png") },
-  { name: "Custom", custom: true, meta: ["Any size", "Fully custom"], price: "From $79/ft²", blurb: "A home designed around your property and requirements.", img: photo("a9409ada6_ChatGPTImageSep29202603_53_52PM1.png") },
+  prefabConfig("Compact", "hrg-101", "An efficient footprint for one: a guest suite, rental, or compact full-time home."),
+  prefabConfig("Essential", "hrg-103", "Two bedrooms in a smart linear plan: the essentials for small households."),
+  prefabConfig("Family", "hrg-106", "Two bedrooms with generous living space for daily family life."),
+  prefabConfig("Family Plus", "hrg-111", "Three bedrooms, two bathrooms, and a pool-ready plan."),
+  prefabConfig("Large", "hrg-110", "Four bedrooms for a growing household."),
+  { name: "Custom", custom: true, meta: ["Any size", "Fully custom"], price: null, blurb: "A home designed around your property and requirements.", img: photo("a9409ada6_ChatGPTImageSep29202603_53_52PM1.png") },
 ];
 
 export const prefabCatalogue = [
   { src: img("a0e4d214f_HRGPREFABLab-01.png"), label: "True Prefab Design and Build · Overview" },
   { src: img("973bed88f_HRGPREFABLab-03.png"), label: "Your Home, From Concept to Keys" },
-  { src: img("2d1d9dc3d_HRGPREFABLab-04.png"), label: "HRG-101 · Studio Cabin · 258 ft²" },
-  { src: img("fd865dcd4_HRGPREFABLab-05.png"), label: "HRG-102 · Single-Bedroom Suite · 452 ft²" },
-  { src: img("8a0a7c4f2_HRGPREFABLab-06.png"), label: "HRG-103 · Linear Two-Bedroom · 646 ft²" },
-  { src: img("c7f1a7aff_HRGPREFABLab-07.png"), label: "HRG-104 · Compact Two-Bedroom · 592 ft²" },
-  { src: img("e59984e29_HRGPREFABLab-08.png"), label: "HRG-106 · Modern Two-Bedroom · 829 ft²" },
-  { src: img("5767f99d9_HRGPREFABLab-09.png"), label: "HRG-107 · Two-Bedroom + Dining · 1,076 ft²" },
-  { src: img("8f1ba1b5b_HRGPREFABLab-10.png"), label: "HRG-108 · Three-Bedroom + Carport · 1,130 ft²" },
-  { src: img("8b9869bef_HRGPREFABLab-11.png"), label: "HRG-109 · Hip-Roof Three-Bedroom · 1,292 ft²" },
-  { src: img("92d806ae1_HRGPREFABLab-12.png"), label: "HRG-110 · Four-Bedroom Family · 1,378 ft²" },
-  { src: img("3dc32ac97_HRGPREFABLab-13.png"), label: "HRG-111 · Three-Bedroom + Pool · 1,432 ft²" },
-  { src: img("de1a22739_HRGPREFABLab-14.png"), label: "HRG-112 · Modern Pool Villa · 1,475 ft²" },
-  { src: img("cdffdcf6a_HRGPREFABLab-15.png"), label: "HRG-113 · Four-Bedroom Linear Villa · 2,007 ft²" },
-  { src: img("9d19bf47f_HRGPREFABLab-16.png"), label: "HRG-114 · Stone-Clad Three-Bedroom · 2,422 ft²" },
-  { src: img("362b49e77_HRGPREFABLab-17.png"), label: "HRG-115 · Three-Bedroom Estate · 2,885 ft²" },
-  { src: img("d12b6ba2d_HRGPREFABLab-18.png"), label: "HRG-201 · Two-Story Three-Bedroom · 915 ft²" },
-  { src: img("f3d2deaa3_HRGPREFABLab-19.png"), label: "HRG-202 · Cubic Three-Bedroom · 1,399 ft²" },
-  { src: img("c3a999e3a_HRGPREFABLab-20.png"), label: "HRG-203 · Loft Four-Bedroom · 1,507 ft²" },
-  { src: img("90b2f2d39_HRGPREFABLab-21.png"), label: "HRG-204 · Cantilever Four-Bedroom · 1,701 ft²" },
-  { src: img("e99317683_HRGPREFABLab-22.png"), label: "HRG-205 · Modern Two-Story · 1,755 ft²" },
-  { src: img("9c4dd3939_HRGPREFABLab-23.png"), label: "HRG-206 · Cedar Two-Story + Garage · 2,583 ft²" },
-  { src: img("69c4ccbd5_HRGPREFABLab-24.png"), label: "HRG-207 · Two-Story Modern + Garage · 2,799 ft²" },
-  { src: img("924073f7e_HRGPREFABLab-25.png"), label: "HRG-208 · Hillside Pool Estate · 3,229 ft²" },
-  { src: img("b80572518_HRGPREFABLab-26.png"), label: "HRG-209 · Five-Bedroom Estate · 3,832 ft²" },
+  ...prefabModels.map((m) => ({ src: m.img, label: `${m.id} · ${m.name} · ${m.sqft}` })),
   { src: img("ac865cc24_HRGPREFABLab-27.png"), label: "HRG Prefab · Contact" },
 ];
 
@@ -220,24 +233,25 @@ export const buildCollections = {
     catalogue: prefabCatalogue,
     heroFit: "contain",
     metaFor: (m) => [m.sqft, `${m.beds} Bed · ${m.baths} Bath`],
-    priceFor: () => "From $79/ft² · finish level dependent",
+    priceFor: (m) => fromLabel(m),
+    buildable: true,
     specsFor: (m) => [
       { label: "Floor area", value: `${m.sqft}${m.sqftMetric ? ` (${m.sqftMetric})` : ""}` },
       { label: "Dimensions", value: m.dim ? `${m.dim}${m.dimMetric ? ` (${m.dimMetric})` : ""}` : "Per final plan" },
       { label: "Bedrooms", value: m.beds },
       { label: "Bathrooms", value: m.baths },
-      { label: "Price basis", value: "From $79/ft² by finish level" },
+      { label: "Starting price", value: `${fromLabel(m)} with base finishes, all in` },
     ],
     floorPlanFor: (m) => ({ src: m.photo || m.img, label: `${m.id} · ${m.name}` }),
     galleryFor: (m) => [prefabCatalogue[0], prefabCatalogue[1], prefabCatalogue[2], { src: m.img, label: `${m.id} · ${m.name} · ${m.sqft}` }],
     included: [
       { title: "Complete engineered materials package", desc: "Structure, envelope, and interior materials computed for your chosen model by our engineering team." },
       { title: "Factory prefabrication", desc: "Modules and components built in controlled factory conditions, then shipped to your site." },
-      { title: "Finish level of your choice", desc: "Standard, Premium, or Luxury interior specification." },
+      { title: "Finishes of your choice", desc: "Siding, roof, windows, floors, kitchen and bath: pick each one." },
       { title: "Assembly documentation", desc: "Architectural and construction shop drawings, plus foundation drawings for your local contractor." },
     ],
     customization: [
-      { name: "Finishes", desc: "Select the Standard, Premium, or Luxury package: from builder-grade fixtures to natural stone and custom millwork." },
+      { name: "Finishes", desc: "Pick floors, kitchen and bath from photos and see the price change." },
       { name: "Exterior", desc: "Facade and cladding treatments adapted to your project and setting." },
       { name: "Kitchen", desc: "Kitchen specification matched to your finish level, from stock cabinetry to designer packages." },
       { name: "Windows", desc: "Window placement and glazing adapted to your plan and site orientation." },

@@ -28,7 +28,7 @@ function ScopeToggle({ added, onToggle }) {
   );
 }
 
-export default function BudgetPanel({ form, setField, estimate }) {
+export default function BudgetPanel({ form, setField, estimate, budgetText }) {
   const sf = Number(form.sf) || 0;
 
   return (
@@ -55,6 +55,7 @@ export default function BudgetPanel({ form, setField, estimate }) {
           action={<ScopeToggle added={form.materials} onToggle={() => setField("materials", !form.materials)} />}
         />
         <Row label="Delivery" value={form.materials ? money(estimate.del) : "—"} />
+        {estimate.upgrades > 0 && <Row label="Finishes + Add-ons" value={money(estimate.upgrades)} />}
         <Row
           label="Site Work + Assembly"
           value={form.site_work ? money(estimate.p3) : "Not included"}
@@ -67,8 +68,8 @@ export default function BudgetPanel({ form, setField, estimate }) {
         <span className="text-xs font-bold uppercase tracking-[0.2em] text-foreground/50">
           Expected Project Budget
         </span>
-        <span className="font-heading text-4xl font-bold text-primary text-right">
-          {money(estimate.total)}
+        <span className="font-heading text-3xl md:text-4xl font-bold text-primary text-right">
+          {budgetText || money(estimate.total)}
         </span>
       </div>
 

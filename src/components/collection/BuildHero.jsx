@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 
-export default function BuildHero({ collection, model, meta, price, blurb, hasFloorPlan, fit = "contain" }) {
+export default function BuildHero({ collection, model, meta, price, blurb, hasFloorPlan, fit = "contain", buildTo }) {
   return (
     <section className="bg-brand-dark text-white">
       <div className="max-w-7xl mx-auto px-6 pt-8 pb-14 md:pb-20">
@@ -87,10 +87,10 @@ export default function BuildHero({ collection, model, meta, price, blurb, hasFl
               className="mt-8 flex flex-wrap gap-4"
             >
               <Link
-                to="/see-what-fits"
+                to={buildTo || "/see-what-fits"}
                 className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-7 py-4 rounded-md font-semibold tracking-wide uppercase text-sm hover:bg-primary/90 transition-colors"
               >
-                Get My Project Estimate
+                {buildTo ? "Build yours" : "Get My Project Estimate"}
               </Link>
               {hasFloorPlan && (
                 <a
