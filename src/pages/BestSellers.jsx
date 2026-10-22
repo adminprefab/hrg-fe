@@ -6,63 +6,55 @@ import SectionLabel from "@/components/shared/SectionLabel";
 import AnimatedHeading from "@/components/shared/AnimatedHeading";
 import MobileProductCard from "@/components/shared/MobileProductCard";
 import ImageLightbox from "@/components/shared/ImageLightbox";
+import { fromLabel, getPrefabModel } from "@/lib/collectionData";
 
 const BASE = "https://media.base44.com/images/public/6a3d99160f311f943d2b9488";
-const PRODUCTPHOTOS = "https://media.base44.com/images/public/6aa6b441ec9ba0e9a14504fa";
-const photo = (file) => `${PRODUCTPHOTOS}/${file}`;
 
 const HERO_IMG = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=80";
 
-const models = [
+// Size, rooms, photo and price come from the catalogue (collectionData.js); only the
+// marketing copy lives here.
+const bestSellers = [
   {
-    id: "HRG-101",
-    name: "Studio Cabin",
+    slug: "hrg-101",
     tag: "Most Compact",
-    sqft: "258 ft²",
-    beds: "1 Bed",
-    baths: "1 Bath",
-    price: "From $89K",
     timeline: "10–14 weeks",
-    areaMetric: "(24 m²)",
-    dims: `10'-10" × 23'-0"`,
-    dimsMetric: "3.3 m × 7.0 m",
-    img: photo("5efe4f57e_ChatGPTImageSep29202603_53_17PM1.png"),
     bestFor: "Guest suite, home office, or rental income on a small lot.",
     desc: "The smallest footprint in our line. A turnkey studio that drops into tight backyards without dominating them.",
   },
   {
-    id: "HRG-104",
-    name: "Compact Two-Bedroom",
+    slug: "hrg-104",
     tag: "Most Popular",
-    sqft: "592 ft²",
-    beds: "2 Beds",
-    baths: "1 Bath",
-    price: "From $149K",
     timeline: "12–16 weeks",
-    areaMetric: "(55 m²)",
-    dims: null,
-    dimsMetric: null,
-    img: photo("9a3d18dab_ChatGPTImageSep29202605_40_26PM1.png"),
     bestFor: "Families, multigenerational living, or a high-demand rental.",
     desc: "The model more clients choose than any other. Two real bedrooms in a layout that still fits most yards.",
   },
   {
-    id: "HRG-106",
-    name: "Modern Two-Bedroom",
+    slug: "hrg-106",
     tag: "Best Value",
-    sqft: "829 ft²",
-    beds: "2 Beds",
-    baths: "1 Bath",
-    price: "From $189K",
     timeline: "14–18 weeks",
-    areaMetric: "(77 m²)",
-    dims: `29'-4" × 35'-9"`,
-    dimsMetric: "8.9 m × 10.9 m",
-    img: photo("f0c372083_ChatGPTImageSep29202603_53_21PM1.png"),
     bestFor: "Max livable space per dollar, full-time residence or long-term rental.",
     desc: "Our largest single-floor best seller. More square footage, open living, and the strongest resale value we offer.",
   },
 ];
+
+const models = bestSellers.map((b) => {
+  const m = getPrefabModel(b.slug);
+  return {
+    ...b,
+    id: m.id,
+    name: m.name,
+    sqft: m.sqft,
+    beds: `${m.beds} Bed${m.beds > 1 ? "s" : ""}`,
+    baths: `${m.baths} Bath${m.baths > 1 ? "s" : ""}`,
+    price: fromLabel(m),
+    areaMetric: m.sqftMetric ? `(${m.sqftMetric})` : null,
+    dims: m.dim,
+    dimsMetric: m.dimMetric,
+    img: m.photo || m.img,
+    buildTo: `/collection/prefab-design-build/${m.slug}/build`,
+  };
+});
 
 const proofStats = [
   { stat: "120+", label: "Units Installed" },
@@ -125,7 +117,7 @@ const faqs = [
   },
   {
     q: "Are the starting prices fixed?",
-    a: "No. Starting prices cover the unit and standard finishes. Site prep, foundation, utility connections, permits, and taxes are quoted separately based on your lot. Your final estimate reflects your specific site and finish selections.",
+    a: "No. The starting price is the low end of a complete project with base finishes: design, permits, materials, delivery, site work and assembly. Your lot and your finishes set the final number.",
   },
 ];
 
@@ -250,8 +242,8 @@ export default function BestSellers() {
                   dimensions={m.dims}
                   dimensionsMetric={m.dimsMetric}
                   price={`${m.price} · ${m.timeline}`}
-                  ctaLabel="Get a quote for this model"
-                  ctaTo="/get-a-quote"
+                  ctaLabel="Build yours"
+                  ctaTo={m.buildTo}
                 />
               </motion.div>
             ))}
@@ -301,10 +293,10 @@ export default function BestSellers() {
                     </div>
                   </dl>
                   <Link
-                    to="/get-a-quote"
+                    to={m.buildTo}
                     className="mt-auto inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-md font-semibold uppercase text-sm tracking-wide hover:bg-primary/90 transition-colors"
                   >
-                    Get a quote for this model
+                    Build yours
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>

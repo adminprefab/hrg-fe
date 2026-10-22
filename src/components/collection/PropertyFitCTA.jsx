@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
-export default function PropertyFitCTA({ title, copy, buttonText = "See What Fits My Property" }) {
+export default function PropertyFitCTA({ title, copy, buttonText = "See What Fits My Property", to = "/see-what-fits" }) {
   return (
     <section className="bg-brand-dark text-white py-20">
       <div className="max-w-3xl mx-auto px-6 text-center">
@@ -34,7 +34,7 @@ export default function PropertyFitCTA({ title, copy, buttonText = "See What Fit
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <Link
-            to="/see-what-fits"
+            to={to}
             className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-md font-semibold tracking-wide uppercase text-sm hover:bg-primary/90 transition-colors"
           >
             {buttonText}

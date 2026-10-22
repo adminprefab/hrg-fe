@@ -1,6 +1,7 @@
 // HRG Project Builder — pricing variables.
 // All customer-facing pricing is derived from these values. Change them here;
 // the calculator and value prompt update automatically.
+import { finishLines, priceRange } from "./finishPricing";
 
 export const PRICING = {
   materialsRate: 100, // $/SF for prefabricated materials
@@ -84,7 +85,18 @@ export const clampSfInput = (raw, large = false) => {
 // than showing a budget made of nothing but add-ons. landDev still carries each item's amount.
 // p3 is Site Work + Assembly net of its slope allowance and no-plumbing credit (see
 // siteWork for the parts); adjustment is the credit as applied to the budget.
-export function buildProject({ sf, plumbing = "Yes", landDevAnswers = {}, materials = true, siteWork = true }) {
+// `finishes` and `addOns` are the catalogue configurator's choices (finishPricing.js). They
+// add `upgrades` on top of the base materials; finish upgrades ride with the Materials scope,
+// add-ons are always counted. `range` is the low/high shown to visitors.
+export function buildProject({
+  sf,
+  plumbing = "Yes",
+  landDevAnswers = {},
+  materials = true,
+  siteWork = true,
+  finishes,
+  addOns = [],
+}) {
   const billableSf = sf >= PRICING.sfMin ? Math.min(sf, PRICING.sfLargeMax) : 0;
   const landDev = landDevLines(landDevAnswers, billableSf);
   const p1 = billableSf ? landDev.reduce((sum, l) => sum + l.amount, 0) : 0;
@@ -93,9 +105,24 @@ export function buildProject({ sf, plumbing = "Yes", landDevAnswers = {}, materi
   const parts = siteWorkParts(billableSf, landDevAnswers, plumbing);
   const p3 = parts.total;
   const adjustment = siteWork && billableSf ? parts.credit : 0;
-  const total = billableSf ? Math.max(0, p1 + (materials ? mats + del : 0) + (siteWork ? p3 : 0)) : 0;
-  return { p1, landDev, mats, del, p3, siteWork: parts, adjustment, total };
+  const finishParts = finishes || addOns.length ? finishLines(billableSf, finishes, addOns) : [];
+  const upgrades = finishParts
+    .filter((l) => (l.group === "addon" ? true : materials))
+    .reduce((sum, l) => sum + l.amount, 0);
+  const total = billableSf
+    ? Math.max(0, p1 + (materials ? mats + del : 0) + (siteWork ? p3 : 0) + upgrades)
+    : 0;
+  return { p1, landDev, mats, del, p3, siteWork: parts, adjustment, finishLines: finishParts, upgrades, total, range: priceRange(total) };
 }
+
+// A model's "From" price: the low end of the range for the base finishes and every scope,
+// with the builder's defaults (plumbing, no drawings or permits yet, lot not confirmed flat),
+// so the builder never opens above the price a card showed.
+export const startingPrice = (sf) => buildProject({ sf }).range.low;
+
+// "$163K" style, for cards.
+export const moneyShort = (n) =>
+  n >= 1e6 ? `$${(n / 1e6).toFixed(2).replace(/0$/, "")}M` : `$${Math.round(n / 1000)}K`;
 
 // Under-250 SF value comparison: current size vs. 250 / 350 / 500 SF complete projects.
 // `answers` (plumbing, drawings, permits, lot) price every size the way the visitor answered.

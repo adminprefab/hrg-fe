@@ -60,7 +60,7 @@ function SummaryRow({ label, value, strong = false }) {
   );
 }
 
-export default function ProceedStep({ form, setField, estimate, sf, onSubmit, loading, error, disabled }) {
+export default function ProceedStep({ form, setField, estimate, sf, preset, budgetText, onSubmit, loading, error, disabled }) {
   return (
     <div>
       <h2 className="font-heading text-3xl md:text-4xl font-bold text-balance">
@@ -72,6 +72,7 @@ export default function ProceedStep({ form, setField, estimate, sf, onSubmit, lo
 
       {/* Clean summary first */}
       <div className="mt-8 rounded-lg border border-border divide-y divide-border overflow-hidden">
+        {preset && <SummaryRow label="Model" value={preset.name} />}
         <SummaryRow label="Property" value={form.property_address} />
         <SummaryRow label="Square Footage" value={`${sf} SF`} />
         <SummaryRow label="Bathroom / Plumbing" value={form.plumbing} />
@@ -87,6 +88,7 @@ export default function ProceedStep({ form, setField, estimate, sf, onSubmit, lo
             value={`${money(estimate.mats)} + ${money(estimate.del)}`}
           />
         )}
+        {estimate.upgrades > 0 && <SummaryRow label="Finishes + Add-ons" value={money(estimate.upgrades)} />}
         {form.site_work && (
           <>
             <SummaryRow label="Site Work + Assembly" value={money(estimate.p3)} />
@@ -96,7 +98,7 @@ export default function ProceedStep({ form, setField, estimate, sf, onSubmit, lo
         <SummaryRow
           label="Expected Project Budget"
           strong
-          value={<span className="font-heading text-xl font-bold text-primary">{money(estimate.total)}</span>}
+          value={<span className="font-heading text-xl font-bold text-primary">{budgetText || money(estimate.total)}</span>}
         />
       </div>
       <p className="mt-2 text-xs font-semibold text-foreground/60">{BALLPARK_NOTE}</p>
