@@ -4,6 +4,8 @@ import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@/components/
 import { useIsMobile } from "@/hooks/use-mobile";
 import { priceLabel } from "./FinishCard";
 
+const SHOWROOM_CLIP = "HRG video, supplier showroom.";
+
 // A finish up close: bigger photo, a room example, and the details behind a disclosure so
 // they are there without crowding the panel. Slides in from the side on desktop and up
 // from the bottom on phones.
@@ -30,7 +32,23 @@ export default function FinishDetail({ detail, sf, selectedKey, onSelect, onClea
               {option.room && option.room !== option.img && (
                 <figure className="mt-6">
                   <img src={option.room} alt="" className="w-full aspect-[3/2] object-cover rounded-md" />
-                  <figcaption className="mt-2 text-xs text-foreground/55">In a room</figcaption>
+                  <figcaption className="mt-2 text-xs text-foreground/55">{option.credit || "In a room"}</figcaption>
+                </figure>
+              )}
+
+              {option.video && (
+                <figure className="mt-6">
+                  {/* Short clip, loaded only when the visitor presses play. */}
+                  <video
+                    src={option.video}
+                    poster={option.videoPoster}
+                    controls
+                    muted
+                    playsInline
+                    preload="none"
+                    className="w-full max-h-[70vh] rounded-md bg-black object-contain"
+                  />
+                  <figcaption className="mt-2 text-xs text-foreground/55">See it open and close. {SHOWROOM_CLIP}</figcaption>
                 </figure>
               )}
 

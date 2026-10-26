@@ -3,7 +3,9 @@
 //
 // SAMPLE CONTENT: names, descriptions and details are generic material types written for
 // the prototype, not supplier products. HRG replaces them with the real catalogue.
-// Photos: Unsplash (free license), hotlinked from images.unsplash.com.
+// Photos: HRG's own (hrg() below: shot at supplier showrooms in Oct 2026, cleaned up and
+// served from public/catalogue/finishes) where HRG has one; otherwise Unsplash (free
+// license), hotlinked from images.unsplash.com. `credit` captions HRG's room photos.
 //
 // Each category has one or more slots; a slot is one choice (Exterior has siding, roof
 // and windows). In each slot the option marked `included` is the standard finish already
@@ -12,6 +14,8 @@
 
 const photo = (id, w = 640, h = 480) => `https://images.unsplash.com/${id}?w=${w}&h=${h}&fit=crop&q=70`;
 const room = (id) => photo(id, 1200, 800);
+const hrg = (name) => `/catalogue/finishes/${name}.webp`;
+const SHOWROOM = "HRG photo, supplier showroom";
 
 // `needs` hides a category when the project has no kitchen or no plumbing (see
 // relevantCategories in finishPricing.js).
@@ -43,7 +47,7 @@ export const FINISH_CATEGORIES = [
             // draft: interior finishes $18/SF × 0.60 Luxury factor ≈ $10.80
             key: "stone", name: "Large porcelain tile", perSf: 11, draft: true, lead: "Luxury",
             desc: "Big, calm tiles with very few grout lines.",
-            img: photo("photo-1786933638319-10ebbb5b8661"), room: room("photo-1763485956243-50068d04a1ad"),
+            img: photo("photo-1786933638319-10ebbb5b8661"), room: hrg("living-porcelain-room"), credit: SHOWROOM,
             details: { Look: "Soft stone look, large format", Care: "Sweep and mop; seal grout as advised", "Where it goes": "Whole home or kitchen and bath only" },
           },
         ],
@@ -111,6 +115,12 @@ export const FINISH_CATEGORIES = [
             img: photo("photo-1786462543690-71b19c0d5321"), room: room("photo-1774427753780-e74b63344864"),
             details: { Look: "Oiled wood strips", Care: "Re-oil from time to time; wipe spills", "Where it goes": "Kitchen counters or island" },
           },
+          {
+            key: "granite", name: "Dark granite",
+            desc: "Deep black stone with silver flecks.",
+            img: hrg("counter-granite"), room: hrg("counter-granite-room"), credit: SHOWROOM,
+            details: { Look: "Polished black with silver and gold flecks", Care: "Mild soap and water; reseal as advised", "Where it goes": "Kitchen counters and vanity" },
+          },
         ],
       },
     ],
@@ -132,10 +142,10 @@ export const FINISH_CATEGORIES = [
             details: { Look: "Glossy white, 3 × 6 brick pattern", Care: "Wipe down; clean grout now and then", "Where it goes": "Shower walls" },
           },
           {
-            key: "large", name: "Large stone-look tile",
-            desc: "Bigger tiles, fewer grout lines, calm feel.",
-            img: photo("photo-1763485956243-50068d04a1ad"), room: room("photo-1758448018619-4cbe2250b9ad"),
-            details: { Look: "Warm stone look, large format", Care: "Wipe down; fewer grout lines to clean", "Where it goes": "Shower walls and floor" },
+            key: "large", name: "Large marble-look tile",
+            desc: "Big marble-look panels, very few grout lines.",
+            img: hrg("tile-large"), room: hrg("bath-vanity-room"), credit: SHOWROOM,
+            details: { Look: "White marble look with gray veining, large format", Care: "Wipe down; fewer grout lines to clean", "Where it goes": "Shower walls and floor" },
           },
           {
             key: "green", name: "Green patterned tile",
@@ -172,7 +182,7 @@ export const FINISH_CATEGORIES = [
           {
             key: "brass", name: "Brushed brass",
             desc: "A warm accent that works with wood and green.",
-            img: photo("photo-1644916925497-109cbd92087d"), room: room("photo-1771682390082-eb3f9821efd7"),
+            img: hrg("fixture-brass"), room: hrg("tile-large-room"), credit: SHOWROOM,
             details: { Look: "Warm gold tone, brushed", Care: "Wipe with a soft cloth; avoid abrasives", "Where it goes": "Kitchen, bath and cabinet pulls" },
           },
         ],
@@ -256,7 +266,7 @@ export const FINISH_CATEGORIES = [
             // draft: share of the $20/SF Mid grade gap
             key: "metal", name: "Standing-seam metal", perSf: 2.5, draft: true,
             desc: "Clean vertical seams with a modern edge.",
-            img: photo("photo-1602193458517-db6caca8f1fe"), room: room("photo-1759105734106-47594c3eea11"),
+            img: photo("photo-1602193458517-db6caca8f1fe"), room: hrg("roof-metal-aframe-room"), credit: SHOWROOM,
             details: { Look: "Smooth panels with raised seams", Care: "Clear leaves from valleys", "Where it goes": "Pitched or low-slope roofs" },
           },
           {
@@ -282,7 +292,8 @@ export const FINISH_CATEGORIES = [
             // draft: share of the $20/SF Mid grade gap
             key: "black", name: "Black aluminum frames", perSf: 3, draft: true,
             desc: "Slim dark frames that outline the view.",
-            img: photo("photo-1600607687939-ce8a6c25118c"), room: room("photo-1600607687939-ce8a6c25118c"),
+            img: hrg("window-black"), room: hrg("window-black-room"), credit: SHOWROOM,
+            video: "/catalogue/finishes/window-black-demo.mp4", videoPoster: hrg("window-black-demo"),
             details: { Look: "Slim black frames", Care: "Wipe frames; clean tracks", "Where it goes": "All windows and doors" },
           },
           {
@@ -317,13 +328,13 @@ export const COORDINATED_LOOKS = [
   {
     key: "warm", name: "Warm Natural",
     desc: "Oak, warm wood and brass.",
-    img: photo("photo-1771888703722-ee7ad9143a67", 640, 420),
+    img: hrg("tub-stone"),
     picks: { flooring: "oak", cabinets: "wood", counters: "butcher", tile: "large", fixtures: "brass", paint: "greige", exterior: "cedar", roof: "metal", windows: "black" },
   },
   {
     key: "contemporary", name: "Clean Contemporary",
     desc: "White, quartz and black accents.",
-    img: photo("photo-1635108195612-1ba1c88aaf0c", 640, 420),
+    img: hrg("tile-large-room"),
     picks: { flooring: "stone", cabinets: "white", counters: "quartz", tile: "large", fixtures: "black", paint: "white", exterior: "batten", roof: "metal", windows: "black" },
   },
   {
