@@ -17,7 +17,7 @@
 /* Lead form: posts to the same CRM route as the cost planner. If that fails, the visitor
    gets a ready-to-send email and a call button, so a lead is never silently lost. */
 (function(){
-  var API='https://www.hrgprefab.com/api/estimate-lead',MAIL='sales@hrgprefab.com',TEL='+12132164416';
+  var API='https://www.hrgprefab.com/api/estimate-lead',MAIL='sales@hrgprefab.com',TEL='+19092740272';
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
   // "Free estimate" buttons on project cards pick the project, then jump to the form
   document.addEventListener('click',function(e){var a=e.target.closest('[data-project]');if(!a)return;
@@ -45,7 +45,7 @@
           var txt='Name: '+d.name+'\nPhone: '+d.phone+'\nEmail: '+d.email+'\nZIP: '+(d.zip||'-')+'\nProject: '+(d.project||'-');
           f.className='lead done';f.innerHTML='<p class="big">Almost there</p><p>Our form is having trouble. Send this as an email, or call us.</p><div class="alt">'+
             '<a class="btn" href="mailto:'+MAIL+'?subject='+encodeURIComponent('Free estimate request')+'&body='+encodeURIComponent(txt)+'">Send by email</a>'+
-            '<a class="btn ghost" href="tel:'+TEL+'">Call 213.216.4416</a></div>'});
+            '<a class="btn ghost" href="tel:'+TEL+'">Call 909.274.0272</a></div>'});
     });
   });
 })();
