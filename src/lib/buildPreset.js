@@ -1,5 +1,5 @@
 // A visitor's catalogue build carried between pages in the URL:
-//   /see-what-fits?model=hrg-103&sf=650&f=kitchen.designer,flooring.oak&a=solar
+//   /see-what-fits?model=hrg-103&sf=650&f=cabinets.wood,flooring.oak&a=solar
 // `model` is a prefab slug (hrg-103) or one of the two prototypes (500 / 800).
 import { PROTOTYPES } from "./prototypes";
 import { buildPath, getPrefabModel } from "./collectionData";
@@ -42,7 +42,9 @@ export function presetSearch({ slug, sf, finishes, addOns }) {
 export function presetLeadFields(preset, estimate, sf) {
   if (!preset) return { entity: {}, lines: [] };
   const choices = preset.finishes ? finishLines(sf, preset.finishes, preset.addOns) : [];
-  const choiceText = choices.map((l) => `${l.label}: ${l.name}${l.amount ? ` (+${money(l.amount)})` : ""}`);
+  const priceNote = (l) =>
+    l.included ? " (included)" : l.amount === null ? " (pricing to be confirmed)" : ` (+${money(l.amount)})`;
+  const choiceText = choices.map((l) => `${l.label}: ${l.name}${l.chosen ? "" : " [not chosen, standard]"}${priceNote(l)}`);
   return {
     entity: {
       model_selection: preset.name,

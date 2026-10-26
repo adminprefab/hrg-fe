@@ -5,21 +5,15 @@ import { base44 } from "@/api/base44Client";
 import { createLead, landDevFields, leadDetails, sendLeadEmail, uploadNote } from "@/lib/leadEmail";
 import { PRICING, buildProject, money } from "@/lib/projectPricing";
 import { presetLeadFields } from "@/lib/buildPreset";
+import { BUILDER_STEPS, CATALOGUE_STEPS } from "@/lib/builderSteps";
 import AddressLookup from "./AddressLookup";
 import SizeStep from "./SizeStep";
 import ScopeCards from "./ScopeCards";
 import BudgetPanel from "./BudgetPanel";
 import ProceedStep from "./ProceedStep";
 
-const TOTAL_STEPS = 6;
-const STEP_TITLES = [
-  "Property",
-  "Project Size",
-  "Configuration",
-  "Build Your Project",
-  "Expected Budget",
-  "Proceed",
-];
+const STEP_TITLES = BUILDER_STEPS;
+const TOTAL_STEPS = STEP_TITLES.length;
 
 // `preset` is a model the visitor picked elsewhere (see buildPreset.js): its size starts the
 // size step, and its finishes and add-ons are priced in. With a preset the budget shows as a range.
@@ -51,6 +45,9 @@ export default function ProjectBuilder({ preset = null }) {
     utility_info: "",
     plans_file: null,
   });
+
+  // A build from the Finishes step has already done "Your Model" and "Finishes" (CATALOGUE_STEPS).
+  const stepOffset = preset?.finishes ? CATALOGUE_STEPS.length - BUILDER_STEPS.length : 0;
 
   const setField = (name, value) => setForm((f) => ({ ...f, [name]: value }));
 
@@ -223,8 +220,10 @@ export default function ProjectBuilder({ preset = null }) {
                 </div>
               </div>
               {preset.editTo && (
-                <Link to={preset.editTo} className="text-xs font-semibold uppercase tracking-wide text-primary hover:underline shrink-0">
-                  Edit
+                <Link
+                  to={`${preset.editTo}${form.plumbing === "No" ? "&plumbing=No" : ""}`}
+                  className="text-xs font-semibold uppercase tracking-wide text-primary hover:underline shrink-0">
+                  Edit finishes
                 </Link>
               )}
             </div>
@@ -234,14 +233,14 @@ export default function ProjectBuilder({ preset = null }) {
           <div>
             <div className="flex justify-between text-xs text-foreground/60 mb-2">
               <span className="font-semibold uppercase tracking-wide">
-                Step {step} of {TOTAL_STEPS} · {STEP_TITLES[step - 1]}
+                Step {step + stepOffset} of {TOTAL_STEPS + stepOffset} · {STEP_TITLES[step - 1]}
               </span>
-              <span>{Math.round((step / TOTAL_STEPS) * 100)}%</span>
+              <span>{Math.round(((step + stepOffset) / (TOTAL_STEPS + stepOffset)) * 100)}%</span>
             </div>
             <div className="h-1.5 rounded-full bg-secondary overflow-hidden">
               <div
                 className="h-full bg-primary rounded-full transition-all duration-500"
-                style={{ width: `${(step / TOTAL_STEPS) * 100}%` }}
+                style={{ width: `${((step + stepOffset) / (TOTAL_STEPS + stepOffset)) * 100}%` }}
               />
             </div>
           </div>
