@@ -46,8 +46,8 @@ export default function CoordinatedLooks({ open, onToggle, applied, onApply }) {
           })}
           <p className="sm:col-span-3 text-sm text-foreground/60">
             Rather talk it through? Call{" "}
-            <a href="tel:+12132164416" className="font-semibold text-primary hover:underline">
-              213.216.4416
+            <a href="tel:+19092740272" className="font-semibold text-primary hover:underline">
+              909.274.0272
             </a>{" "}
             and we'll help you choose.
           </p>
