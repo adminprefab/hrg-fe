@@ -12,7 +12,9 @@ const SITE_LINKS = [
 ];
 
 const CONTACTS = [
-  { name: "HRG Sales", phone: "213.216.4416", email: "sales@hrgprefab.com" },
+  { phone: "909.274.0272", email: "sales@hrgprefab.com" },
+  { phone: null, email: "jason@hrgprefab.com" },
+  { phone: null, email: "michael@hrgprefab.com" },
 ];
 
 export default function Footer() {
@@ -43,8 +45,7 @@ export default function Footer() {
           <h4 className="text-primary text-xs font-bold uppercase tracking-[0.2em] mb-4">Call</h4>
           <ul className="space-y-3 text-sm text-white">
             {CONTACTS.filter((c) => c.phone).map((c) => (
-              <li key={c.name}>
-                <span className="block text-xs text-white/50 mb-1">{c.name}</span>
+              <li key={c.email}>
                 <a href={`tel:+1${c.phone.replace(/\D/g, "")}`} className="hover:text-primary transition-colors">
                   {c.phone}
                 </a>
@@ -58,7 +59,6 @@ export default function Footer() {
           <ul className="space-y-3 text-sm text-white">
             {CONTACTS.map((c) => (
               <li key={c.email}>
-                <span className="block text-xs text-white/50 mb-1">{c.name}</span>
                 <a href={`mailto:${c.email}`} className="hover:text-primary transition-colors">
                   {c.email}
                 </a>

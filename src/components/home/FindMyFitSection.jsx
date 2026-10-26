@@ -44,7 +44,7 @@ export default function FindMyFitSection() {
               <span className="text-sm text-foreground/60">About 2 minutes. No account required.</span>
             </div>
             <p className="mt-6 text-sm text-foreground/50">
-              Prefer to talk? 213.216.4416
+              Prefer to talk? 909.274.0272
             </p>
           </div>
         </motion.div>

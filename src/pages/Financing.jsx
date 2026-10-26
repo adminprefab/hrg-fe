@@ -149,7 +149,7 @@ export default function Financing() {
             <Phone className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
             <p className="text-sm text-foreground/70 leading-relaxed">
               Need help aligning financing with your scope? Call HRG at{" "}
-              <span className="font-semibold text-foreground">213.216.4416</span> and ask for Jason or Michael, we'll walk you through it.
+              <span className="font-semibold text-foreground">909.274.0272</span> and we'll walk you through it.
             </p>
           </motion.div>
         </div>
