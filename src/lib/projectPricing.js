@@ -85,9 +85,10 @@ export const clampSfInput = (raw, large = false) => {
 // than showing a budget made of nothing but add-ons. landDev still carries each item's amount.
 // p3 is Site Work + Assembly net of its slope allowance and no-plumbing credit (see
 // siteWork for the parts); adjustment is the credit as applied to the budget.
-// `finishes` and `addOns` are the catalogue configurator's choices (finishPricing.js). They
-// add `upgrades` on top of the base materials; finish upgrades ride with the Materials scope,
-// add-ons are always counted. `range` is the low/high shown to visitors.
+// `finishes` and `addOns` are the catalogue configurator's choices (finishPricing.js). Their
+// VERIFIED prices add `upgrades` on top of the base materials (finish upgrades ride with the
+// Materials scope, add-ons always count); choices still waiting on pricing are counted in
+// `pendingPricing` and change nothing. `range` is the low/high shown to visitors.
 export function buildProject({
   sf,
   plumbing = "Yes",
@@ -108,11 +109,12 @@ export function buildProject({
   const finishParts = finishes || addOns.length ? finishLines(billableSf, finishes, addOns) : [];
   const upgrades = finishParts
     .filter((l) => (l.group === "addon" ? true : materials))
-    .reduce((sum, l) => sum + l.amount, 0);
+    .reduce((sum, l) => sum + (l.amount || 0), 0);
+  const pendingPricing = finishParts.filter((l) => l.amount === null).length;
   const total = billableSf
     ? Math.max(0, p1 + (materials ? mats + del : 0) + (siteWork ? p3 : 0) + upgrades)
     : 0;
-  return { p1, landDev, mats, del, p3, siteWork: parts, adjustment, finishLines: finishParts, upgrades, total, range: priceRange(total) };
+  return { p1, landDev, mats, del, p3, siteWork: parts, adjustment, finishLines: finishParts, upgrades, pendingPricing, total, range: priceRange(total) };
 }
 
 // A model's "From" price: the low end of the range for the base finishes and every scope,
