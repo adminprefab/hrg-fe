@@ -9,8 +9,9 @@
 //
 // Each category has one or more slots; a slot is one choice (Exterior has siding, roof
 // and windows). In each slot the option marked `included` is the standard finish already
-// in the base price. `perSf` / `flat` with `draft: true` are HRG's unconfirmed drafts:
-// they are kept for review but never shown or priced until set to `verified: true`.
+// in the base price. `perSf` / `flat` with `verified: true` are prices HRG has approved
+// and the only ones the page shows and adds to the budget; an option without it shows
+// "Pricing to be confirmed".
 
 const photo = (id, w = 640, h = 480) => `https://images.unsplash.com/${id}?w=${w}&h=${h}&fit=crop&q=70`;
 const room = (id) => photo(id, 1200, 800);
@@ -37,15 +38,15 @@ export const FINISH_CATEGORIES = [
             details: { Look: "Matte wood grain, long planks", Care: "Sweep and damp mop", "Where it goes": "Every room, including kitchen and bath" },
           },
           {
-            // draft: interior finishes $18/SF × 0.25 Mid factor ≈ $4.50 (Master Cost Calculator)
-            key: "oak", name: "Engineered oak", perSf: 4.5, draft: true, lead: "Premium",
+            // approved by HRG 2026-10-22; drafted from: interior finishes $18/SF × 0.25 Mid factor ≈ $4.50 (Master Cost Calculator)
+            key: "oak", name: "Engineered oak", perSf: 4.5, verified: true, lead: "Premium",
             desc: "Real oak on top, warm underfoot.",
             img: photo("photo-1584622781564-1d987f7333c1"), room: room("photo-1649083048381-520a5b3d91ff"),
             details: { Look: "Natural oak, light to mid tone", Care: "Sweep, damp mop, felt pads under furniture", "Where it goes": "Living areas and bedrooms" },
           },
           {
-            // draft: interior finishes $18/SF × 0.60 Luxury factor ≈ $10.80
-            key: "stone", name: "Large porcelain tile", perSf: 11, draft: true, lead: "Luxury",
+            // approved by HRG 2026-10-22; drafted from: interior finishes $18/SF × 0.60 Luxury factor ≈ $10.80
+            key: "stone", name: "Large porcelain tile", perSf: 11, verified: true, lead: "Luxury",
             desc: "Big, calm tiles with very few grout lines.",
             img: photo("photo-1786933638319-10ebbb5b8661"), room: hrg("living-porcelain-room"), credit: SHOWROOM,
             details: { Look: "Soft stone look, large format", Care: "Sweep and mop; seal grout as advised", "Where it goes": "Whole home or kitchen and bath only" },
@@ -237,15 +238,15 @@ export const FINISH_CATEGORIES = [
             details: { Look: "Horizontal painted boards", Care: "Rinse yearly; repaint as needed", "Where it goes": "All exterior walls" },
           },
           {
-            // draft: share of the $79→$99 grade gap ($20/SF) for the envelope
-            key: "batten", name: "Board and batten", perSf: 4, draft: true, lead: "Impact",
+            // approved by HRG 2026-10-22; drafted from: share of the $79→$99 grade gap ($20/SF) for the envelope
+            key: "batten", name: "Board and batten", perSf: 4, verified: true, lead: "Impact",
             desc: "Tall vertical lines, farmhouse to modern.",
             img: photo("photo-1770756051811-1612ac8bedfa"), room: room("photo-1770756051811-1612ac8bedfa"),
             details: { Look: "Vertical boards with narrow strips", Care: "Rinse yearly; repaint as needed", "Where it goes": "All walls or one accent wall" },
           },
           {
-            // draft: share of the $79→$129 grade gap ($50/SF) for the envelope
-            key: "cedar", name: "Cedar and metal", perSf: 10, draft: true, lead: "Architectural",
+            // approved by HRG 2026-10-22; drafted from: share of the $79→$129 grade gap ($50/SF) for the envelope
+            key: "cedar", name: "Cedar and metal", perSf: 10, verified: true, lead: "Architectural",
             desc: "Natural wood paired with dark metal panels.",
             img: photo("photo-1596830762262-7b5e55dd821c"), room: room("photo-1602193458517-db6caca8f1fe"),
             details: { Look: "Stained cedar with dark metal", Care: "Re-stain wood every few years", "Where it goes": "Mix of walls" },
@@ -263,15 +264,15 @@ export const FINISH_CATEGORIES = [
             details: { Look: "Layered shingles, charcoal", Care: "Check after big storms", "Where it goes": "Pitched roofs" },
           },
           {
-            // draft: share of the $20/SF Mid grade gap
-            key: "metal", name: "Standing-seam metal", perSf: 2.5, draft: true,
+            // approved by HRG 2026-10-22; drafted from: share of the $20/SF Mid grade gap
+            key: "metal", name: "Standing-seam metal", perSf: 2.5, verified: true,
             desc: "Clean vertical seams with a modern edge.",
             img: photo("photo-1602193458517-db6caca8f1fe"), room: hrg("roof-metal-aframe-room"), credit: SHOWROOM,
             details: { Look: "Smooth panels with raised seams", Care: "Clear leaves from valleys", "Where it goes": "Pitched or low-slope roofs" },
           },
           {
-            // draft: share of the $50/SF Luxury grade gap
-            key: "tile", name: "Concrete tile", perSf: 6, draft: true,
+            // approved by HRG 2026-10-22; drafted from: share of the $50/SF Luxury grade gap
+            key: "tile", name: "Concrete tile", perSf: 6, verified: true,
             desc: "Curved terracotta-color tile, Spanish style.",
             img: photo("photo-1605450099279-533bd3ce379a"), room: room("photo-1528223871781-8f4c984f6164"),
             details: { Look: "Curved tile, terracotta color", Care: "Replace any cracked tiles", "Where it goes": "Pitched roofs" },
@@ -289,16 +290,16 @@ export const FINISH_CATEGORIES = [
             details: { Look: "White frames", Care: "Wipe frames; clean tracks", "Where it goes": "All windows and doors" },
           },
           {
-            // draft: share of the $20/SF Mid grade gap
-            key: "black", name: "Black aluminum frames", perSf: 3, draft: true,
+            // approved by HRG 2026-10-22; drafted from: share of the $20/SF Mid grade gap
+            key: "black", name: "Black aluminum frames", perSf: 3, verified: true,
             desc: "Slim dark frames that outline the view.",
             img: hrg("window-black"), room: hrg("window-black-room"), credit: SHOWROOM,
             video: "/catalogue/finishes/window-black-demo.mp4", videoPoster: hrg("window-black-demo"),
             details: { Look: "Slim black frames", Care: "Wipe frames; clean tracks", "Where it goes": "All windows and doors" },
           },
           {
-            // draft: share of the $50/SF Luxury grade gap
-            key: "glasswall", name: "Sliding glass wall", perSf: 8, draft: true,
+            // approved by HRG 2026-10-22; drafted from: share of the $50/SF Luxury grade gap
+            key: "glasswall", name: "Sliding glass wall", perSf: 8, verified: true,
             desc: "Opens the living room to the yard.",
             img: photo("photo-1600566753190-17f0baa2a6c3"), room: room("photo-1600566753190-17f0baa2a6c3"),
             details: { Look: "Large sliding panels", Care: "Keep the track clear", "Where it goes": "Living room wall" },
@@ -309,18 +310,18 @@ export const FINISH_CATEGORIES = [
   },
 ];
 
-// Optional extras, shown after the finishes. Drafts only; never priced until verified.
+// Optional extras, shown after the finishes, priced per home.
 export const ADD_ONS = [
-  // draft: ~4 kW system at the national installed average of about $3.25/W
-  { key: "solar", name: "Solar panels", flat: 13000, draft: true, lead: "Solar", desc: "Rooftop panels sized for a small home.", img: photo("photo-1509391366360-2e959784a276") },
-  // draft: two-zone ductless heat pump, national installed average
-  { key: "minisplit", name: "Mini-split heat and AC", flat: 7500, draft: true, desc: "Wall units that heat and cool each zone.", img: photo("photo-1762341123870-d706f257a12e") },
-  // draft: locks, thermostat, lighting and doorbell package
-  { key: "smart", name: "Smart home", flat: 4500, draft: true, lead: "Smart Home", desc: "Smart lock, thermostat, lights and doorbell.", img: photo("photo-1558002038-1055907df827") },
-  // draft: Master Cost Calculator deck rate $45/SF × 200 SF
-  { key: "deck", name: "Deck, about 200 sq ft", flat: 9000, draft: true, lead: "Outdoor Living", desc: "Outdoor space right off the living room.", img: photo("photo-1613544723371-23b514a78c85") },
-  // draft: Master Cost Calculator "Landscaping — Basic"
-  { key: "landscape", name: "Landscaping", flat: 6000, draft: true, lead: "Landscape", desc: "Planting and paths around the new home.", img: photo("photo-1558904541-efa843a96f01") },
+  // approved by HRG 2026-10-22; drafted from: ~4 kW system at the national installed average of about $3.25/W
+  { key: "solar", name: "Solar panels", flat: 13000, verified: true, lead: "Solar", desc: "Rooftop panels sized for a small home.", img: photo("photo-1509391366360-2e959784a276") },
+  // approved by HRG 2026-10-22; drafted from: two-zone ductless heat pump, national installed average
+  { key: "minisplit", name: "Mini-split heat and AC", flat: 7500, verified: true, desc: "Wall units that heat and cool each zone.", img: photo("photo-1762341123870-d706f257a12e") },
+  // approved by HRG 2026-10-22; drafted from: locks, thermostat, lighting and doorbell package
+  { key: "smart", name: "Smart home", flat: 4500, verified: true, lead: "Smart Home", desc: "Smart lock, thermostat, lights and doorbell.", img: photo("photo-1558002038-1055907df827") },
+  // approved by HRG 2026-10-22; drafted from: Master Cost Calculator deck rate $45/SF × 200 SF
+  { key: "deck", name: "Deck, about 200 sq ft", flat: 9000, verified: true, lead: "Outdoor Living", desc: "Outdoor space right off the living room.", img: photo("photo-1613544723371-23b514a78c85") },
+  // approved by HRG 2026-10-22; drafted from: Master Cost Calculator "Landscaping — Basic"
+  { key: "landscape", name: "Landscaping", flat: 6000, verified: true, lead: "Landscape", desc: "Planting and paths around the new home.", img: photo("photo-1558904541-efa843a96f01") },
 ];
 
 // "Start with a coordinated look": a choice for every slot. Homeowners can change any of it.

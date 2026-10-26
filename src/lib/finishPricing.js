@@ -4,9 +4,9 @@
 // Only VERIFIED prices count. An option prices in only when it has `verified: true` and a
 // `perSf` (per square foot of the home) or `flat` (per home) amount. The `included`
 // option adds $0. Everything else shows "Pricing to be confirmed" and leaves the budget
-// as it is. HRG's draft numbers (draft: true, from the Master Cost Calculator: middle
+// as it is. The verified prices were drafted from HRG's Master Cost Calculator (middle
 // options together +$20/SF, top options +$50/SF, the gap between the $79 / $99 / $129
-// grades) stay in the data for review until HRG confirms them.
+// grades) and approved by HRG on 2026-10-22.
 import { ADD_ONS, COORDINATED_LOOKS, FINISH_CATEGORIES } from "./finishCatalogue";
 
 export { ADD_ONS, COORDINATED_LOOKS, FINISH_CATEGORIES };
