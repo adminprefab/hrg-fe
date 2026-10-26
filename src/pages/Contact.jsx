@@ -7,11 +7,12 @@ import PageHero from "@/components/shared/PageHero";
 
 const contacts = [
   {
-    name: "HRG Sales",
-    phone: "213.216.4416",
-    phoneHref: "tel:+12132164416",
+    phone: "909.274.0272",
+    phoneHref: "tel:+19092740272",
     email: "sales@hrgprefab.com",
   },
+  { email: "jason@hrgprefab.com" },
+  { email: "michael@hrgprefab.com" },
 ];
 
 const projectTypes = ["Detached ADU", "Attached Addition", "Not sure yet"];
@@ -67,7 +68,7 @@ export default function Contact() {
       setSubmitted(true);
     } catch (err) {
       console.error(err);
-      setError("Something went wrong sending your message. Please try again, or call us at 213.216.4416.");
+      setError("Something went wrong sending your message. Please try again, or call us at 909.274.0272.");
     } finally {
       setLoading(false);
     }
@@ -91,14 +92,13 @@ export default function Contact() {
             <div className="space-y-8">
               {contacts.map((c, i) => (
                 <motion.div
-                  key={c.name}
+                  key={c.email}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
                   className="border-l-2 border-primary pl-6"
                 >
-                  <h3 className="font-heading text-lg font-semibold mb-3">{c.name}</h3>
                   {c.phone && (
                     <a href={c.phoneHref} className="flex items-center gap-3 text-foreground/70 hover:text-primary transition-colors mb-2">
                       <Phone className="w-4 h-4 text-primary" /> {c.phone}
