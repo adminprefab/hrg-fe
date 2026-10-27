@@ -71,18 +71,9 @@ export default function Footer() {
           <h4 className="text-primary text-xs font-bold uppercase tracking-[0.2em] mb-4">Visit</h4>
           <ul className="space-y-2 text-sm text-white">
             <li>
-              <a
-                href="https://hrgprefab.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-primary transition-colors"
-              >
-                hrgprefab.com
-              </a>
-            </li>
-            <li>
+              <span className="block text-xs text-white/50">An extension of</span>
               <a href="https://thehomeremodelgroup.com" className="hover:text-primary transition-colors">
-                thehomeremodelgroup.com
+                The Home Remodel Group
               </a>
             </li>
             <li>
