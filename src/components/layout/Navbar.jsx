@@ -6,6 +6,7 @@ import ThemeToggle from "./ThemeToggle";
 const links = [
   { label: "Most Popular", to: "/adu-models" },
   { label: "Builds", to: "/collection" },
+  { label: "Finishes", to: "/finishes" },
   { label: "Best Sellers", to: "/best-sellers" },
   { label: "Pools", to: "/pools" },
   { label: "Financing", to: "/financing" },
@@ -13,7 +14,7 @@ const links = [
   { label: "Contact", to: "/contact" },
 ];
 
-const linkClass = "text-xs font-semibold uppercase tracking-wide text-foreground/60 hover:text-foreground transition-colors";
+const linkClass = "whitespace-nowrap text-xs font-semibold uppercase tracking-wide text-foreground/60 hover:text-foreground transition-colors";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -26,7 +27,7 @@ export default function Navbar() {
           <img src="/assets/logo-02-sm.png" alt="" aria-hidden="true" className="h-12 w-auto object-contain hidden dark:block" />
         </Link>
 
-        <div className="hidden lg:flex items-center gap-5">
+        <div className="hidden lg:flex items-center gap-4 xl:gap-5">
           {links.map((l) => (
             <NavLink
               key={l.label}
@@ -44,7 +45,7 @@ export default function Navbar() {
           <ThemeToggle />
           <Link
             to="/#build"
-            className="bg-primary text-primary-foreground px-5 py-3 rounded-md text-xs font-bold uppercase tracking-wide hover:bg-primary/90 transition-colors"
+            className="whitespace-nowrap bg-primary text-primary-foreground px-5 py-3 rounded-md text-xs font-bold uppercase tracking-wide hover:bg-primary/90 transition-colors"
           >
             Build my project
           </Link>

@@ -33,11 +33,15 @@ export default function BuildDetail() {
 
       <BuildKeyInfo specs={collection.specsFor(model)} floorPlan={floorPlan} />
 
-      <BuildIncluded
-        included={collection.included}
-        customization={collection.customization}
-        note={collection.customizationNote}
-      />
+      {/* Prefab models go straight from the specs to choosing finishes; the long "included"
+          and "customization" lists stay for the other collections. */}
+      {!buildTo && (
+        <BuildIncluded
+          included={collection.included}
+          customization={collection.customization}
+          note={collection.customizationNote}
+        />
+      )}
 
       {buildTo ? (
         <PropertyFitCTA title="Pick your finishes. See your price." buttonText="Build yours" to={buildTo} />

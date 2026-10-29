@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 const SITE_LINKS = [
   { label: "Most Popular", to: "/adu-models" },
   { label: "Builds", to: "/collection" },
+  { label: "Finishes", to: "/finishes" },
   { label: "Best Sellers", to: "/best-sellers" },
   { label: "Pools", to: "/pools" },
   { label: "Financing", to: "/financing" },
