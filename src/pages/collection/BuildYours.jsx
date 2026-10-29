@@ -11,6 +11,10 @@ import FinishDetail from "@/components/finishes/FinishDetail";
 import CoordinatedLooks from "@/components/finishes/CoordinatedLooks";
 import { ReviewSheet, SelectionsAside, SelectionsBar } from "@/components/finishes/SelectionsSummary";
 
+// The "Finishes" menu tab (/finishes) has no model in its path; it opens on this one, and
+// the visitor can change it.
+const DEFAULT_MODEL = "hrg-103";
+
 const ADD_ONS_TAB = { key: "addons", label: "Add-ons", intro: "Optional extras. Skip them if you like.", slots: [] };
 
 // Choices survive leaving the page: the URL carries them, and this browser remembers the
@@ -36,7 +40,7 @@ const recall = (slug) => {
 // property and contact steps (/see-what-fits).
 export default function BuildYours() {
   const { modelSlug } = useParams();
-  const model = getPrefabModel(modelSlug);
+  const model = getPrefabModel(modelSlug || DEFAULT_MODEL);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -165,6 +169,12 @@ export default function BuildYours() {
               {s.sf.toLocaleString("en-US")} sq ft
             </button>
           ))}
+          <Link
+            to="/collection/prefab-design-build"
+            className="min-h-10 inline-flex items-center px-2 font-semibold text-primary hover:underline"
+          >
+            Change model
+          </Link>
         </div>
 
         <div className="mt-6">

@@ -73,6 +73,7 @@ const AuthenticatedApp = () => {
         <Route path="/collection/apple-cabin" element={<AppleCabin />} />
         <Route path="/collection/expandable-container" element={<ExpandableContainer />} />
         <Route path="/collection/outdoor-kitchen" element={<OutdoorKitchen />} />
+        <Route path="/finishes" element={<BuildYours />} />
         <Route path="/collection/prefab-design-build/:modelSlug/build" element={<BuildYours />} />
         <Route path="/collection/:collectionSlug/:modelSlug" element={<BuildDetail />} />
         <Route path="/pools" element={<Pool />} />
