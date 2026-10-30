@@ -73,13 +73,8 @@ export default function Footer() {
           <ul className="space-y-2 text-sm text-white">
             <li>
               <span className="block text-xs text-white/50">An extension of</span>
-              <a href="https://thehomeremodelgroup.com" className="hover:text-primary transition-colors">
+              <a href="https://thehomeremodelgroup.com" className="text-primary font-semibold underline underline-offset-4 decoration-primary/40 hover:decoration-primary transition-colors">
                 The Home Remodel Group
-              </a>
-            </li>
-            <li>
-              <a href="/estimate" className="hover:text-primary transition-colors">
-                Remodel cost planner
               </a>
             </li>
             <li>Mon – Fri, 8am – 5pm</li>
