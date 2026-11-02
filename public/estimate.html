@@ -430,7 +430,7 @@ section[id],main[id]{scroll-margin-top:60px}
 </div></header>
 <section class="mast">
   <div class="mast-in">
-    <p class="m-eye" data-i18n>The Home Remodel Group · Remodel cost planner</p>
+    <p class="m-eye" data-i18n>The Home Remodel Group</p>
     <h1 data-i18n>What would it cost to <em>change</em> your home?</h1>
     <p data-i18n>Pick a job, enter the size and see your price in seconds. Then send it to HRG for a firm quote.</p>
     <ol class="m-steps"><li><b>01</b><span data-i18n>Job</span></li><li><b>02</b><span data-i18n>Size</span></li><li><b>03</b><span data-i18n>Details</span></li><li><b>04</b><span data-i18n>Estimate</span></li><li><b>05</b><span data-i18n>Firm quote</span></li></ol>
@@ -2063,7 +2063,7 @@ const ES={
 "About":"Nosotros",
 "Remodeling guides":"Guías de remodelación",
 "Remodeling cost estimates for homes anywhere in the United States.":"Estimados de costos de remodelación para casas en cualquier parte de Estados Unidos.",
-"The Home Remodel Group · Remodel cost planner":"The Home Remodel Group · Calculadora de costos de remodelación",
+"The Home Remodel Group":"The Home Remodel Group",
 "Source: Zonda/JLC Cost vs. Value 2025, West Coast metro and Pacific-region figures (read from published summaries). Resale value is an average and depends on your local market.":"Fuente: Zonda/JLC Cost vs. Value 2025, cifras de una metrópoli de la costa oeste y de la región del Pacífico (tomadas de resúmenes publicados). El valor de reventa es un promedio y depende del mercado local.",
 "When to schedule it":"Cuándo programarlo",
 "Kitchens, bathrooms, additions, ADUs and whole-home remodels, priced for any U.S. state.":"Cocinas, baños, ampliaciones, ADUs y remodelaciones de toda la casa, con precios para cualquier estado de EE. UU.",
@@ -3270,7 +3270,7 @@ function renderPrint(){const r=totals(S.basket),ar=area(),d=new Date();
   const ph=weeks(r),tw=ph.reduce((s,p)=>s+p[1],0);
   const jobs=r.per.map(({e,ls,cost})=>`<section class="ps-job"><div class="ps-row ps-h"><b>${esc(tr(JOB[e.job].name))}</b><b>${usd(cost)}</b></div><p class="ps-d">${esc(describe(e))}</p>
     <table>${ls.map(l=>`<tr><td>${esc(tr(l.label))}</td><td class="num">${usd(l.cost)}</td></tr>`).join('')}</table></section>`).join('');
-  $('print-sheet').innerHTML=`<header class="ps-top"><div><b class="ps-brand">HRG</b> ${esc(tr('The Home Remodel Group · Remodel cost planner'))}</div><div>${d.toLocaleDateString(LANG==='es'?'es-US':'en-US',{year:'numeric',month:'long',day:'numeric'})}</div></header>
+  $('print-sheet').innerHTML=`<header class="ps-top"><div><b class="ps-brand">HRG</b> ${esc(tr('The Home Remodel Group'))}</div><div>${d.toLocaleDateString(LANG==='es'?'es-US':'en-US',{year:'numeric',month:'long',day:'numeric'})}</div></header>
     <h1>${T('Remodel cost estimate','Estimado de costo de remodelación')}</h1>
     <p class="ps-meta">${esc(ar.name)} · ${T('Home built','Casa construida en')} ${esc(String(S.year||'—'))}</p>
     <div class="ps-total"><span>${T('Estimated range','Rango estimado')}</span><b>${usd(r.total*0.9)} – ${usd(r.total*1.15)}</b><span>${T('Most likely','Lo más probable')} ${usd(r.total)}</span></div>
