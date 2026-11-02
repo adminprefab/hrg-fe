@@ -39,6 +39,11 @@ export default function Footer() {
                 </Link>
               </li>
             ))}
+            <li>
+              <a href="https://selections.hrgprefab.com" className="text-primary hover:underline">
+                Finish selections
+              </a>
+            </li>
           </ul>
         </div>
 
