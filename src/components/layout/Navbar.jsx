@@ -14,6 +14,10 @@ const links = [
   { label: "Contact", to: "/contact" },
 ];
 
+// The one public finish selections form, served by the CRM. What a client
+// sends there becomes a lead with their selections and an email to sales@.
+const SELECTIONS_URL = "https://selections.hrgprefab.com";
+
 const linkClass = "whitespace-nowrap text-xs font-semibold uppercase tracking-wide text-foreground/60 hover:text-foreground transition-colors";
 
 export default function Navbar() {
@@ -43,6 +47,12 @@ export default function Navbar() {
 
         <div className="hidden md:flex items-center gap-3">
           <ThemeToggle />
+          <a
+            href={SELECTIONS_URL}
+            className="whitespace-nowrap border border-primary text-primary px-4 py-3 rounded-md text-xs font-bold uppercase tracking-wide hover:bg-primary hover:text-primary-foreground transition-colors"
+          >
+            Finish selections
+          </a>
           <Link
             to="/#build"
             className="whitespace-nowrap bg-primary text-primary-foreground px-5 py-3 rounded-md text-xs font-bold uppercase tracking-wide hover:bg-primary/90 transition-colors"
@@ -74,6 +84,12 @@ export default function Navbar() {
               {l.label}
             </NavLink>
           ))}
+          <a
+            href={SELECTIONS_URL}
+            className={`${linkClass} block text-primary`}
+          >
+            Finish selections
+          </a>
           <div className="pt-2 flex items-center gap-3">
             <ThemeToggle />
             <Link
