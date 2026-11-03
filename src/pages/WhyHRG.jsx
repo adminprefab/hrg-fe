@@ -4,6 +4,7 @@ import PageHero from "@/components/shared/PageHero";
 import SectionLabel from "@/components/shared/SectionLabel";
 import AnimatedHeading from "@/components/shared/AnimatedHeading";
 import CTASection from "@/components/shared/CTASection";
+import ReferencesStrip from "@/components/shared/ReferencesStrip";
 import ClickableImage from "@/components/shared/ClickableImage";
 
 const IMG = {
@@ -153,6 +154,10 @@ export default function WhyHRG() {
           greater flexibility, and personal attention.
         </motion.p>
       </section>
+
+      <div className="max-w-7xl mx-auto px-6 pb-20 md:pb-24">
+        <ReferencesStrip />
+      </div>
 
       <CTASection
         label="Next Step"

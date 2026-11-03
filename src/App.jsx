@@ -21,6 +21,7 @@ import Financing from '@/pages/Financing';
 import SeeWhatFits from '@/pages/SeeWhatFits';
 import BestSellers from '@/pages/BestSellers';
 import WhyHRG from '@/pages/WhyHRG';
+import References from '@/pages/References';
 import ProjectBuilderPage from '@/pages/ProjectBuilderPage';
 import PrefabDesignBuild from '@/pages/collection/PrefabDesignBuild';
 import AppleCabin from '@/pages/collection/AppleCabin';
@@ -79,6 +80,7 @@ const AuthenticatedApp = () => {
         <Route path="/pools" element={<Pool />} />
         <Route path="/collection/pool" element={<Navigate to="/pools" replace />} />
         <Route path="/why-hrg" element={<WhyHRG />} />
+        <Route path="/references" element={<References />} />
         <Route path="/project-builder" element={<ProjectBuilderPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-conditions" element={<TermsConditions />} />
