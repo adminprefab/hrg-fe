@@ -10,6 +10,7 @@ import FinishCard from "@/components/finishes/FinishCard";
 import FinishDetail from "@/components/finishes/FinishDetail";
 import CoordinatedLooks from "@/components/finishes/CoordinatedLooks";
 import { ReviewSheet, SelectionsAside, SelectionsBar } from "@/components/finishes/SelectionsSummary";
+import ReferencesStrip from "@/components/shared/ReferencesStrip";
 
 // The "Finishes" menu tab (/finishes) has no model in its path; it opens on this one, and
 // the visitor can change it.
@@ -285,6 +286,8 @@ export default function BuildYours() {
             <SelectionsAside rows={rows} estimate={estimate} onJump={jumpTo} {...actions} />
           </aside>
         </div>
+
+        <ReferencesStrip className="mt-16 pt-10 border-t border-border" />
       </div>
 
       <SelectionsBar rows={rows} estimate={estimate} onReview={() => setReviewOpen(true)} onSave={save} />

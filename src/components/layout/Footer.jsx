@@ -9,6 +9,7 @@ const SITE_LINKS = [
   { label: "Pools", to: "/pools" },
   { label: "Financing", to: "/financing" },
   { label: "Why HRG", to: "/why-hrg" },
+  { label: "Our Work", to: "/references" },
   { label: "Contact", to: "/contact" },
 ];
 

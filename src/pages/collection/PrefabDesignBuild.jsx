@@ -5,6 +5,7 @@ import CTASection from "@/components/shared/CTASection";
 import SectionLabel from "@/components/shared/SectionLabel";
 import AnimatedHeading from "@/components/shared/AnimatedHeading";
 import VideoShowcase from "@/components/shared/VideoShowcase";
+import ReferencesStrip from "@/components/shared/ReferencesStrip";
 import ConfigCard from "@/components/collection/ConfigCard";
 import PropertyFitCTA from "@/components/collection/PropertyFitCTA";
 import ExploreMoreDesigns from "@/components/collection/ExploreMoreDesigns";
@@ -150,6 +151,10 @@ export default function PrefabDesignBuild() {
           <p className="text-xs text-muted-foreground text-center mt-6">Standard finishes are in every starting price. Pick a look on any model with Build yours, then change anything.</p>
         </div>
       </section>
+
+      <div className="max-w-7xl mx-auto px-6 py-16 md:py-20">
+        <ReferencesStrip />
+      </div>
 
       {/* Video Walkthroughs */}
       <VideoShowcase />

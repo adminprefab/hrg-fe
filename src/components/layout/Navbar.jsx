@@ -11,6 +11,7 @@ const links = [
   { label: "Pools", to: "/pools" },
   { label: "Financing", to: "/financing" },
   { label: "Why HRG", to: "/why-hrg" },
+  { label: "Our Work", to: "/references" },
   { label: "Contact", to: "/contact" },
 ];
 
@@ -31,7 +32,8 @@ export default function Navbar() {
           <img src="/assets/logo-02-sm.png" alt="" aria-hidden="true" className="h-12 w-auto object-contain hidden dark:block" />
         </Link>
 
-        <div className="hidden lg:flex items-center gap-4 xl:gap-5">
+        {/* Nine links and two buttons only fit side by side from 1280px; below that the menu button opens them. */}
+        <div className="hidden xl:flex items-center gap-4 2xl:gap-5">
           {links.map((l) => (
             <NavLink
               key={l.label}
@@ -45,7 +47,7 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-3 ml-auto xl:ml-0">
           <ThemeToggle />
           <a
             href={SELECTIONS_URL}
@@ -62,7 +64,7 @@ export default function Navbar() {
         </div>
 
         <button
-          className="md:hidden text-foreground"
+          className="xl:hidden text-foreground"
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
         >
@@ -71,7 +73,7 @@ export default function Navbar() {
       </nav>
 
       {open && (
-        <div className="md:hidden px-6 py-4 space-y-3 border-t border-border">
+        <div className="xl:hidden px-6 py-4 space-y-3 border-t border-border">
           {links.map((l) => (
             <NavLink
               key={l.label}
