@@ -30,6 +30,7 @@ import OutdoorKitchen from '@/pages/collection/OutdoorKitchen';
 import BuildDetail from '@/pages/collection/BuildDetail';
 import BuildYours from '@/pages/collection/BuildYours';
 import Pool from '@/pages/collection/Pool';
+import Buildings from '@/pages/collection/Buildings';
 import PrivacyPolicy from '@/pages/PrivacyPolicy';
 import TermsConditions from '@/pages/TermsConditions';
 
@@ -78,6 +79,7 @@ const AuthenticatedApp = () => {
         <Route path="/collection/prefab-design-build/:modelSlug/build" element={<BuildYours />} />
         <Route path="/collection/:collectionSlug/:modelSlug" element={<BuildDetail />} />
         <Route path="/pools" element={<Pool />} />
+        <Route path="/buildings" element={<Buildings />} />
         <Route path="/collection/pool" element={<Navigate to="/pools" replace />} />
         <Route path="/why-hrg" element={<WhyHRG />} />
         <Route path="/references" element={<References />} />

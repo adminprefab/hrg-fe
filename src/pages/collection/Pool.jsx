@@ -164,8 +164,8 @@ export default function Pool() {
           <h2 className="font-heading text-2xl md:text-3xl font-bold">Get your pool quote</h2>
           <p className="mt-2 mb-6 text-foreground/65">
             We'll confirm your price, installation range and delivery date. Want a pool house too?{" "}
-            <Link to="/collection/prefab-design-build" className="font-semibold text-primary hover:underline">
-              See the prefab builds
+            <Link to="/buildings" className="font-semibold text-primary hover:underline">
+              See the Pool House and other buildings
             </Link>
             .
           </p>
