@@ -151,3 +151,14 @@ export const POOL_INSTALLED = [
 export const POOL_VIDEO = { src: "/catalogue/pools/real-spa.mp4", poster: img("real-spa-poster") };
 export const POOL_HERO = img("hero");
 export const POOL_MOSAIC = img("mosaic");
+
+// The approved ad campaign (Nov 2026, "HRG Approved Campaign" Drive folder): the B videos,
+// with package price and installed total, female narrator. Ads send people to /pools, so
+// the page shows the same three pools at the advertised sizes. Prices stay live from
+// poolPrice; the ads were cut at these same numbers.
+const ad = (name) => `/catalogue/pools/ads/${name}`;
+export const POOL_ADS = [
+  { model: "cove", size: [8, 16], headline: "Small yard. Big possibilities.", video: ad("cove.mp4"), poster: ad("cove-poster.webp") },
+  { model: "riviera", size: [14, 28], headline: "Keep the vision. Know the cost.", video: ad("riviera.mp4"), poster: ad("riviera-poster.webp"), note: "Loungers and water feature shown for styling." },
+  { model: "sorrento", size: [14, 28], headline: "More than a pool. Plan the whole project.", video: ad("sorrento.mp4"), poster: ad("sorrento-poster.webp") },
+];

@@ -6,6 +6,7 @@ import SectionLabel from "@/components/shared/SectionLabel";
 import PoolCollection from "@/components/pools/PoolCollection";
 import PoolQuoteForm from "@/components/pools/PoolQuoteForm";
 import AcrylicPools from "@/components/pools/AcrylicPools";
+import PoolAds from "@/components/pools/PoolAds";
 import { money } from "@/lib/projectPricing";
 import {
   MOSAIC_FINISHES,
@@ -52,6 +53,13 @@ export default function Pool() {
           </p>
         </div>
       )}
+
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-14 md:pt-20">
+        <SectionLabel>Featured pools</SectionLabel>
+        <h2 className="font-heading text-3xl md:text-4xl font-bold">Cove, Riviera and Sorrento</h2>
+        <p className="mt-2 mb-8 max-w-2xl text-foreground/65">Watch a 30-second video, then quote the pool you like.</p>
+        <PoolAds onQuote={quote} />
+      </section>
 
       <section id="collection" className="max-w-7xl mx-auto px-4 sm:px-6 py-14 md:py-20 scroll-mt-20">
         <SectionLabel>The collection</SectionLabel>
