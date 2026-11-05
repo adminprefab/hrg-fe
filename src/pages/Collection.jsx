@@ -34,6 +34,13 @@ const categories = [
     cta: "Explore Outdoor Kitchens",
     image: "https://images.unsplash.com/photo-1762117360868-d4e757073d45?w=1200&q=80",
   },
+  {
+    slug: "pool",
+    title: "Pool Collection",
+    desc: "16 modular fiberglass pools with a glass mosaic interior, priced by size.",
+    cta: "Explore Pools",
+    image: "/catalogue/pools/hero.webp",
+  },
 ];
 
 export default function Collection() {

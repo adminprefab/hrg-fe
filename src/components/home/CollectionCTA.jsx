@@ -22,7 +22,7 @@ export default function CollectionCTA() {
           transition={{ duration: 0.6, delay: 0.15 }}
           className="mt-5 text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed"
         >
-          Browse prefab homes, apple cabins, expandable containers, outdoor kitchens, and acrylic pools, all engineered off-site and built to last.
+          Browse prefab homes, apple cabins, expandable containers, outdoor kitchens, and pools, all engineered off-site and built to last.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 18 }}
