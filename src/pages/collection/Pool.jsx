@@ -1,261 +1,179 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { Check } from "lucide-react";
 import PageHero from "@/components/shared/PageHero";
-import CTASection from "@/components/shared/CTASection";
 import SectionLabel from "@/components/shared/SectionLabel";
-import AnimatedHeading from "@/components/shared/AnimatedHeading";
-import ImageCarousel from "@/components/shared/ImageCarousel";
-import ClickableImage from "@/components/shared/ClickableImage";
+import PoolCollection from "@/components/pools/PoolCollection";
+import PoolQuoteForm from "@/components/pools/PoolQuoteForm";
+import AcrylicPools from "@/components/pools/AcrylicPools";
+import { money } from "@/lib/projectPricing";
+import {
+  MOSAIC_FINISHES,
+  POOL_HERO,
+  POOL_INCLUDED,
+  POOL_INSTALL,
+  POOL_INSTALLED,
+  POOL_MODELS,
+  POOL_PRICING,
+  POOL_SPECS,
+  POOL_STEPS,
+  POOL_VIDEO,
+  poolPrice,
+  promoActive,
+} from "@/lib/poolCatalogue";
 
-const POOL_BASE = "https://media.base44.com/images/public/6a3d99160f311f943d2b9488";
+const fromPrice = Math.min(...POOL_MODELS.flatMap((m) => m.sizes.map((sz) => poolPrice(m, sz).pkg)));
 
-const poolGalleryImages = [
-  { src: `${POOL_BASE}/7433b4774_Poolcatalg-05.png`, label: "Villa Sky, Dubai Hills Estate" },
-  { src: `${POOL_BASE}/cd6e406b0_Poolcatalg-07.png`, label: "Main & Kid Swimming Pool, Dubai" },
-  { src: `${POOL_BASE}/d58ba8f5f_Poolcatalg-08.png`, label: "Al-Mana Hotel, Doha, Qatar" },
-  { src: `${POOL_BASE}/345ae38cd_Poolcatalg-09.png`, label: "Resort Hotel, Jeddah, Saudi Arabia" },
-  { src: `${POOL_BASE}/bc86afbb8_Poolcatalg-10.png`, label: "Acrylic Swimming Pool, Riyadh, Saudi Arabia" },
-  { src: `${POOL_BASE}/7013b2df9_Poolcatalg-11.png`, label: "Water Pool Villa, Muscat, Oman" },
-  { src: `${POOL_BASE}/de69be7e0_Poolcatalg-12.png`, label: "Home Acrylic Swimming Pool, Baghdad, Iraq" },
-  { src: `${POOL_BASE}/fa44ed4fe_Poolcatalg-16.png`, label: "Curved Acrylic Window, Oregon, USA" },
-  { src: `${POOL_BASE}/6360a9d6b_Poolcatalg-17.png`, label: "Swimming Pool on Yacht, Ancona, Italy" },
-  { src: `${POOL_BASE}/7e53a5126_Poolcatalg-18.png`, label: "Demo Tube Cover, Bern, Switzerland" },
-  { src: `${POOL_BASE}/e9cc6623a_Poolcatalg-29.png`, label: "Gujarat Science City Aquarium, India" },
-  { src: `${POOL_BASE}/892380b8c_Poolcatalg-32.png`, label: "SKY Pool, Da Nang, Vietnam" },
-  { src: `${POOL_BASE}/379ead134_Poolcatalg-34.png`, label: "Aqualab, Seria Energy Lab, Brunei" },
-];
-
-const projectsGCC = [
-  { project: "BINGHATTI Apartments", usage: "Acrylic side panel for balcony swimming pool", thick: "60 mm", location: "Jumeirah Village Circle, Dubai" },
-  { project: "Villa of UMM SEQUIM", usage: "Acrylic floor panel, side panel for pool", thick: "120 mm", location: "UMM SEQUIM, Dubai" },
-  { project: "Villa in Mille Colline", usage: "Acrylic Floor Panel, Wall Panel", thick: "120 mm", location: "Mille Colline, Dubai" },
-  { project: "Private Villa Al Barari", usage: "Acrylic side panel, floor panel", thick: "150 mm", location: "Al Barari, Dubai" },
-  { project: "Al-Mana Hotel, Doha Qatar", usage: "Hanging acrylic pool", thick: "130 mm", location: "Doha, Qatar" },
-  { project: "Resort Hotel, Jeddah Saudi", usage: "Acrylic Side Panel", thick: "150 mm", location: "Jeddah, Saudi Arabia" },
-  { project: "Acrylic Swimming Pool", usage: "Acrylic Side Panel", thick: "120 mm", location: "Riyadh, Saudi Arabia" },
-  { project: "Water Pool in Villa", usage: "Acrylic Floor", thick: "100 mm", location: "Muscat, Oman" },
-];
-
-const projectsEurope = [
-  { project: "VAI Resort Swimming Pool", usage: "Acrylic side panel", thick: "60 mm", location: "Glendale, AZ, United States" },
-  { project: "Swimming Pool for House (Oregon)", usage: "Acrylic curved Side Panel", thick: "100 mm", location: "Oregon, U.S." },
-  { project: "Swimming Pool on YACHT", usage: "Acrylic side panel", thick: "130 mm", location: "Ancona, Italy" },
-  { project: "Sky Roof Pool", usage: "Acrylic sky window", thick: "120 mm", location: "Copenhagen, Denmark" },
-  { project: "Backyard SPO Swimming Pool", usage: "Acrylic side panel for SPO Pool", thick: "60 mm", location: "El Dorado Hills, CO, U.S." },
-  { project: "Swimming Pool in Backyard (Kosovo)", usage: "Acrylic window", thick: "100 mm", location: "Suhareka, Kosovo" },
-];
-
-const projectsAsia = [
-  { project: "Finolhu Island Resort Villas", usage: "Acrylic floor panel, side panel", thick: "60–110 mm", location: "Finolhu Baa Atoll, Maldives" },
-  { project: "Nayyahuchi Underwater Resort", usage: "Acrylic Panels for Underwater Window", thick: "120 mm", location: "Nayyahuchi Island, Maldives" },
-  { project: "Gujarat Science City Aquarium", usage: "Acrylic Panel, Tunnel, Cylinder", thick: "330 mm", location: "Gujarat, India" },
-  { project: "SKY Pool, Da-Nang Vietnam", usage: "Acrylic side pool (4 sides)", thick: "250 mm", location: "Da-Nang, Vietnam" },
-  { project: "Acrylic SKY Swimming Pool, Cambodia", usage: "Acrylic Side Panel, Floor Panel", thick: "130 mm", location: "Phnom Penh, Cambodia" },
-  { project: "Lee Residence Swimming Pool, Philippines", usage: "Acrylic side panels and floor panel", thick: "110 mm", location: "Pampanga, Philippines" },
-];
-
-const products = [
-  { name: "Acrylic Side Panel", desc: "Crystal-clear acrylic walls for pools, allowing underwater viewing from outside. Available in any dimension up to 320mm thickness." },
-  { name: "Acrylic Floor Panel", desc: "Walk-on transparent pool floor. Allows light transmission and viewing from below. Standard and custom sizes." },
-  { name: "Acrylic Wall Panel", desc: "Interior swimming pool wall lining. Smooth, non-porous surface resistant to chemicals and UV." },
-  { name: "Acrylic Sky Window", desc: "Pool bottom as a ceiling, creating the dramatic 'sky pool' floating effect. Structural-grade panels with steel framing system." },
-  { name: "Acrylic Tunnel", desc: "Walk-through aquarium tunnels. Curved extrusion, available up to 3.5m diameter." },
-  { name: "Acrylic Cylinder & Aquarium", desc: "Custom shapes for aquariums, hotel lobbies, and commercial spaces. Up to 72,000 liters capacity." },
-];
-
-// Project list: a table where there is room for five columns, one card per project on phones,
-// where the table would otherwise be squeezed into a sideways scroll.
-function ProjectList({ projects, productLabel }) {
-  return (
-    <>
-      <div className="hidden md:block overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="bg-brand-dark text-white">
-              <th className="text-left p-4 font-semibold">Project</th>
-              <th className="text-left p-4 font-semibold">{productLabel}</th>
-              <th className="text-left p-4 font-semibold">Max Thickness</th>
-              <th className="text-left p-4 font-semibold">Location</th>
-            </tr>
-          </thead>
-          <tbody>
-            {projects.map((p, i) => (
-              <tr key={i} className={i % 2 === 0 ? "bg-card" : "bg-secondary/20"}>
-                <td className="p-4 font-semibold text-foreground">{p.project}</td>
-                <td className="p-4 text-muted-foreground">{p.usage}</td>
-                <td className="p-4 text-muted-foreground">{p.thick}</td>
-                <td className="p-4 text-muted-foreground">{p.location}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="md:hidden space-y-3">
-        {projects.map((p, i) => (
-          <div key={i} className="bg-card border border-border rounded-lg p-4">
-            <h4 className="font-semibold text-foreground leading-snug">{p.project}</h4>
-            <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-foreground/50">{p.location}</p>
-            <p className="mt-2 text-sm text-muted-foreground">
-              {p.usage} · {p.thick}
-            </p>
-          </div>
-        ))}
-      </div>
-    </>
-  );
-}
-
+// Pools: the modular fiberglass collection first (models, prices, quote), then the acrylic range.
 export default function Pool() {
+  const [selected, setSelected] = useState(null);
+  const quoteRef = useRef(null);
+  const promo = POOL_PRICING.promo;
+
+  const quote = (choice) => {
+    setSelected(choice);
+    setTimeout(() => quoteRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 30);
+  };
+
   return (
     <div className="bg-background min-h-screen">
       <PageHero
         breadcrumb="Pools"
-        label="Acrylic Pools"
-        title={<>Premium Acrylic for Pool & <em className="not-italic font-bold">Aquarium</em></>}
-        subtitle="Transparent acrylic pool walls, floors and sky windows, engineered to specification and added to your HRG project."
-        image="https://images.unsplash.com/photo-1603085429201-64dadaec4061?w=1600&q=80"
+        label="The HRG Pool Collection"
+        title={<>Resort pools, <em className="not-italic font-bold">delivered in sections</em></>}
+        subtitle={`16 modular fiberglass pools, tiled in glass mosaic at the factory and joined on your property in days. Pool packages from ${money(fromPrice)}.`}
+        image={POOL_HERO}
       />
 
-      {/* Slideable Catalogue Gallery */}
-      <section className="max-w-7xl mx-auto px-6 py-16">
-        <div className="text-center mb-10">
-          <SectionLabel>Acrylic Pools</SectionLabel>
-          <AnimatedHeading className="font-heading text-3xl font-normal text-foreground">
-            Pool & Aquarium <em className="not-italic font-bold">Gallery</em>
-          </AnimatedHeading>
-          <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">Swipe through our catalogue of acrylic pool and aquarium projects. Click any image to view it full screen.</p>
+      {promoActive() && (
+        <div className="bg-primary text-primary-foreground">
+          <p className="max-w-7xl mx-auto px-4 sm:px-6 py-3 text-sm font-semibold text-center">
+            {promo.name}: {promo.percentOff}% off every pool package through {promo.endsLabel}. {promo.terms}.
+          </p>
         </div>
-        <ImageCarousel images={poolGalleryImages} />
+      )}
+
+      <section id="collection" className="max-w-7xl mx-auto px-4 sm:px-6 py-14 md:py-20 scroll-mt-20">
+        <SectionLabel>The collection</SectionLabel>
+        <h2 className="font-heading text-3xl md:text-4xl font-bold">16 models. 3 sizes each.</h2>
+        <p className="mt-2 max-w-2xl text-foreground/65">Pick a size to see the pool package and an estimated installed range.</p>
+        <div className="mt-8">
+          <PoolCollection onQuote={quote} />
+        </div>
       </section>
 
-      {/* Product Types */}
-      <section className="max-w-7xl mx-auto px-6 py-20">
-        <div className="text-center mb-14">
-          <SectionLabel>What We Supply</SectionLabel>
-          <AnimatedHeading className="font-heading text-3xl font-normal text-foreground">
-            Acrylic Pool <em className="not-italic font-bold">Products</em>
-          </AnimatedHeading>
-          <p className="text-muted-foreground mt-3 max-w-2xl mx-auto">Factory-produced acrylic panels engineered to specification: any size, any shape, any thickness up to 330mm.</p>
+      <section className="bg-secondary/40 py-14 md:py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <h2 className="font-heading text-2xl md:text-3xl font-bold">Built in sections. Joined as one.</h2>
+          <ol className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {POOL_STEPS.map((s, i) => (
+              <li key={s.title} className="rounded-lg border border-border bg-card p-5">
+                <span className="font-heading text-sm font-bold text-primary">0{i + 1}</span>
+                <h3 className="mt-1 font-heading font-bold">{s.title}</h3>
+                <p className="mt-1 text-sm text-foreground/65">{s.text}</p>
+              </li>
+            ))}
+          </ol>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.map((p, i) => (
-            <motion.div
-              key={p.name}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="bg-card border border-border rounded-lg p-6"
-            >
-              <div className="w-2 h-8 bg-primary rounded mb-4"></div>
-              <h3 className="font-heading font-bold text-foreground mb-2">{p.name}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
-            </motion.div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-14 md:py-20">
+        <h2 className="font-heading text-2xl md:text-3xl font-bold">Installed by HRG</h2>
+        <div className="mt-6 grid gap-4 grid-cols-2 lg:grid-cols-5">
+          <video
+            className="col-span-2 lg:col-span-1 w-full aspect-[3/4] rounded-lg object-cover bg-brand-dark"
+            src={POOL_VIDEO.src}
+            poster={POOL_VIDEO.poster}
+            muted
+            loop
+            playsInline
+            autoPlay
+            preload="none"
+            aria-label="Pool and spa with fountain wall"
+          />
+          {POOL_INSTALLED.map((p) => (
+            <figure key={p.img} className="rounded-lg overflow-hidden border border-border bg-card">
+              <img src={p.img} alt={p.caption} loading="lazy" decoding="async" className="w-full aspect-[3/4] object-cover" />
+              <figcaption className="px-3 py-2 text-xs text-foreground/65">{p.caption}</figcaption>
+            </figure>
           ))}
         </div>
       </section>
 
-      {/* Project Gallery — GCC */}
-      <section className="bg-secondary/30 py-20">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <SectionLabel>GCC / Middle East / West Asia</SectionLabel>
-            <AnimatedHeading className="font-heading text-3xl font-normal text-foreground">
-              Featured <em className="not-italic font-bold">Projects</em>
-            </AnimatedHeading>
-          </div>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-14 md:pb-20 grid gap-6 lg:grid-cols-3">
+        <div className="rounded-lg border border-border bg-card p-6">
+          <h3 className="font-heading text-lg font-bold">In the pool package</h3>
+          <ul className="mt-3 space-y-2 text-sm">
+            {POOL_INCLUDED.map((t) => (
+              <li key={t} className="flex gap-2">
+                <Check className="mt-0.5 w-4 h-4 shrink-0 text-primary" aria-hidden="true" />
+                {t}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="rounded-lg border border-border bg-card p-6">
+          <h3 className="font-heading text-lg font-bold">In the installed estimate</h3>
+          <ul className="mt-3 space-y-2 text-sm text-foreground/75">
+            {POOL_INSTALL.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+          <p className="mt-3 text-xs text-foreground/55">Permits, fencing, heaters and decking are quoted separately.</p>
+        </div>
+        <div className="rounded-lg border border-border bg-card p-6">
+          <h3 className="font-heading text-lg font-bold">Glass mosaic, set at the factory</h3>
+          <p className="mt-2 text-sm text-foreground/65">Included in every package, in your palette.</p>
+          <ul className="mt-4 grid grid-cols-3 gap-3">
+            {MOSAIC_FINISHES.map((f) => (
+              <li key={f.name} className="text-xs">
+                <span className="grid grid-cols-2 overflow-hidden rounded border border-border">
+                  {f.colors.map((c) => (
+                    <span key={c} className="h-5" style={{ background: c }} />
+                  ))}
+                </span>
+                <span className="mt-1 block">{f.name}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
 
-          {/* Dubai Highlight */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-            <motion.div
-              initial={{ opacity: 0, x: -24 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
-            >
-              <ClickableImage src={`${POOL_BASE}/7433b4774_Poolcatalg-05.png`} alt="Villa Sky transparent pool, Dubai Hills Estate" className="w-full h-72" label="Villa Sky, Dubai Hills Estate" />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 24 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
-              className="flex flex-col justify-center"
-            >
-              <div className="text-xs font-bold text-primary uppercase tracking-widest mb-2">Dubai, UAE</div>
-              <h3 className="font-heading text-2xl font-bold text-foreground mb-4">Villa Sky Transparent Pool</h3>
-              <p className="text-muted-foreground leading-relaxed mb-4">A pool cantilevered out over the terrace, with an acrylic floor and walls you can see straight through. Floor panels of 5.95 m × 2.75 m were lifted into place by crane, with acrylic wall and window panels around them.</p>
-              <div className="flex gap-4 text-sm">
-                <div className="bg-card border border-border rounded-lg p-3 text-center">
-                  <div className="font-bold text-primary">320 mm</div>
-                  <div className="text-xs text-muted-foreground">Panel Thickness</div>
-                </div>
-                <div className="bg-card border border-border rounded-lg p-3 text-center">
-                  <div className="font-bold text-primary">2023</div>
-                  <div className="text-xs text-muted-foreground">Completed</div>
-                </div>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-14 md:pb-20">
+        <details className="group rounded-lg border border-border bg-card">
+          <summary className="cursor-pointer list-none flex items-center justify-between gap-4 p-5 min-h-14">
+            <span>
+              <span className="block font-heading text-lg font-bold">Specifications and engineering</span>
+              <span className="block text-sm text-foreground/60">One construction standard across the collection</span>
+            </span>
+            <span className="text-primary text-2xl leading-none group-open:rotate-45 transition-transform" aria-hidden="true">+</span>
+          </summary>
+          <dl className="grid gap-x-8 gap-y-3 px-5 pb-5 sm:grid-cols-2 text-sm">
+            {POOL_SPECS.map(([k, v]) => (
+              <div key={k}>
+                <dt className="font-semibold">{k}</dt>
+                <dd className="text-foreground/70">{v}</dd>
               </div>
-            </motion.div>
-          </div>
+            ))}
+          </dl>
+        </details>
+      </section>
 
-          {/* GCC Projects Table */}
-          <ProjectList projects={projectsGCC} productLabel="Usage" />
+      <section ref={quoteRef} id="quote" className="bg-secondary/40 py-14 md:py-20 scroll-mt-20">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+          <h2 className="font-heading text-2xl md:text-3xl font-bold">Get your pool quote</h2>
+          <p className="mt-2 mb-6 text-foreground/65">
+            We'll confirm your price, installation range and delivery date. Want a pool house too?{" "}
+            <Link to="/collection/prefab-design-build" className="font-semibold text-primary hover:underline">
+              See the prefab builds
+            </Link>
+            .
+          </p>
+          <PoolQuoteForm selected={selected} onClear={() => setSelected(null)} />
         </div>
       </section>
 
-      {/* Europe / America */}
-      <section className="max-w-7xl mx-auto px-6 py-20">
-        <div className="text-center mb-12">
-          <SectionLabel>Europe / America / Africa</SectionLabel>
-          <AnimatedHeading className="font-heading text-3xl font-normal text-foreground">
-            International <em className="not-italic font-bold">Projects</em>
-          </AnimatedHeading>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <ClickableImage src={`${POOL_BASE}/fa44ed4fe_Poolcatalg-16.png`} alt="Curved acrylic pool window, Oregon" className="w-full h-64 mb-4" label="Curved Acrylic Window, Oregon USA" />
-            <h3 className="font-heading font-bold text-foreground mb-1">Curved Acrylic Window, Oregon USA</h3>
-            <p className="text-sm text-muted-foreground">A curved acrylic side panel, 42 in tall by 9 ft long, set into the wall of a backyard pool so the water can be seen from the garden.</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
-            <ClickableImage src={`${POOL_BASE}/6360a9d6b_Poolcatalg-17.png`} alt="Acrylic pool on a yacht, Italy" className="w-full h-64 mb-4" label="Swimming Pool on a Yacht, Italy" />
-            <h3 className="font-heading font-bold text-foreground mb-1">Swimming Pool on a Yacht, Italy</h3>
-            <p className="text-sm text-muted-foreground">An acrylic side panel, 4.7 m × 1.85 m and 130 mm thick with a black painted edge, forming the clear wall of an on-deck pool.</p>
-          </motion.div>
-        </div>
-
-        <ProjectList projects={projectsEurope} productLabel="Product" />
-      </section>
-
-      {/* Southeast Asia */}
-      <section className="bg-secondary/30 py-20">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <SectionLabel>Southeast Asia / South Asia / East Asia</SectionLabel>
-            <AnimatedHeading className="font-heading text-3xl font-normal text-foreground">
-              Asia <em className="not-italic font-bold">Projects</em>
-            </AnimatedHeading>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
-              <ClickableImage src={`${POOL_BASE}/892380b8c_Poolcatalg-32.png`} alt="Acrylic sky pool, Da Nang" className="w-full h-64 mb-4" label="Sky Pool, Da Nang Vietnam" />
-              <h3 className="font-heading font-bold text-foreground mb-1">Sky Pool, Da Nang Vietnam</h3>
-              <p className="text-sm text-muted-foreground">A pool with acrylic on all four sides: 11.51 m × 3.61 m, with 200 mm walls and a 250 mm floor, so swimmers can be seen from below and every side.</p>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
-              <ClickableImage src={`${POOL_BASE}/e9cc6623a_Poolcatalg-29.png`} alt="Gujarat Science City" className="w-full h-64 mb-4" label="Gujarat Science City Aquarium, India" />
-              <h3 className="font-heading font-bold text-foreground mb-1">Gujarat Science City Aquarium, India</h3>
-              <p className="text-sm text-muted-foreground">Acrylic Panel, Acrylic Tunnel, Acrylic Cylinder for Aquarium. Thickness 330 mm. One of the largest acrylic aquarium projects in South Asia.</p>
-            </motion.div>
-          </div>
-
-          <ProjectList projects={projectsAsia} productLabel="Product" />
-        </div>
-      </section>
-
-      <CTASection label="Get Started" title="Ready to add a premium acrylic pool to your project?" buttonText="Request a Free Estimate" />
+      <AcrylicPools />
     </div>
   );
 }
