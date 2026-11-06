@@ -11,16 +11,16 @@ const services = [
   { icon: Building2, title: "Attached Additions", desc: "Room and suite additions engineered to tie cleanly into your existing structure, roofline, and utilities." },
   { icon: FileText, title: "Design & Permitting", desc: "In-house architectural design tailored to your lot, plus full handling of permit submission and approval with your local jurisdiction." },
   { icon: HardHat, title: "Site Prep & Foundation", desc: "Grading, excavation, foundation work, and utility hookups coordinated in parallel with off-site manufacturing." },
-  { icon: Factory, title: "Off-Site Manufacturing", desc: "Units are framed, wired, plumbed, insulated, and largely finished indoors before they ever reach your property." },
-  { icon: Truck, title: "Rapid Installation", desc: "Crane-set or trailer delivery with on-site assembly typically completed within days once your foundation is ready." },
-  { icon: ShieldCheck, title: "Code & Inspection Support", desc: "We manage city and county inspections through final close-out so your unit is fully legal and finance-ready." },
+  { icon: Factory, title: "Off-Site Manufacturing", desc: "Prefabricated panels and components are manufactured off site, then delivered for assembly by the homeowner-hired general contractor." },
+  { icon: Truck, title: "Rapid Installation", desc: "Delivery and assembly are coordinated around site access, foundation readiness and the schedule agreed with your contractor." },
+  { icon: ShieldCheck, title: "Code & Inspection Support", desc: "We coordinate documentation and inspection requirements within the agreed scope. Your contractor and local authority handle construction inspections and final approval." },
   { icon: Palette, title: "Custom Finishes", desc: "Exterior siding and roofline options, plus interior finish packages to match the look of your main house." },
 ];
 
 const faqs = [
   {
     q: "How long does a typical project take?",
-    a: "Most detached ADU projects go from signed design to final inspection in three to five months, with the off-site manufacturing portion taking six to ten weeks. Site-specific factors like permitting timelines and utility work can affect the overall schedule.",
+    a: "Your schedule depends on the design, permitting, site work, manufacturing, delivery and assembly scope. HRG reviews these steps with you and your contractor after the property review.",
   },
   {
     q: "Do I need a permit for an ADU?",
@@ -28,7 +28,7 @@ const faqs = [
   },
   {
     q: "What's already done before the unit arrives on-site?",
-    a: "Framing, electrical rough-in, plumbing rough-in, insulation, drywall, and most interior finishes are completed in our facility. On-site work is largely limited to foundation tie-in, utility connections, and exterior finish touch-ups.",
+    a: "The prefabricated panels and components in your materials package are manufactured off site. Your written scope identifies what arrives with the package and what your general contractor completes on site, including foundation, utility and assembly work.",
   },
   {
     q: "Can a prefab addition match my home's existing style?",
@@ -72,7 +72,7 @@ export default function Services() {
         breadcrumb="Services"
         label="Our Services"
         title={<>Everything it takes to add space, in <em className="not-italic font-bold">one scope</em> of work</>}
-        subtitle="We cover design, engineering, permitting, manufacturing, and installation, so you're working with one team, not coordinating five."
+        subtitle="We coordinate design, engineering, permitting, materials and delivery within your agreed scope. Your homeowner-hired general contractor handles site construction and assembly."
         image="https://images.unsplash.com/photo-1608303588026-884930af2559?w=1600&q=80"
       />
 

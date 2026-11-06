@@ -2,18 +2,61 @@
   "redirects": [
     {
       "source": "/",
-      "has": [{ "type": "host", "value": "estimate.thehomeremodelgroup.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "estimate.thehomeremodelgroup.com"
+        }
+      ],
       "destination": "/estimate",
       "permanent": false
+    },
+    {
+      "source": "/get-a-quote",
+      "destination": "/see-what-fits",
+      "permanent": true
+    },
+    {
+      "source": "/collection/pool",
+      "destination": "/pools",
+      "permanent": true
     }
   ],
   "rewrites": [
     {
       "source": "/((?!api/).*)",
-      "has": [{ "type": "host", "value": "estimate.thehomeremodelgroup.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "estimate.thehomeremodelgroup.com"
+        }
+      ],
       "destination": "/estimate.html"
     },
-    { "source": "/estimate", "destination": "/estimate.html" },
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    {
+      "source": "/estimate",
+      "destination": "/estimate.html"
+    }
+  ],
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/robots.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml"
+        }
+      ]
+    }
   ]
 }

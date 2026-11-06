@@ -6,7 +6,7 @@ import CTASection from "@/components/shared/CTASection";
 export default function ADUModels() {
   return (
     <>
-      <PrototypeSection />
+      <PrototypeSection headingTag="h1" />
       <NeedSomethingDifferent />
       <CTASection
         label="Still Deciding?"
