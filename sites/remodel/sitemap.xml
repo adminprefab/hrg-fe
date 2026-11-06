@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://thehomeremodelgroup.com/</loc><lastmod>2026-10-20</lastmod></url>
-  <url><loc>https://thehomeremodelgroup.com/guides</loc><lastmod>2026-10-20</lastmod></url>
-  <url><loc>https://thehomeremodelgroup.com/guides/remodel-process</loc><lastmod>2026-10-20</lastmod></url>
-  <url><loc>https://thehomeremodelgroup.com/guides/kitchen-remodel</loc><lastmod>2026-10-20</lastmod></url>
-  <url><loc>https://thehomeremodelgroup.com/guides/bathroom-remodel</loc><lastmod>2026-10-20</lastmod></url>
-  <url><loc>https://thehomeremodelgroup.com/guides/adu</loc><lastmod>2026-10-20</lastmod></url>
-  <url><loc>https://thehomeremodelgroup.com/guides/permits</loc><lastmod>2026-10-20</lastmod></url>
-  <url><loc>https://thehomeremodelgroup.com/guides/hiring-a-contractor</loc><lastmod>2026-10-20</lastmod></url>
-  <url><loc>https://thehomeremodelgroup.com/guides/budget-and-financing</loc><lastmod>2026-10-20</lastmod></url>
-  <url><loc>https://thehomeremodelgroup.com/about</loc><lastmod>2026-10-20</lastmod></url>
-  <url><loc>https://thehomeremodelgroup.com/contact</loc><lastmod>2026-10-20</lastmod></url>
+  <url><loc>https://thehomeremodelgroup.com/</loc></url>
+  <url><loc>https://thehomeremodelgroup.com/about</loc></url>
+  <url><loc>https://thehomeremodelgroup.com/contact</loc></url>
+  <url><loc>https://thehomeremodelgroup.com/faq</loc></url>
+  <url><loc>https://thehomeremodelgroup.com/guides</loc></url>
+  <url><loc>https://thehomeremodelgroup.com/guides/adu</loc></url>
+  <url><loc>https://thehomeremodelgroup.com/guides/bathroom-remodel</loc></url>
+  <url><loc>https://thehomeremodelgroup.com/guides/budget-and-financing</loc></url>
+  <url><loc>https://thehomeremodelgroup.com/guides/hiring-a-contractor</loc></url>
+  <url><loc>https://thehomeremodelgroup.com/guides/kitchen-remodel</loc></url>
+  <url><loc>https://thehomeremodelgroup.com/guides/permits</loc></url>
+  <url><loc>https://thehomeremodelgroup.com/guides/remodel-process</loc></url>
 </urlset>

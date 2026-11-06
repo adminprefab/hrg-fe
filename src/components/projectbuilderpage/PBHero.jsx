@@ -12,6 +12,8 @@ export default function PBHero() {
       <div className="absolute inset-0">
         <img
           src={HERO_IMG}
+          fetchPriority="high"
+          decoding="async"
           alt="A finished HRG semi-prefabricated backyard studio with glass sliding doors"
           className="w-full h-full object-cover opacity-60"
         />

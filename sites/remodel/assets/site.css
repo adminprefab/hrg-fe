@@ -255,3 +255,5 @@ a.card:hover{border-color:var(--accent);transform:translateY(-2px);color:inherit
   .mcta .btn.light{padding-inline:16px}
   body{padding-bottom:72px}
 }
+
+.faq-list{max-width:800px}.faq-list details{border-bottom:1px solid #8885;padding:20px 0}.faq-list summary{font-weight:700;cursor:pointer}.faq-list p{line-height:1.7;margin-top:14px}

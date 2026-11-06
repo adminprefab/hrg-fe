@@ -5,6 +5,8 @@ import PBWhatWeHandle from "@/components/projectbuilderpage/PBWhatWeHandle";
 import PBBuilderFlow from "@/components/projectbuilderpage/PBBuilderFlow";
 import PBHowItWorks from "@/components/projectbuilderpage/PBHowItWorks";
 
+import FaqSection from "@/components/home/FaqSection";
+
 export default function Home() {
   return (
     <div className="bg-background">
@@ -13,6 +15,7 @@ export default function Home() {
       <PBWhatWeHandle />
       <PBBuilderFlow />
       <PBHowItWorks />
+      <FaqSection />
     </div>
   );
 }
