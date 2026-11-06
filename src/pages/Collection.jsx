@@ -7,6 +7,13 @@ import PropertyFitCTA from "@/components/collection/PropertyFitCTA";
 
 const categories = [
   {
+    to: "/buildings",
+    title: "Building Collection",
+    desc: "Eight prefab buildings with floor plans and prices, from a garden office to a three-bedroom home.",
+    cta: "See the Buildings",
+    image: "https://media.base44.com/images/public/6aa6b441ec9ba0e9a14504fa/26751b3ff_ChatGPTImageSep29202603_53_18PM1.png",
+  },
+  {
     slug: "prefab-design-build",
     title: "Prefab Design & Build",
     desc: "Customizable prefab homes designed around the customer's property.",
@@ -58,7 +65,7 @@ export default function Collection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {categories.map((cat, i) => (
             <motion.div
-              key={cat.slug}
+              key={cat.title}
               initial={{ opacity: 0, y: 32 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
@@ -78,7 +85,7 @@ export default function Collection() {
                 </h2>
                 <p className="text-muted-foreground text-sm leading-relaxed mb-6">{cat.desc}</p>
                 <Link
-                  to={`/collection/${cat.slug}`}
+                  to={cat.to || `/collection/${cat.slug}`}
                   className="mt-auto inline-flex w-fit items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-md font-semibold text-sm uppercase tracking-wide hover:bg-primary/90 transition-colors"
                 >
                   {cat.cta}
