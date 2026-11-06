@@ -37,6 +37,9 @@ for (const collection of Object.values(buildCollections)) {
     if (collection.buildable) seoPages[`${modelPath}/build`] = { title: `Configure ${model.id} Finishes | HRG Prefab`, description: `Choose finishes and options for the ${model.name} and review your planning estimate.`, canonicalPath: modelPath, noindex: true };
   }
 }
+// The standalone builder repeats the homepage builder; consolidate search signals.
+seoPages["/project-builder"].canonicalPath = "/";
+
 export function pageSeo(pathname) {
   const path = pathname.replace(/\/$/, '') || '/';
   const page = seoPages[path];

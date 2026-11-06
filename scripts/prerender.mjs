@@ -22,7 +22,7 @@ try {
     const file = path === '/' ? 'dist/index.html' : path === '/404' ? 'dist/404.html' : `dist${path}/index.html`;
     await mkdir(dirname(file), { recursive: true }); await writeFile(file, html);
   }
-  const paths = Object.keys(seoPages).filter(path => !seoPages[path].noindex);
+  const paths = Object.keys(seoPages).filter(path => !seoPages[path].noindex && !seoPages[path].canonicalPath);
   await writeFile('dist/sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${paths.map(path => `  <url><loc>${escape(SITE_URL + path)}</loc></url>`).join('\n')}\n</urlset>\n`);
   await writeFile('dist/robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
   console.log(`Prerendered ${Object.keys(seoPages).length} public routes and a 404 page; sitemap includes ${paths.length} canonical URLs.`);
