@@ -4,6 +4,7 @@ import TopBar from "./TopBar";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import MobileCTA from "./MobileCTA";
+import HrgChat from "../HrgChat";
 
 export default function Layout() {
   return (
@@ -15,6 +16,7 @@ export default function Layout() {
       </main>
       <Footer />
       <MobileCTA />
+      <HrgChat />
     </div>
   );
 }

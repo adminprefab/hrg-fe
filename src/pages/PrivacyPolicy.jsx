@@ -55,6 +55,14 @@ const sections = [
     ],
   },
   {
+    heading: "AI Project Assistant",
+    body: [
+      'If you choose to use our AI assistant, your question and recent chat context are sent to OpenAI to generate a response using public HRG information. Please do not include passwords, payment information, sensitive financial information or private project documents.',
+      'Chat messages stay in the current browser page and are cleared when you refresh or select Clear chat. HRG does not save chat transcripts in its customer database. OpenAI may retain data under its API data policies. The assistant cannot access your client portal, project records or payments, and does not submit inquiries on your behalf.',
+      'The assistant provides general guidance. Confirm project scope, budget and property-specific requirements with HRG and the relevant professionals.',
+    ],
+  },
+  {
     heading: "Data Security",
     body: [
       'We use commercially reasonable safeguards to protect the information you submit. However, no method of electronic transmission or storage is completely secure.',

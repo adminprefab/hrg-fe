@@ -1,0 +1,36 @@
+.hrg-chat { position: fixed; right: 24px; bottom: 24px; z-index: 60; color: hsl(var(--foreground)); font-family: var(--font-body); }
+.hrg-chat button, .hrg-chat a { -webkit-tap-highlight-color: transparent; }
+.hrg-chat button:focus-visible, .hrg-chat a:focus-visible, .hrg-chat textarea:focus-visible { outline: 2px solid hsl(var(--primary)); outline-offset: 3px; }
+.hrg-chat-launcher { display: flex; align-items: center; gap: 9px; margin-left: auto; min-height: 48px; padding: 12px 20px; border-radius: 8px; background: hsl(var(--primary)); color: white; font-size: 14px; font-weight: 600; box-shadow: 0 4px 20px #0002; }
+.hrg-chat-panel { display: flex; flex-direction: column; width: 400px; height: min(620px, calc(100dvh - 110px)); margin-bottom: 12px; overflow: hidden; border: 1px solid hsl(var(--border)); border-radius: 12px; background: hsl(var(--background)); box-shadow: 0 18px 70px #0003; }
+.hrg-chat-heading { display: flex; align-items: flex-start; gap: 18px; padding: 22px 20px; background: hsl(var(--brand-dark)); color: white; }
+.hrg-chat-eyebrow { font-size: 10px; letter-spacing: .12em; color: #ddd3c7; }
+.hrg-chat-heading h2 { margin: 8px 0 0; font-family: var(--font-heading); font-size: 22px; line-height: 1.25; font-weight: 600; }
+.hrg-chat-icon { display: grid; place-items: center; flex-shrink: 0; min-height: 44px; min-width: 44px; border: 1px solid #ffffff40; border-radius: 6px; }
+.hrg-chat-conversation { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 18px; }
+.hrg-chat-message { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: 8px; padding: 15px; margin-bottom: 14px; overflow-wrap: anywhere; }
+.hrg-chat-user { margin-left: 26px; background: hsl(var(--secondary)); }
+.hrg-chat-byline { font-size: 9px; font-weight: 600; letter-spacing: .08em; color: hsl(var(--muted-foreground)); }
+.hrg-chat-message p { font-size: 14px; line-height: 1.65; margin-top: 6px; white-space: pre-wrap; }
+.hrg-chat-message nav { border-top: 1px solid hsl(var(--border)); margin-top: 14px; padding-top: 6px; }
+.hrg-chat-message nav a { display: flex; align-items: center; justify-content: space-between; min-height: 44px; gap: 12px; font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
+.hrg-chat-suggestions { display: grid; gap: 8px; }
+.hrg-chat-suggestions button { display: flex; align-items: center; justify-content: space-between; gap: 8px; border: 1px solid hsl(var(--border)); border-radius: 6px; padding: 12px; min-height: 44px; font-size: 12px; text-align: left; background: hsl(var(--card)); }
+.hrg-chat-status { font-size: 12px; color: hsl(var(--muted-foreground)); padding: 6px; }
+.hrg-chat-form { display: flex; align-items: center; gap: 8px; padding: 12px 16px 8px; border-top: 1px solid hsl(var(--border)); background: hsl(var(--card)); }
+.hrg-chat-form textarea { flex: 1; min-width: 0; resize: none; border: 1px solid hsl(var(--border)); border-radius: 6px; background: hsl(var(--background)); padding: 10px; font-size: 16px; line-height: 1.4; }
+.hrg-chat-form button { display: grid; place-items: center; width: 44px; min-height: 44px; background: hsl(var(--primary)); color: white; border-radius: 6px; }
+.hrg-chat-form button:disabled { opacity: .45; }
+.hrg-chat-footer { padding: 4px 16px 12px; background: hsl(var(--card)); }
+.hrg-chat-footer p { font-size: 10px; line-height: 1.5; color: hsl(var(--muted-foreground)); }
+.hrg-chat-footer div { display: flex; justify-content: space-between; gap: 8px; }
+.hrg-chat-footer a, .hrg-chat-footer button { display: inline-flex; align-items: center; min-height: 36px; text-decoration: underline; text-underline-offset: 3px; font-size: 11px; }
+@media (max-width: 1023px) {
+  .hrg-chat { right: 14px; bottom: calc(100px + env(safe-area-inset-bottom, 0px)); }
+  .hrg-chat-panel { width: min(400px, calc(100vw - 28px)); height: min(580px, calc(100dvh - 190px - env(safe-area-inset-bottom, 0px))); }
+}
+@media (max-height: 600px) {
+  .hrg-chat-panel { position: fixed; inset: 8px; width: auto; height: auto; margin: 0; }
+  .hrg-chat-heading { padding: 10px 16px; }
+  .hrg-chat-heading h2 { font-size: 18px; }
+}
