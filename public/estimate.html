@@ -412,8 +412,23 @@ section[id],main[id]{scroll-margin-top:60px}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .logo-l{display:none}:root:not([data-theme="light"]) .logo-d{display:block}}
 :root[data-theme="dark"] .logo-l{display:none}:root[data-theme="dark"] .logo-d{display:block}
 </style>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1344105344510844');
+fbq('track', 'PageView');
+</script>
+<!-- End Meta Pixel Code -->
 </head>
 <body>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1344105344510844&ev=PageView&noscript=1"></noscript>
 
 <div class="topbar"><div class="topbar-in"><p data-i18n>Remodeling cost estimates for homes anywhere in the United States.</p>
   <div class="tb-links"><a href="tel:+19092740272">909.274.0272</a><a href="mailto:sales@hrgprefab.com">sales@hrgprefab.com</a></div></div></div>
@@ -3176,6 +3191,7 @@ function renderLead(r){const el=$('lead');
         summary:summaryText(t,'en')})});
       const out=await res.json().catch(()=>null);
       if(!res.ok||!out||out.ok!==true)throw new Error('not sent');
+      if(window.fbq)window.fbq('track','Lead',{content_name:'Remodel Cost Planner'});
       const first=f.name.trim().split(' ')[0];
       LEAD={state:'sent',msg:TT(`Thanks, ${first}. HRG has your estimate and will contact you to set up a site visit.`,`Gracias, ${first}. HRG recibió su estimado y se comunicará con usted para programar una visita.`)}}
     catch(e){LEAD={state:'fallback',msg:TT("We couldn't send your request just now. Copy your estimate and email it to HRG, or give us a call, and we'll take it from there.","No pudimos enviar su solicitud en este momento. Copie su estimado y envíelo por correo a HRG, o llámenos, y nosotros nos encargamos del resto.")}}
