@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const SITE_LINKS = [
+  { label: "Planning guides", to: "/guides" },
   { label: "FAQs", to: "/faq" },
   { label: "How it works", to: "/how-it-works" },
   { label: "Services", to: "/services" },

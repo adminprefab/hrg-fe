@@ -17,6 +17,7 @@ export default function FaqSection({ full = false }) {
         </div>
         <p className="mt-8 flex flex-wrap gap-6">
           {!full && <Link className="text-primary underline" to="/faq">All prefab ADU questions</Link>}
+          <Link className="text-primary underline" to="/guides">Plan costs and scope</Link>
           <Link className="text-primary underline" to="/collection">Explore floor plans</Link>
           <Link className="text-primary underline" to="/see-what-fits">Check my property</Link>
         </p>

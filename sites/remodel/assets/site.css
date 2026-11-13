@@ -257,3 +257,5 @@ a.card:hover{border-color:var(--accent);transform:translateY(-2px);color:inherit
 }
 
 .faq-list{max-width:800px}.faq-list details{border-bottom:1px solid #8885;padding:20px 0}.faq-list summary{font-weight:700;cursor:pointer}.faq-list p{line-height:1.7;margin-top:14px}
+
+.quote-guide{max-width:850px}.quote-guide h2{margin-top:40px;font-size:clamp(25px,4vw,36px)}.quote-guide p{line-height:1.85;margin:18px 0}.quote-guide p a{text-decoration:underline}.quote-table{overflow-x:auto;margin:25px 0}.quote-table table{width:100%;border-collapse:collapse;font-size:15px;line-height:1.6}.quote-table td,.quote-table th{padding:16px;text-align:left;border:1px solid var(--line,#bbb);vertical-align:top}.quote-table th{font-weight:700}

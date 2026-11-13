@@ -1,3 +1,4 @@
+import { planningGuides } from './planningGuides';
 import { buildCollections } from './collectionData';
 export const SITE_URL = 'https://www.hrgprefab.com';
 const rows = [
@@ -24,6 +25,8 @@ const rows = [
   ['/terms-conditions', 'Terms & Conditions', 'Read the terms and conditions for using the HRG Prefab website and its project planning tools.'],
 ];
 export const seoPages = Object.fromEntries(rows.map(([path, title, description]) => [path, { title: `${title} | HRG Prefab`, description }]));
+seoPages['/guides'] = { title: 'Prefab ADU Planning Guides | HRG Prefab', description: 'Understand prefab ADU budgets, compare materials-only and coordinated scopes, and prepare for a property review with HRG Prefab.' };
+for (const guide of planningGuides) seoPages[`/guides/${guide.slug}`] = { title: `${guide.title} | HRG Prefab`, description: guide.description };
 for (const collection of Object.values(buildCollections)) {
   const path = `/collection/${collection.slug}`;
   seoPages[path] = { title: `${collection.name} Collection | HRG Prefab`, description: `${collection.tagline} Explore models, specifications and options with HRG Prefab.` };
@@ -46,9 +49,11 @@ export function pageSeo(pathname) {
   return { ...(page || { title: 'Page Not Found | HRG Prefab', description: 'Find prefab ADU plans, materials and project information at HRG Prefab.', noindex: true }), path, url: SITE_URL + (page?.canonicalPath || path), image: page?.image || `${SITE_URL}/assets/hero.webp` };
 }
 export function structuredData(page) {
-  const organization = { '@type': 'Organization', '@id': `${SITE_URL}/#organization`, name: 'HRG Prefab', url: `${SITE_URL}/`, logo: `${SITE_URL}/assets/logo-01-sm.png`, telephone: '+1-909-274-0272', email: 'sales@hrgprefab.com' };
+  const organization = { '@type': 'Organization', '@id': `${SITE_URL}/#organization`, name: 'HRG Prefab', parentOrganization: { '@id': 'https://thehomeremodelgroup.com/#organization', '@type': 'Organization', name: 'The Home Remodel Group', url: 'https://thehomeremodelgroup.com/' }, url: `${SITE_URL}/`, logo: `${SITE_URL}/assets/logo-01-sm.png`, telephone: '+1-909-274-0272', email: 'sales@hrgprefab.com' };
   const graph = [organization, { '@type': 'WebSite', '@id': `${SITE_URL}/#website`, name: 'HRG Prefab', url: `${SITE_URL}/`, publisher: { '@id': organization['@id'] } }, { '@type': 'WebPage', '@id': `${page.url}#webpage`, url: page.url, name: page.title, description: page.description, isPartOf: { '@id': `${SITE_URL}/#website` } }];
   if (page.path !== '/' && !page.noindex) graph.push({ '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/` }, { '@type': 'ListItem', position: 2, name: page.title.replace(' | HRG Prefab', ''), item: page.url }] });
+  const guide = planningGuides.find(g => page.path === `/guides/${g.slug}`);
+  if (guide) graph.push({ '@type': 'Article', headline: guide.title, description: guide.description, mainEntityOfPage: { '@id': `${page.url}#webpage` }, author: { '@id': organization['@id'] }, publisher: { '@id': organization['@id'] }, datePublished: '2026-11-13', dateModified: '2026-11-13' });
   return { '@context': 'https://schema.org', '@graph': graph };
 }
 export const robotsFor = page => page.noindex ? 'noindex,follow' : 'index,follow,max-image-preview:large';

@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import PageNotFound from "./lib/PageNotFound";
+import PlanningGuides from "./pages/PlanningGuides";
 import FAQ from "./pages/FAQ";
 import Layout from '@/components/layout/Layout';
 import Home from '@/pages/Home';
@@ -34,6 +35,8 @@ export default function SiteRoutes() {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/guides" element={<PlanningGuides />} />
+        <Route path="/guides/:slug" element={<PlanningGuides />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/about" element={<About />} />
         <Route path="/services" element={<Services />} />
