@@ -1,3 +1,4 @@
+/** @type {Array<{slug:string,title:string,description:string,intro:string,sections:Array<[string,string[]]>}>} */
 export const planningGuides = [
   {
     "slug": "prefab-adu-cost",
@@ -10,6 +11,14 @@ export const planningGuides = [
         [
           "HRG offers prefab materials and coordinated project services. Materials are produced off-site and assembled on your property. The advertised materials price is not an installed project price. Before comparing two quotes, ask whether both include the same floor area, finishes, delivery and site work.",
           "Use the selected model and finish schedule as your starting point. Then request a written list of included items, allowances, exclusions and who is responsible for each part of the project."
+        ]
+      ],
+      [
+        "HRG materials and delivery: three planning examples",
+        [
+          "At the current $100 per square foot materials planning rate, delivery calculated at 22% adds $22 per square foot. Materials plus delivery therefore total $122 per square foot before other project costs.",
+          "500 square feet: $50,000 materials + $11,000 delivery = $61,000. 800 square feet: $80,000 + $17,600 = $97,600. 1,200 square feet: $120,000 + $26,400 = $146,400. These are arithmetic examples, not installed quotes or a final materials specification.",
+          "Design, approvals, site preparation, foundation, utilities, assembly, selected upgrades and other property requirements must still be accounted for. Confirm package contents, delivery access and unloading responsibilities in writing before ordering."
         ]
       ],
       [
