@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { CheckCircle } from "lucide-react";
 import { money } from "@/lib/projectPricing";
-import { createLead, sendLeadEmail } from "@/lib/leadEmail";
+import { createLead, sendLeadEmail, trackLead } from "@/lib/leadEmail";
 import { POOL_MODELS, POOL_PRICING, customPoolPrice } from "@/lib/poolCatalogue";
 
 const inputClass =
@@ -80,6 +80,7 @@ export default function PoolQuoteForm({ selected, onClear }) {
         lead_flow: "Pool Collection",
         details: lines.join("\n"),
       });
+      trackLead({ content_name: "Pool Collection" });
       setSubmitted(true);
     } catch (err) {
       console.error(err);

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { createLead, landDevFields, leadDetails, sendLeadEmail, uploadNote } from "@/lib/leadEmail";
+import { createLead, landDevFields, leadDetails, sendLeadEmail, uploadNote, trackLead } from "@/lib/leadEmail";
 import { PRICING, buildProject, money } from "@/lib/projectPricing";
 import StepHeading from "./StepHeading";
 import PBStepProperty from "./PBStepProperty";
@@ -137,6 +137,7 @@ export default function PBBuilderFlow() {
           finalSf: sf,
         }),
       });
+      trackLead({ content_name: "Build Yours" });
       setSubmitted(true);
       setTimeout(() => {
         document

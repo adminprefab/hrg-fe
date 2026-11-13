@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from "lucide-react";
 import { base44 } from "@/api/base44Client";
-import { sendLeadEmail } from "@/lib/leadEmail";
+import { sendLeadEmail, trackLead } from "@/lib/leadEmail";
 import PageHero from "@/components/shared/PageHero";
 
 const contacts = [
@@ -65,6 +65,7 @@ export default function Contact() {
         lead_flow: "Contact Page",
         details: `Form: Contact page\nProject type: ${projectType}\nMessage: ${form.message.trim() || "-"}`,
       });
+      trackLead({ content_name: "Contact Page" });
       setSubmitted(true);
     } catch (err) {
       console.error(err);

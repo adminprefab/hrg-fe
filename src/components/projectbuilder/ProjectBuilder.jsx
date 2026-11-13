@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Check } from "lucide-react";
 import { base44 } from "@/api/base44Client";
-import { createLead, landDevFields, leadDetails, sendLeadEmail, uploadNote } from "@/lib/leadEmail";
+import { createLead, landDevFields, leadDetails, sendLeadEmail, uploadNote, trackLead } from "@/lib/leadEmail";
 import { PRICING, buildProject, money } from "@/lib/projectPricing";
 import { presetLeadFields } from "@/lib/buildPreset";
 import { BUILDER_STEPS, CATALOGUE_STEPS } from "@/lib/builderSteps";
@@ -168,6 +168,7 @@ export default function ProjectBuilder({ preset = null }) {
         }),
       });
 
+      trackLead({ content_name: "Project Builder" });
       setSubmitted(true);
     } catch (err) {
       setError("Something went wrong sending your project. Please try again.");

@@ -38,7 +38,7 @@
       fetch(API,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)})
         .then(function(r){return r.json().catch(function(){return{}}).then(function(j){return{ok:r.ok&&j.ok,status:r.status,j:j}})})
         .then(function(r){
-          if(r.ok){f.className='lead done';f.innerHTML='<p class="big">Thanks, '+esc(d.name.split(' ')[0])+'.</p><p>We got your request and will call you to set up your free estimate.</p><a class="btn ghost" href="https://estimate.thehomeremodelgroup.com/estimate">See prices while you wait</a>';return}
+          if(r.ok){if(window.fbq)window.fbq('track','Lead');f.className='lead done';f.innerHTML='<p class="big">Thanks, '+esc(d.name.split(' ')[0])+'.</p><p>We got your request and will call you to set up your free estimate.</p><a class="btn ghost" href="https://estimate.thehomeremodelgroup.com/estimate">See prices while you wait</a>';return}
           if(r.status===400&&r.j&&r.j.error){btn.disabled=false;btn.textContent='Get my free estimate';return fail(r.j.error)}
           throw new Error('send failed')})
         .catch(function(){

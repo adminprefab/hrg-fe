@@ -95,3 +95,8 @@ export async function sendLeadEmail(params) {
     }
   }
 }
+
+// Meta Pixel "Lead" conversion, once a form has gone through. The pixel itself loads in index.html.
+export function trackLead(params) {
+  if (typeof window !== "undefined" && typeof window.fbq === "function") window.fbq("track", "Lead", params);
+}
