@@ -3,7 +3,7 @@ import { buildCollections } from './collectionData';
 export const SITE_URL = 'https://www.hrgprefab.com';
 const rows = [
   ['/', 'Prefab ADUs, Additions & Building Materials', 'Plan your prefab ADU or addition with HRG Prefab. Explore floor plans, compare materials-only and coordinated project scopes, and estimate your budget.'],
-  ['/about', 'About HRG Prefab', 'Meet HRG Prefab and learn how we coordinate design, permitting and prefabricated building materials for ADUs and additions.'],
+  ['/about', 'About HRG Prefab & The Home Remodel Group', 'HRG Prefab is the prefab division of The Home Remodel Group. Learn about our panelized materials, project coordination and homeowner-hired contractor model.'],
   ['/services', 'Prefab ADU Design, Permits & Materials', 'Explore HRG services for detached ADUs and additions, from feasibility and design to permitting, prefab materials and installation coordination.'],
   ['/projects', 'Prefab ADU & Addition Projects', 'Explore HRG prefab project examples and design ideas for backyard living spaces and additions. Start planning what fits your property.'],
   ['/testimonials', 'Client Testimonials', 'Read client feedback about working with HRG Prefab and explore the next steps for your ADU or addition project.'],
@@ -53,7 +53,7 @@ export function structuredData(page) {
   const graph = [organization, { '@type': 'WebSite', '@id': `${SITE_URL}/#website`, name: 'HRG Prefab', url: `${SITE_URL}/`, publisher: { '@id': organization['@id'] } }, { '@type': 'WebPage', '@id': `${page.url}#webpage`, url: page.url, name: page.title, description: page.description, isPartOf: { '@id': `${SITE_URL}/#website` } }];
   if (page.path !== '/' && !page.noindex) graph.push({ '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/` }, { '@type': 'ListItem', position: 2, name: page.title.replace(' | HRG Prefab', ''), item: page.url }] });
   const guide = planningGuides.find(g => page.path === `/guides/${g.slug}`);
-  if (guide) graph.push({ '@type': 'Article', headline: guide.title, description: guide.description, mainEntityOfPage: { '@id': `${page.url}#webpage` }, author: { '@id': organization['@id'] }, publisher: { '@id': organization['@id'] }, datePublished: '2026-11-13', dateModified: '2026-11-13' });
+  if (guide) graph.push({ '@type': 'Article', headline: guide.title, description: guide.description, mainEntityOfPage: { '@id': `${page.url}#webpage` }, author: { '@id': organization['@id'] }, publisher: { '@id': organization['@id'] }, datePublished: guide.datePublished || '2026-11-13', dateModified: guide.dateModified || '2026-11-13' });
   return { '@context': 'https://schema.org', '@graph': graph };
 }
 export const robotsFor = page => page.noindex ? 'noindex,follow' : 'index,follow,max-image-preview:large';

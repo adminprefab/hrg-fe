@@ -57,17 +57,17 @@ const models = bestSellers.map((b) => {
 });
 
 const proofStats = [
-  { stat: "120+", label: "Units Installed" },
-  { stat: "3–5 Days", label: "Average On-Site Install" },
-  { stat: "98%", label: "Permit Approval Rate" },
-  { stat: "4.9/5", label: "Customer Satisfaction" },
+  { stat: "Plans", label: "Compare your layout options" },
+  { stat: "Materials", label: "Define your package" },
+  { stat: "Property", label: "Review site requirements" },
+  { stat: "Team", label: "Coordinate with your contractor" },
 ];
 
 const process = [
   { num: "01", title: "Consult & Design", desc: "We walk your lot, talk goals and budget, and design a unit that fits." },
   { num: "02", title: "Permit & Engineer", desc: "We finalize engineering and handle permitting with your city or county." },
-  { num: "03", title: "Build Off-Site", desc: "Your unit is built in our facility while your site is prepped in parallel." },
-  { num: "04", title: "Deliver & Set", desc: "We deliver, set, and connect the unit, then walk you through final inspection." },
+  { num: "03", title: "Prepare Materials", desc: "Your agreed prefab components are produced while your contractor coordinates site readiness." },
+  { num: "04", title: "Deliver & Assemble", desc: "Delivery is coordinated with your hired contractor, who handles assembly and site construction." },
 ];
 
 const testimonials = [
