@@ -54,7 +54,7 @@ export default function WhyHRG() {
               Prefabricated materials. <em className="not-italic font-bold">A permanent home.</em>
             </AnimatedHeading>
             <p className="mt-6 text-foreground/70 leading-relaxed">
-              Roughly one-third less cost and time than a comparable traditional build.
+              Compare the materials package, site work and coordination your project needs.
             </p>
             <p className="mt-4 text-foreground/70 leading-relaxed">
               We coordinate every step, from materials and on-site assembly to permits, inspections, and lights on.

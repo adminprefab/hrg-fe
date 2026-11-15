@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 
 const SITE_LINKS = [
   { label: "Planning guides", to: "/guides" },
+  { label: "Compare prefab options", to: "/guides/compare-prefab-adu-companies" },
+  { label: "Use your own contractor", to: "/guides/prefab-adu-kits-own-contractor" },
   { label: "FAQs", to: "/faq" },
   { label: "How it works", to: "/how-it-works" },
   { label: "Services", to: "/services" },

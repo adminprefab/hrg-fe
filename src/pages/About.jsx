@@ -9,15 +9,15 @@ import CTASection from "@/components/shared/CTASection";
 const STORY_IMG = "https://media.base44.com/images/public/6a3d99160f311f943d2b9488/484b8aa8a_prefabricated-container-houses-in-building-under-c-2026-03-25-00-29-35-utc.jpg";
 
 const principles = [
-  { icon: ShieldCheck, title: "Built to Code, Every Time", desc: "Engineering and permitting are handled in-house so every unit clears inspection the first time." },
+  { icon: ShieldCheck, title: "Plan Around Your Property", desc: "Design, engineering and approval requirements are reviewed for the selected system and your site." },
   { icon: Clock, title: "Honest Timelines", desc: "We quote realistic schedules and communicate early if anything on-site changes the plan." },
-  { icon: Factory, title: "Quality That Doesn't Vary", desc: "Factory conditions mean the same materials and process on unit one and unit one hundred." },
+  { icon: Factory, title: "A Defined Materials Package", desc: "Agree on components, finishes and responsibilities before procurement and delivery." },
 ];
 
 const stats = [
-  { value: "120+", label: "Units Installed" },
-  { value: "14", label: "Years Building" },
-  { value: "98%", label: "On-Time Delivery" },
+  { value: "Plan", label: "Property and project scope" },
+  { value: "Supply", label: "Prefabricated materials" },
+  { value: "Coordinate", label: "With your contractor" },
 ];
 
 export default function About() {
@@ -40,19 +40,20 @@ export default function About() {
               A <em className="not-italic font-bold">factory-first</em> approach to home additions
             </AnimatedHeading>
             <p className="text-foreground/70 leading-relaxed mb-4">
-              HRG Prefab, a division of The Home Remodel Group, was founded by builders who were
-              tired of seeing good projects stall out on weather delays, subcontractor scheduling,
-              and on-site rework. We moved the build indoors.
+              HRG Prefab is the prefab division of The Home Remodel Group. We coordinate
+              prefabricated panels and components for ADUs, homes and additions,
+              with materials-only and coordinated project options.
             </p>
             <p className="text-foreground/70 leading-relaxed mb-4">
-              Every HRG unit, whether it's a detached backyard ADU or an attached suite, is
-              framed, wired, insulated, and finished in our climate-controlled facility under
-              consistent quality control, then transported and set on your property once your
-              site and foundation are ready.
+              Components are manufactured off site and assembled on your property.
+              The written package specification identifies supplied materials and finishes.
+              Your homeowner-hired general contractor handles site construction and assembly.
+              HRG is not the general contractor.
             </p>
             <p className="text-foreground/70 leading-relaxed">
-              The result: fewer surprises, a tighter timeline, and a finished space that holds
-              up the same way whether it was built in July or January.
+              Optional coordination can include feasibility, design, engineering, permitting,
+              procurement and delivery within the agreed scope. Start with a property review
+              to define the team, responsibilities and complete project budget.
             </p>
           </div>
           <motion.div
@@ -62,7 +63,7 @@ export default function About() {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="rounded-lg overflow-hidden shadow-2xl"
           >
-            <img src={STORY_IMG} alt="HRG Prefab facility" className="w-full h-[500px] object-cover" />
+            <img src={STORY_IMG} alt="Prefabricated construction example" className="w-full h-[500px] object-cover" />
           </motion.div>
         </div>
       </section>
@@ -103,17 +104,17 @@ export default function About() {
           <div className="max-w-3xl mb-16">
             <SectionLabel>Our Team</SectionLabel>
             <AnimatedHeading className="font-heading text-3xl font-normal mb-6 text-balance">
-              Builders, designers, and project managers <em className="not-italic font-bold">under one roof</em>
+              One plan for your <em className="not-italic font-bold">project team</em>
             </AnimatedHeading>
             <p className="text-foreground/70 leading-relaxed">
-              Our in-house team covers architectural design, structural engineering,
-              manufacturing, and on-site installation, so you have one point of contact from
-              first sketch to final walkthrough, not a chain of subcontractors.
+              HRG connects the materials and professional services in your agreement with
+              your contractor's construction plan. You can bring an existing team or discuss
+              the coordination you need before choosing a package.
             </p>
             <p className="text-foreground/70 leading-relaxed mt-4">
-              We work in close partnership with local jurisdictions to keep permitting moving
-              and make sure every unit is fully compliant with your area's ADU and zoning
-              requirements.
+              For kitchens, bathrooms and broader renovation planning, visit{' '}
+              <a className="underline" href="https://thehomeremodelgroup.com/about">The Home Remodel Group</a>.
+              For prefab materials and project coordination, start here with HRG Prefab.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">

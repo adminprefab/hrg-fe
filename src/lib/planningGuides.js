@@ -1,4 +1,5 @@
-/** @type {Array<{slug:string,title:string,description:string,intro:string,sections:Array<[string,string[]]>}>} */
+import { competitiveGuides } from './competitiveGuides';
+/** @type {Array<{slug:string,title:string,description:string,intro:string,sections:Array<[string,string[]]>,datePublished?:string,dateModified?:string,sources?:string[][]}>} */
 export const planningGuides = [
   {
     "slug": "prefab-adu-cost",
@@ -123,5 +124,6 @@ export const planningGuides = [
         ]
       ]
     ]
-  }
+  },
+  ...competitiveGuides
 ];
