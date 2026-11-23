@@ -12,6 +12,11 @@ export default function FaqSection({ full = false }) {
             <details key={item.q} className="border-b border-border py-5">
               <summary className="font-heading text-lg font-semibold cursor-pointer">{item.q}</summary>
               <p className="pt-4 text-foreground/70 leading-relaxed">{item.a}</p>
+              {item.link && (
+                <Link to={item.link.to} className="mt-2 inline-flex min-h-11 items-center font-semibold underline underline-offset-4">
+                  {item.link.label}
+                </Link>
+              )}
             </details>
           ))}
         </div>

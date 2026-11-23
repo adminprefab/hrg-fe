@@ -74,6 +74,14 @@ export default function PBStepScopes({ data, setField, sf, estimate }) {
             HRG coordinates the prefabricated building materials required to construct the permitted
             structure through an on-site conventional building and assembly process.
           </p>
+          <a
+            href="/materials-warranty"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 inline-flex min-h-11 items-center text-sm font-semibold underline underline-offset-4"
+          >
+            Read the materials warranty<span className="sr-only"> (opens in a new tab)</span>
+          </a>
 
           <div className="mt-5 grid grid-cols-2 gap-4">
             <div className="rounded-md bg-secondary px-5 py-4">

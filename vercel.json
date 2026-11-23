@@ -41,6 +41,15 @@
   "trailingSlash": false,
   "headers": [
     {
+      "source": "/documents/hrg-prefab-materials-warranty.pdf",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://www.hrgprefab.com/materials-warranty>; rel=\"canonical\""
+        }
+      ]
+    },
+    {
       "source": "/robots.txt",
       "headers": [
         {

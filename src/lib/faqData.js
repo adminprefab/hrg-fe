@@ -5,6 +5,11 @@ export const faqs = [
   { q: "Can I order materials and use my own contractor?", a: "Yes. The materials-only option lets you work with your own general contractor for site preparation and assembly. Confirm the design, approvals, delivery access and responsibilities with HRG and your contractor before ordering." },
   { q: "What does HRG coordinate for a turnkey project?", a: "HRG coordinates feasibility, design, engineering, permitting, procurement and delivery, plus installation coordination within the agreed scope. HRG is not the general contractor. The homeowner hires the general contractor responsible for site construction and assembly." },
   { q: "How do I find out what fits on my property?", a: "Start with your property address, intended use and approximate size. A feasibility review checks access, setbacks, utilities, site conditions and local requirements before a final design or construction budget is confirmed." },
+  {
+    q: "What warranty comes with my prefab materials?",
+    a: "HRG corrects its own order errors and pays the related freight. Before you approve a product, we provide its written warranty or confirm in writing if none applies. The named manufacturer or supplier handles covered factory defects. Your licensed contractor is responsible for installation workmanship.",
+    link: { to: "/materials-warranty", label: "Read the limited materials warranty" },
+  },
   { q: "Can I customize the floor plan and finishes?", a: "Yes. Browse the model collection and finish selections for a starting point. HRG reviews layout changes, finishes and options against your property, engineering requirements and budget." },
   { q: "Who handles permits and approvals?", a: "For scopes that include design and permitting, HRG coordinates the plans and submission process. Your city or county determines the approvals required and reviews the application. Permit requirements and responsibility for inspections should be confirmed in the written scope." },
   { q: "How long does a prefab ADU project take?", a: "Timing depends on design, local review, site preparation, manufacturing, delivery and assembly. Prefabrication can reduce work performed on site, but it does not remove permitting or foundation and utility work. HRG establishes a project schedule after reviewing the property and scope." },

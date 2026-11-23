@@ -27,6 +27,7 @@ import OutdoorKitchen from '@/pages/collection/OutdoorKitchen';
 import BuildDetail from '@/pages/collection/BuildDetail';
 import BuildYours from '@/pages/collection/BuildYours';
 import Pool from '@/pages/collection/Pool';
+import MaterialsWarranty from '@/pages/MaterialsWarranty';
 import PrivacyPolicy from '@/pages/PrivacyPolicy';
 import TermsConditions from '@/pages/TermsConditions';
 
@@ -63,6 +64,7 @@ export default function SiteRoutes() {
         <Route path="/why-hrg" element={<WhyHRG />} />
         <Route path="/references" element={<References />} />
         <Route path="/project-builder" element={<ProjectBuilderPage />} />
+        <Route path="/materials-warranty" element={<MaterialsWarranty />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-conditions" element={<TermsConditions />} />
       </Route>

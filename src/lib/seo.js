@@ -21,6 +21,7 @@ const rows = [
   ['/references', 'HRG Project References & Our Work', 'Browse references from the combined project portfolio. HRG coordinates design, approvals, materials and delivery; owners hire licensed contractors for construction.'],
   ['/project-builder', 'Prefab ADU Project Budget Builder', 'Choose your property, size and scope to estimate a prefab project budget. Separate building materials, site work and optional services.'],
   ['/faq', 'Prefab ADU Costs, Permits & Project FAQs', 'Get clear answers about prefab ADU materials pricing, permits, contractors, project timelines, financing and what fits on your property.'],
+  ['/materials-warranty', 'Limited Materials Warranty', 'Read HRG Prefab’s materials warranty for delivery errors, factory defects and installation workmanship. Download the one-page warranty or find out how to make a claim.'],
   ['/privacy-policy', 'Privacy Policy', 'Read the HRG Prefab privacy policy and how information submitted through our website is handled.'],
   ['/terms-conditions', 'Terms & Conditions', 'Read the terms and conditions for using the HRG Prefab website and its project planning tools.'],
 ];

@@ -95,9 +95,16 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-6 py-6 text-xs text-white/50">
-          © {new Date().getFullYear()} HRG Prefab. Expected Project Budgets are planning
-          estimates, not contracts or bids.
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-x-6 gap-y-3 px-6 py-6">
+          <p className="text-xs text-white/65">
+            © {new Date().getFullYear()} HRG Prefab. Expected Project Budgets are planning
+            estimates, not contracts or bids.
+          </p>
+          <nav aria-label="Policies" className="flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-white/85">
+            <Link to="/materials-warranty" className="py-2 underline-offset-4 hover:underline">Materials warranty</Link>
+            <Link to="/terms-conditions" className="py-2 underline-offset-4 hover:underline">Terms &amp; conditions</Link>
+            <Link to="/privacy-policy" className="py-2 underline-offset-4 hover:underline">Privacy policy</Link>
+          </nav>
         </div>
       </div>
     </footer>
