@@ -1,5 +1,5 @@
 import React from "react";
-import { money } from "@/lib/projectPricing";
+import { money, PRICING } from "@/lib/projectPricing";
 import { BALLPARK_NOTE, LandDevSubLines, SiteWorkSubLines } from "./LandDevQuestions";
 
 function Row({ label, value, action }) {
@@ -58,7 +58,7 @@ export default function BudgetPanel({ form, setField, estimate, budgetText }) {
         {estimate.upgrades > 0 && <Row label="Finishes + Add-ons" value={money(estimate.upgrades)} />}
         <Row
           label="Site Work + Assembly"
-          value={form.site_work ? money(estimate.p3) : "Not included"}
+          value={!form.site_work ? "Not included" : sf >= PRICING.sfMin ? money(estimate.p3) : "—"}
           action={<ScopeToggle added={form.site_work} onToggle={() => setField("site_work", !form.site_work)} />}
         />
         {form.site_work && <SiteWorkSubLines estimate={estimate} />}

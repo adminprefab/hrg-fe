@@ -114,7 +114,7 @@ export default function PBProjectCard({ data, setField, estimate, sf }) {
           onToggle={() => setField("site_work", !data.site_work)}
           title="Site Work + Assembly"
           sub="Optional add-on"
-          value={money(estimate.p3)}
+          value={hasSf ? money(estimate.p3) : "—"}
         />
         <div className="-mt-1">
           <SiteWorkSubLines estimate={estimate} />
