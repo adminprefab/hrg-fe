@@ -18,7 +18,7 @@ const rows = [
   ['/finishes', 'Prefab Home Finish Selections', 'Explore HRG interior and exterior finishes, compare options and build a selection package for your prefab home or ADU.'],
   ['/pools', 'Prefab Pool Collection & Backyard Designs', 'Explore HRG pool models, dimensions, equipment and backyard design options. Request a quote for your selected pool and property.'],
   ['/why-hrg', 'Why Choose HRG Prefab', 'Learn about the HRG approach to prefab building materials, project planning and coordination for ADUs, additions and homes.'],
-  ['/references', 'HRG Project References & Our Work', 'Browse HRG project references and examples of prefab construction, then discuss your property and scope with our team.'],
+  ['/references', 'HRG Project References & Our Work', 'Browse references from the combined project portfolio. HRG coordinates design, approvals, materials and delivery; owners hire licensed contractors for construction.'],
   ['/project-builder', 'Prefab ADU Project Budget Builder', 'Choose your property, size and scope to estimate a prefab project budget. Separate building materials, site work and optional services.'],
   ['/faq', 'Prefab ADU Costs, Permits & Project FAQs', 'Get clear answers about prefab ADU materials pricing, permits, contractors, project timelines, financing and what fits on your property.'],
   ['/privacy-policy', 'Privacy Policy', 'Read the HRG Prefab privacy policy and how information submitted through our website is handled.'],

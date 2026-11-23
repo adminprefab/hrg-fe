@@ -68,10 +68,11 @@ export default function WhyHRG() {
           >
             <ClickableImage
               src={IMG.prefab}
-              alt="Modern prefab home built by HRG"
-              label="Prefabricated construction, modern tools"
+              alt="Illustrative modern home exterior"
+              label="Illustrative architecture photograph"
               className="w-full h-80"
             />
+            <p className="mt-2 text-xs text-foreground/60">Illustrative architecture photograph.</p>
           </motion.div>
         </div>
       </section>

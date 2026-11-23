@@ -11,14 +11,14 @@ export const BEFORE_AFTER = {
   alt: "A detached garage before conversion, and the finished ADU after",
   project: "Mulholland Estates Luxury Residence",
   address: "14047 Aubrey Road, Mulholland Estates, CA",
-  caption: "Same lot, same footprint. Design, permits, factory and install by one team.",
+  caption: "Same lot, same footprint. A garage-to-ADU conversion from the combined portfolio.",
 };
 
 export const STATS = [
   { stat: "19+", label: "Referenced projects" },
-  { stat: "50+", label: "Units built" },
+  { stat: "50+", label: "Units across the combined portfolio" },
   { stat: "5", label: "States: CA, NY, FL, PA, NJ" },
-  { stat: "1", label: "Team, drawing to install" },
+  { stat: "1", label: "HRG coordination team" },
 ];
 
 // "People you can call": both have run work for HRG directly.

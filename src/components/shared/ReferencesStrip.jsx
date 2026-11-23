@@ -10,10 +10,10 @@ export default function ReferencesStrip({ className = "" }) {
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 id="references-strip" className="font-heading text-2xl md:text-3xl font-bold">
-            Homes we've built
+            Our project portfolio
           </h2>
           <p className="mt-1 text-foreground/65">
-            {STATS[0].stat} referenced projects · {STATS[1].stat} units · references you can call.
+            {STATS[0].stat} referenced projects · {STATS[1].stat} units across the portfolio · references you can call.
           </p>
         </div>
         <Link

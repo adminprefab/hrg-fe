@@ -32,8 +32,8 @@ export default function References() {
       <PageHero
         breadcrumb="References"
         label="Our work"
-        title={<>Built by <em className="not-italic font-bold">one team</em></>}
-        subtitle="Design, permits, factory and install under one roof."
+        title={<>Our <em className="not-italic font-bold">project portfolio</em></>}
+        subtitle="HRG coordinates design, approvals, materials and delivery. The owner directly hires a licensed general contractor for site construction and assembly under a separate agreement."
       />
 
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-14 md:py-20">
@@ -55,6 +55,7 @@ export default function References() {
             </div>
           ))}
         </dl>
+        <p className="mt-4 text-sm text-foreground/65">The portfolio includes conventional construction and prefab project work. HRG is not the general contractor.</p>
       </section>
 
       <section className="bg-secondary/40 py-14 md:py-20">
@@ -81,13 +82,13 @@ export default function References() {
 
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-14 md:py-20">
         <h2 className="font-heading text-2xl md:text-3xl font-bold">ADUs and backyard units</h2>
-        <p className="mt-1 mb-6 text-foreground/65">Built off-site, installed on the client's lot.</p>
+        <p className="mt-1 mb-6 text-foreground/65">ADU and backyard projects from the combined portfolio. Prefabricated components are assembled on site by the owner's licensed contractor.</p>
         <PhotoGrid photos={ADU_PHOTOS} />
       </section>
 
       <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-14 md:pb-20">
         <h2 className="font-heading text-2xl md:text-3xl font-bold">Luxury homes</h2>
-        <p className="mt-1 mb-6 text-foreground/65">Ground-up custom homes in Los Angeles, built with our own crews.</p>
+        <p className="mt-1 mb-6 text-foreground/65">Ground-up custom homes in Los Angeles from the combined portfolio, with contractor references listed below.</p>
         <ul className="grid gap-4 md:grid-cols-3 mb-8">
           {LUXURY_PROJECTS.map((p) => (
             <li key={p.name} className="rounded-lg border border-border bg-card p-5">
