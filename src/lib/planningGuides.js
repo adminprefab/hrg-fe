@@ -3,9 +3,10 @@ import { competitiveGuides } from './competitiveGuides';
 export const planningGuides = [
   {
     "slug": "prefab-adu-cost",
-    "title": "What goes into a prefab ADU budget?",
-    "description": "Separate prefab ADU materials from delivery, foundation, utilities, permits and installation before comparing project estimates.",
-    "intro": "A prefab materials price is one part of an ADU budget. A useful estimate separates the building package from the work needed to make it a permitted, finished space on your property.",
+    "title": "What does a prefab ADU cost all in?",
+    "description": "Price an 800 sq. ft. prefab ADU kit with delivery, then work out what foundation, utility hookups, unloading and assembly add to the budget for your lot.",
+    "intro": "For an 800 sq. ft. ADU, HRG’s materials planning rate puts the panel package at $80,000 and delivery at $17,600. To work out the all-in cost for your lot, add the design and permit scope plus a contractor’s price for the on-site work.",
+    "dateModified": "2026-11-23",
     "sections": [
       [
         "Start with the same scope",
@@ -30,6 +31,20 @@ export const planningGuides = [
           "Delivery and access: freight, unloading, equipment and access planning. A narrow driveway, overhead lines or a difficult staging area can change the delivery plan.",
           "Site and installation: demolition where needed, grading, foundation, utilities, assembly and finishing by your hired contractor. Ask about utility upgrades and work outside the building footprint.",
           "Contingency: a separate allowance for unresolved site conditions or owner changes. Agree how additional work will be approved before it begins."
+        ]
+      ],
+      [
+        "Does the ADU kit price include the foundation and utility hookups?",
+        [
+          "The $97,600 example covers the materials package and delivery for 800 sq. ft. Ask your contractor to show what the foundation costs on your lot, where the water and sewer connect, and whether the electrical service needs work. Add the applicable design, engineering, city fees and on-site assembly to see the budget through move-in.",
+          "If one estimate says “site work included,” ask where each utility run starts and ends. Trenching from the house to the ADU, connecting at the street and putting back a driveway are different scopes. Use the same drawing and utility route when you compare bids."
+        ]
+      ],
+      [
+        "Who unloads the panels if the truck can’t get up my driveway?",
+        [
+          "The delivery percentage alone does not assign unloading. Before ordering, agree in writing where the truck stops, who receives the panels, who books lifting equipment if needed, and who pays for the move from the truck to the foundation.",
+          "Send photos of the approach from the street, the narrowest gate or turn, overhead obstructions and the space available to stage panels. Include the slope and any access limits. HRG and the owner’s licensed contractor can use those details to confirm the delivery plan and identify costs that still need a bid."
         ]
       ],
       [

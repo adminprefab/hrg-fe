@@ -1,5 +1,5 @@
 // Each page answers a distinct buying decision; related keyword variants share it.
-/** @type {Array<{slug:string,title:string,description:string,intro:string,sections:Array<[string,string[]]>,sources?:string[][]}>} */
+/** @type {Array<{slug:string,title:string,description:string,intro:string,sections:Array<[string,string[]]>,sources?:string[][],dateModified?:string}>} */
 const guides = [
   {
     slug: 'panelized-vs-modular-adu',
@@ -17,9 +17,14 @@ const guides = [
   {
     slug: 'prefab-adu-kits-own-contractor',
     title: 'Buy a prefab ADU materials package with your own contractor',
-    description: 'Plan an HRG panelized ADU materials package with your general contractor. Review specifications, permits, delivery, assembly and exclusions before ordering.',
-    intro: 'Already have a general contractor? HRG can discuss the prefab materials and coordination your team needs. Start with an agreed scope, approved design requirements and a delivery plan.',
+    dateModified: '2026-11-23',
+    description: 'Already have ADU plans and a builder? See how to request a panels-only quote, check drawing compatibility and divide delivery and assembly with your contractor.',
+    intro: 'If you have plans and your own general contractor, you can request a materials-only ADU quote. Send the current drawings, their approval status and the property address so the team can check the panel layout and delivery scope.',
     sections: [
+      ['Can I use the ADU plans I already paid for and just buy the panels?', [
+        'Start with the latest plan set, including any approved revisions. HRG can review wall lengths, window and door openings and structural details against the proposed panel system. Your design team can identify whether engineering changes or a local review are needed.',
+        'Ask for a written takeoff listing the panels, hardware, finishes and freight included. Give the same list to your own contractor to price receiving, assembly and remaining trades. That gives you two scopes you can add together without paying twice for the same item.'
+      ]],
       ['Start with the contractor’s scope', ['Share your contractor’s contact details, property address, floor plan, target budget and current approval status. Your contractor should review the selected system before you commit to procurement.', 'Separate the materials purchase from the construction agreement. Identify who handles the foundation, utility connections, waterproofing, assembly, inspections and final completion. HRG supplies the agreed package and coordination services; your hired contractor handles construction.']],
       ['Request a complete package schedule', ['Ask for the plans and component list, dimensions, structural requirements, finish selections, supplied hardware and assembly information. Confirm what is included for windows, doors, roofing, insulation and interior finishes. Do not assume that the word kit specifies a complete dwelling.', 'Identify any products your contractor must source separately and resolve substitutions before ordering. Confirm who reviews compatibility between the prefab system and site-built work.']],
       ['Coordinate approvals before procurement', ['The team needs to establish the property’s applicable design and approval requirements. Confirm who supplies engineering, who submits documents, who responds to plan-review comments and which fees are excluded.', 'Tell HRG whether you already have plans or need design and permitting coordination. Existing drawings may require changes to work with the selected system and site conditions.']],
@@ -76,4 +81,4 @@ const guides = [
     ]
   }
 ];
-export const competitiveGuides = guides.map(guide => ({ ...guide, datePublished: '2026-11-15', dateModified: '2026-11-15' }));
+export const competitiveGuides = guides.map(guide => ({ dateModified: '2026-11-15', ...guide, datePublished: '2026-11-15' }));
